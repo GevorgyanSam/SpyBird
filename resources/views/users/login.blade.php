@@ -1,0 +1,49 @@
+<x-app title='Login'>
+    <x-slot:styles>
+        <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+    </x-slot>
+    <x-slot:body>
+        <nav>
+            <div class="navParent">
+                <div class="logo">
+                    <a href="{{ route('user.login') }}">
+                        <x-logo color="rgb(39, 135, 245)"/>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        <main>
+            <div class="container">
+                <div class="item">
+                    <div class="box">
+                        <h3>sign in</h3>
+                        <h4>login to your account</h4>
+                        <div class="formParent">
+                            <x-form method="post">
+                                <div class="item">
+                                    <label for="email">Email</label>
+                                    <input type="email" id="email" autocomplete="off" autofocus>
+                                </div>
+                                <div class="item">
+                                    <label for="password">Password</label>
+                                    <input type="password" id="password" autocomplete="off">
+                                    <i class="fa-solid fa-eye-slash" id="eye"></i>
+                                </div>
+                                <div class="item">
+                                    <button type="submit">sign in</button>
+                                </div>
+                            </x-form>
+                        </div>
+                    </div>
+                    <div class="linkParent">
+                        <p>don't have an account yet ? <a href="#">sign up</a></p>
+                        <a href="#">forgot password ?</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </x-slot>
+    <x-slot:scripts>
+        <script src="{{ asset('js/login.js') }}"></script>
+    </x-slot>
+</x-app>

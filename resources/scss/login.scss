@@ -1,0 +1,142 @@
+@import "./components/fonts.scss";
+@import "./components/variables.scss";
+@import "./components/rules.scss";
+@import "./components/icons.scss";
+
+body {
+    background: var(--background-color-1);
+}
+
+nav {
+    .navParent {
+        background-color: var(--background-color-1);
+        position: fixed;
+        height: 80px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+main {
+    .container {
+        height: 100vh;
+        width: 100%;
+        display: grid;
+        place-items: center;
+
+        .item {
+            text-align: center;
+
+            .box {
+                padding: 25px;
+                height: 350px;
+                width: 350px;
+                border-radius: var(--radius);
+                background-color: var(--background-color-2);
+                text-transform: capitalize;
+
+                h3 {
+                    color: var(--white);
+                }
+
+                h4 {
+                    color: var(--gray);
+                    margin-top: 10px;
+                    font-size: 14px;
+                    font-weight: 400;
+                }
+
+                .formParent {
+                    .item {
+                        margin-top: 20px;
+                        width: 100%;
+                        height: 60px;
+                        background-color: var(--background-color-1);
+                        border-radius: var(--radius);
+                        position: relative;
+                        overflow: hidden;
+
+                        label {
+                            color: var(--gray);
+                            position: absolute;
+                            font-size: 15px;
+                            left: 20px;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            pointer-events: none;
+                        }
+
+                        label.focus {
+                            top: 15px;
+                            font-size: 13px;
+                            opacity: .6;
+                        }
+
+                        i {
+                            color: var(--gray);
+                            position: absolute;
+                            transform: translateY(-50%);
+                            top: 50%;
+                            right: 0;
+                            font-size: 14px;
+                            display: none;
+                            cursor: pointer;
+                            padding: 20px;
+                            transition: 0s;
+                        }
+
+                        input {
+                            height: 100%;
+                            width: 100%;
+                            background-color: transparent;
+                            padding: 10px;
+                            padding-left: 20px;
+                            padding-top: 30px;
+                            accent-color: var(--gray);
+                            color: var(--gray);
+                            font-size: 15px;
+                        }
+
+                        #password {
+                            padding-right: 60px;
+                        }
+
+                        button {
+                            height: 100%;
+                            width: 100%;
+                            background-color: var(--blue);
+                            font-size: 15px;
+                            text-transform: capitalize;
+                            cursor: pointer;
+
+                            &:hover {
+                                background-color: var(--blue-hover);
+                            }
+                        }
+                    }
+                }
+            }
+
+            .linkParent {
+                margin-top: 15px;
+                text-transform: capitalize;
+                font-size: 14px;
+
+                p {
+                    color: var(--gray);
+                    margin-bottom: 10px;
+                }
+
+                a {
+                    color: var(--blue);
+
+                    &:hover {
+                        color: var(--blue-hover);
+                    }
+                }
+            }
+        }
+    }
+}
