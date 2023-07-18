@@ -1,6 +1,6 @@
-<x-app title='Login'>
+<x-app title='Register'>
     <x-slot:styles>
-        <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/register.css') }}">
     </x-slot>
     <x-slot:body>
         <nav>
@@ -16,13 +16,17 @@
             <div class="container">
                 <div class="item">
                     <div class="box">
-                        <h3>sign in</h3>
-                        <h4>login to your account</h4>
+                        <h3>sign up</h3>
+                        <h4>follow the easy steps</h4>
                         <div class="formParent">
                             <x-form method="post">
                                 <div class="formItem">
+                                    <label for="name">Name</label>
+                                    <input type="text" id="name" autocomplete="off" autofocus>
+                                </div>
+                                <div class="formItem">
                                     <label for="email">Email</label>
-                                    <input type="email" id="email" autocomplete="off" autofocus>
+                                    <input type="email" id="email" autocomplete="off">
                                 </div>
                                 <div class="formItem">
                                     <label for="password">Password</label>
@@ -30,20 +34,19 @@
                                     <i class="fa-solid fa-eye-slash" id="eye"></i>
                                 </div>
                                 <div class="formItem">
-                                    <button type="submit">sign in</button>
+                                    <button type="submit">create account</button>
                                 </div>
                             </x-form>
                         </div>
                     </div>
                     <div class="linkParent">
-                        <p>don't have an account yet ? <a href="{{ route('user.register') }}">sign up</a></p>
-                        <a href="#">forgot password ?</a>
+                        <p>already have an account ? <a href="{{ route('user.login') }}">sign in</a></p>
                     </div>
                 </div>
             </div>
         </main>
     </x-slot>
     <x-slot:scripts>
-        <script src="{{ asset('js/login.js') }}"></script>
+        <script src="{{ asset('js/register.js') }}"></script>
     </x-slot>
 </x-app>

@@ -8,6 +8,10 @@ import $ from './components/jquery';
 import { focus, eye } from './components/form-functions';
 
 const form = {
+    name: {
+        input: $("#name"),
+        label: $("label[for=name]"),
+    },
     email: {
         input: $("#email"),
         label: $("label[for=email]"),
@@ -19,6 +23,7 @@ const form = {
     },
 };
 
+focus(form.name.input, form.name.label);
 focus(form.email.input, form.email.label);
 focus(form.password.input, form.password.label);
 eye(form.password.input, form.password.icon);

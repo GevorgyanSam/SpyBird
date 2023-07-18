@@ -16,6 +16,10 @@ class Form extends Component
         $this->method = Str::upper($method);
     }
 
+    // ---- ------ -- --- -------- ---------- --- ------- ------- ------
+    // This Method Is For Getting, Validating And Setting Request Method
+    // ---- ------ -- --- -------- ---------- --- ------- ------- ------
+
     public function setMethod ()
     {
         if ($this->method == 'POST' || $this->method == 'GET')

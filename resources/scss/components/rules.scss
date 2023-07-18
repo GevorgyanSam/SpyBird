@@ -10,6 +10,11 @@
     color: var(--white);
     transition: var(--transition);
     font-family: var(--font-family-1);
+
+    &::selection {
+        background-color: transparent;
+        color: var(--blue);
+    }
 }
 
 ::-webkit-scrollbar {
