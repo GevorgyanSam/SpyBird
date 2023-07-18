@@ -9,5 +9,15 @@
     user-select: none;
     color: var(--white);
     transition: var(--transition);
-    font-family: var(--font-family-1);;
+    font-family: var(--font-family-1);
+}
+
+::-webkit-scrollbar {
+    background-color: var(--background-color-1);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--background-color-2);
+    border-radius: var(--radius);
+    border: 1px solid var(--blue);
 }

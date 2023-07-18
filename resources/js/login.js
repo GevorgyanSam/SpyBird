@@ -1,3 +1,6 @@
+// ------ ------ ---- -----------
+// Import JQuery From Components.
+// ------ ------ ---- -----------
 import $ from './components/jquery';
 
 const form = {
@@ -11,6 +14,10 @@ const form = {
         icon: $("#eye"),
     },
 };
+
+// ---- ------ -- --- ------ ------ -- ----- -----
+// This Method Is For Moving Labels In Input Focus
+// ---- ------ -- --- ------ ------ -- ----- -----
 
 function focus (input, label)
 {
@@ -32,6 +39,10 @@ function focus (input, label)
 
     })
 }
+
+// ---- ------ -- --- -------- --- ----- -------- ----
+// This Method Is For Changing The Input Password Type
+// ---- ------ -- --- -------- --- ----- -------- ----
 
 function eye (input, icon)
 {

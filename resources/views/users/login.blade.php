@@ -20,16 +20,16 @@
                         <h4>login to your account</h4>
                         <div class="formParent">
                             <x-form method="post">
-                                <div class="item">
+                                <div class="formItem">
                                     <label for="email">Email</label>
                                     <input type="email" id="email" autocomplete="off" autofocus>
                                 </div>
-                                <div class="item">
+                                <div class="formItem">
                                     <label for="password">Password</label>
                                     <input type="password" id="password" autocomplete="off">
                                     <i class="fa-solid fa-eye-slash" id="eye"></i>
                                 </div>
-                                <div class="item">
+                                <div class="formItem">
                                     <button type="submit">sign in</button>
                                 </div>
                             </x-form>
