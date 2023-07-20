@@ -25,4 +25,13 @@ class UserController extends Controller
         return view('users.register');
     }
 
+    // ---- ------ -- --- -------- ----- ---- ----
+    // This Method Is For Password Reset Page View
+    // ---- ------ -- --- -------- ----- ---- ----
+
+    public function reset ()
+    {
+        return view('users.password-reset');
+    }
+
 }

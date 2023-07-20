@@ -7,6 +7,7 @@ Route::middleware('guest')->controller(UserController::class)->name('user.')->gr
 
     Route::get('/login', 'login')->name('login');
     Route::get('/register', 'register')->name('register');
+    Route::get('/password-reset', 'reset')->name('reset');
 
 });
 

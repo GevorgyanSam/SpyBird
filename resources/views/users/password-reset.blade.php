@@ -1,6 +1,6 @@
-<x-app title='Login'>
+<x-app title='Password Reset'>
     <x-slot:styles>
-        <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/password-reset.css') }}">
     </x-slot>
     <x-slot:body>
         <nav>
@@ -16,8 +16,8 @@
             <div class="container">
                 <div class="item">
                     <div class="box">
-                        <h3>sign in</h3>
-                        <h4>login to your account</h4>
+                        <h3>password reset</h3>
+                        <h4>enter your email to reset password</h4>
                         <div class="formParent">
                             <x-form method="post">
                                 <div class="formItem">
@@ -25,25 +25,19 @@
                                     <input type="email" id="email" autocomplete="off" autofocus>
                                 </div>
                                 <div class="formItem">
-                                    <label for="password">Password</label>
-                                    <input type="password" id="password" autocomplete="off">
-                                    <i class="fa-solid fa-eye-slash" id="eye"></i>
-                                </div>
-                                <div class="formItem">
-                                    <button type="submit">sign in</button>
+                                    <button type="submit">send verification code</button>
                                 </div>
                             </x-form>
                         </div>
                     </div>
                     <div class="linkParent">
-                        <p>don't have an account yet ? <a href="{{ route('user.register') }}">sign up</a></p>
-                        <a href="{{ route('user.reset') }}">forgot password ?</a>
+                        <p>already have an account ? <a href="{{ route('user.login') }}">sign in</a></p>
                     </div>
                 </div>
             </div>
         </main>
     </x-slot>
     <x-slot:scripts>
-        <script src="{{ asset('js/login.js') }}"></script>
+        <script src="{{ asset('js/password-reset.js') }}"></script>
     </x-slot>
 </x-app>
