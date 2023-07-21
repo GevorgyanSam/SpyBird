@@ -1,6 +1,6 @@
-<x-app title='Password Reset'>
+<x-app title='Lock Screen'>
     <x-slot:styles>
-        <link rel="stylesheet" href="{{ asset('css/password-reset.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/lockscreen.css') }}">
     </x-slot>
     <x-slot:body>
         <nav>
@@ -16,28 +16,33 @@
             <div class="container">
                 <div class="item">
                     <div class="box">
-                        <h3>password reset</h3>
-                        <h4>enter your email to reset password</h4>
+                        <div class="avatar">
+                            <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/1.jpg">
+                            W
+                        </div>
+                        <h3>william pearson</h3>
+                        <h4>enter your password to unlock the screen</h4>
                         <div class="formParent">
                             <x-form method="post">
                                 <div class="formItem">
-                                    <label for="email">Email</label>
-                                    <input type="email" id="email" autocomplete="off" autofocus>
+                                    <label for="password">Password</label>
+                                    <input type="password" id="password" autocomplete="off" autofocus>
+                                    <i class="fa-solid fa-eye-slash" id="eye"></i>
                                 </div>
                                 <div class="formItem">
-                                    <button type="submit">send reset link</button>
+                                    <button type="submit">unlock</button>
                                 </div>
                             </x-form>
                         </div>
                     </div>
                     <div class="linkParent">
-                        <p>already have an account ? <a href="{{ route('user.login') }}">sign in</a></p>
+                        <p>not you? return <a href="{{ route('user.login') }}">sign in</a></p>
                     </div>
                 </div>
             </div>
         </main>
     </x-slot>
     <x-slot:scripts>
-        <script src="{{ asset('js/password-reset.js') }}"></script>
+        <script src="{{ asset('js/lockscreen.js') }}"></script>
     </x-slot>
 </x-app>

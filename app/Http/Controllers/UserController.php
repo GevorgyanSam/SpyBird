@@ -34,4 +34,13 @@ class UserController extends Controller
         return view('users.password-reset');
     }
 
+    // ---- ------ -- --- ---- ------ ---- ----
+    // This Method Is For Lock Screen Page View
+    // ---- ------ -- --- ---- ------ ---- ----
+
+    public function lockscreen ()
+    {
+        return view('users.lockscreen');
+    }
+
 }
