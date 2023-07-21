@@ -1,6 +1,6 @@
 <x-app title='Lock Screen'>
     <x-slot:styles>
-        <link rel="stylesheet" href="{{ asset('css/lockscreen.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/users/style.css') }}">
     </x-slot>
     <x-slot:body>
         <nav>
@@ -43,6 +43,6 @@
         </main>
     </x-slot>
     <x-slot:scripts>
-        <script src="{{ asset('js/lockscreen.js') }}"></script>
+        <script src="{{ asset('js/users/lockscreen.js') }}"></script>
     </x-slot>
 </x-app>

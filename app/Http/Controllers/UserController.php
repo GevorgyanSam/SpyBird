@@ -34,6 +34,15 @@ class UserController extends Controller
         return view('users.password-reset');
     }
 
+    // ---- ------ -- --- ------ --- -------- ---- ----
+    // This Method Is For Create New Password Page View
+    // ---- ------ -- --- ------ --- -------- ---- ----
+
+    public function token ()
+    {
+        return view('users.token');
+    }
+
     // ---- ------ -- --- ---- ------ ---- ----
     // This Method Is For Lock Screen Page View
     // ---- ------ -- --- ---- ------ ---- ----

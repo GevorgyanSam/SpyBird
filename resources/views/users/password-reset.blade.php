@@ -1,6 +1,6 @@
 <x-app title='Password Reset'>
     <x-slot:styles>
-        <link rel="stylesheet" href="{{ asset('css/password-reset.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/users/style.css') }}">
     </x-slot>
     <x-slot:body>
         <nav>
@@ -38,6 +38,6 @@
         </main>
     </x-slot>
     <x-slot:scripts>
-        <script src="{{ asset('js/password-reset.js') }}"></script>
+        <script src="{{ asset('js/users/password-reset.js') }}"></script>
     </x-slot>
 </x-app>

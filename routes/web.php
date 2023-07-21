@@ -9,6 +9,7 @@ Route::middleware('guest')->controller(UserController::class)->name('user.')->gr
     Route::get('/register', 'register')->name('register');
     Route::get('/password-reset', 'reset')->name('reset');
     Route::get('/lockscreen', 'lockscreen')->name('lockscreen');
+    Route::get('/password-reset/{token}', 'token')->name('token');
 
 });
 

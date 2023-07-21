@@ -10,19 +10,17 @@ mix.setPublicPath('public');
 // SCSS Files
 // ---- -----
 
-mix.sass('resources/scss/login.scss', 'css/login.css');
-mix.sass('resources/scss/register.scss', 'css/register.css');
-mix.sass('resources/scss/password-reset.scss', 'css/password-reset.css');
-mix.sass('resources/scss/lockscreen.scss', 'css/lockscreen.css');
+mix.sass('resources/scss/users/style.scss', 'css/users/style.css');
 
 // -- -----
 // JS Files
 // -- -----
 
-mix.js('resources/js/login.js', 'js/login.js');
-mix.js('resources/js/register.js', 'js/register.js');
-mix.js('resources/js/password-reset.js', 'js/password-reset.js');
-mix.js('resources/js/lockscreen.js', 'js/lockscreen.js');
+mix.js('resources/js/users/login.js', 'js/users/login.js');
+mix.js('resources/js/users/register.js', 'js/users/register.js');
+mix.js('resources/js/users/password-reset.js', 'js/users/password-reset.js');
+mix.js('resources/js/users/lockscreen.js', 'js/users/lockscreen.js');
+mix.js('resources/js/users/token.js', 'js/users/token.js');
 
 // ---- ------ ------
 // Copy Assets Folder

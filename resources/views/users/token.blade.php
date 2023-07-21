@@ -1,4 +1,4 @@
-<x-app title='Register'>
+<x-app title='Password Reset'>
     <x-slot:styles>
         <link rel="stylesheet" href="{{ asset('css/users/style.css') }}">
     </x-slot>
@@ -16,37 +16,35 @@
             <div class="container">
                 <div class="item">
                     <div class="box">
-                        <h3>sign up</h3>
-                        <h4>follow the easy steps</h4>
+                        <div class="avatar">
+                            <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/1.jpg">
+                            W
+                        </div>
+                        <h3>william pearson</h3>
+                        <h4>create new password for your account</h4>
                         <div class="formParent">
                             <x-form method="post">
                                 <div class="formItem">
-                                    <label for="name">Name</label>
-                                    <input type="text" id="name" autocomplete="off" autofocus>
-                                </div>
-                                <div class="formItem">
-                                    <label for="email">Email</label>
-                                    <input type="email" id="email" autocomplete="off">
-                                </div>
-                                <div class="formItem">
-                                    <label for="password">Password</label>
-                                    <input type="password" id="password" autocomplete="off">
+                                    <label for="password">New Password</label>
+                                    <input type="password" id="password" autocomplete="off" autofocus>
                                     <i class="fa-solid fa-eye-slash" id="eye"></i>
                                 </div>
                                 <div class="formItem">
-                                    <button type="submit">create account</button>
+                                    <label for="password_confirmation">Confirm Password</label>
+                                    <input type="password" id="password_confirmation" autocomplete="off">
+                                    <i class="fa-solid fa-eye-slash" id="eye_confirmation"></i>
+                                </div>
+                                <div class="formItem">
+                                    <button type="submit">create password</button>
                                 </div>
                             </x-form>
                         </div>
-                    </div>
-                    <div class="linkParent">
-                        <p>already have an account ? <a href="{{ route('user.login') }}">sign in</a></p>
                     </div>
                 </div>
             </div>
         </main>
     </x-slot>
     <x-slot:scripts>
-        <script src="{{ asset('js/users/register.js') }}"></script>
+        <script src="{{ asset('js/users/token.js') }}"></script>
     </x-slot>
 </x-app>
