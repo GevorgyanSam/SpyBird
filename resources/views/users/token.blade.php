@@ -40,6 +40,9 @@
                             </x-form>
                         </div>
                     </div>
+                    <div class="linkParent">
+                        <p>skip new password ? <a href="#">continue</a></p>
+                    </div>
                 </div>
             </div>
         </main>
