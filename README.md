@@ -1,4 +1,4 @@
-## <p align="center"><a href="#" target="_blank"><img src="./resources/assets/icon.png" width="100" alt="SpyBird Logo"></a></p>
+<p align="center"><a href="#" target="_blank"><img src="./resources/assets/icon.png" width="150" alt="SpyBird Logo"></a></p>
 
 # SpyBird - Chat Application
 
