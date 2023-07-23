@@ -18,6 +18,13 @@ _Provide step-by-step instructions on how to install the project and its depende
     - `composer install`
     - `npm install`
 
+## Database
+
+_Before building the project, we need to set up the `.env` file and run the migrations_
+
+1. _Run Migrations_
+    `php artisan migrate`
+
 ## Build
 
 _After installing project and its dependencies we need to build application_
