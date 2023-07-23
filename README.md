@@ -27,7 +27,7 @@ _Before building the project, we need to set up the `.env` file and run the migr
 
 ## Build
 
-_After installing project and its dependencies we need to build application_
+_After setting up the database, we need to build the application_
 
 1. _Create Storage Link_
     `php artisan storage:link`
@@ -36,7 +36,7 @@ _After installing project and its dependencies we need to build application_
 
 ## Run
 
-_After building application we need to run it on the server_
+_After building the application, we need to run it on the server_
 
 1. _Run Server_
     `php artisan serve`
