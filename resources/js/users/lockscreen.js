@@ -1,11 +1,3 @@
-// ------ ------ ---- -----------
-// Import JQuery From Components.
-// ------ ------ ---- -----------
-import $ from '../components/jquery';
-// ------ ---- ------ --- -------- ------- -----
-// Import Mode Method For Checking Website Mode.
-// ------ ---- ------ --- -------- ------- -----
-import '../components/mode';
 // ------ ---- ------- ---- -----------
 // Import Form Methods From Components.
 // ------ ---- ------- ---- -----------

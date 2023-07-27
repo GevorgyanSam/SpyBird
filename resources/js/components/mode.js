@@ -7,7 +7,7 @@ function checkMode ()
     let mode = localStorage.getItem('mode');
     if (mode == 'light')
     {
-        document.body.classList.add('light')
+        $('body').addClass('light');
     }
 }
 
