@@ -1,19 +1,7 @@
-// ------ ----- ---- ----------- ----- ---------------------------
-// Import Fonts From Components. Link: 'https://fonts.google.com/'
-// ------ ----- ---- ----------- ----- ---------------------------
-@import "../components/fonts.scss";
-// ------ ----- ---- ----------- ----- --------------------------
-// Import Icons From Components. Link: 'https://fontawesome.com/'
-// ------ ----- ---- ----------- ----- --------------------------
-@import "../components/icons.scss";
-// ------ ----- --------- ---- -----------
-// Import Style Variables From Components.
-// ------ ----- --------- ---- -----------
-@import "../components/variables.scss";
-// ------ ----- ----- ---- -----------
-// Import Style Rules From Components.
-// ------ ----- ----- ---- -----------
-@import "../components/rules.scss";
+// ------ ------ ----- ------ ---------- ------ ------
+// Import Global Style Rules, Variables, Icons, Fonts.
+// ------ ------ ----- ------ ---------- ------ ------
+@import "../components/global.scss";
 
 body {
     background: var(--background-color-1);
@@ -140,6 +128,7 @@ main {
                         }
 
                         button {
+                            color: var(--light);
                             height: 100%;
                             width: 100%;
                             background-color: var(--blue);
