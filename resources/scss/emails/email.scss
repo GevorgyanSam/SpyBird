@@ -26,7 +26,7 @@ main {
         width: 100%;
         display: grid;
         place-items: center;
-        padding: 120px 0;
+        padding: 90px 0;
 
         .item {
             text-align: center;
@@ -34,33 +34,10 @@ main {
             .box {
                 padding: 25px;
                 height: auto;
-                width: 350px;
+                width: 600px;
                 border-radius: var(--radius);
                 background-color: var(--background-color-2);
                 text-transform: capitalize;
-
-                .avatar {
-                    margin: 20px auto;
-                    margin-top: -20%;
-                    width: 70px;
-                    height: 70px;
-                    overflow: hidden;
-                    border-radius: 50%;
-                    background-color: var(--blue);
-                    color: var(--light);
-                    font-family: var(--font-family-1);
-                    font-size: 22px;
-                    display: grid;
-                    place-items: center;
-
-                    img {
-                        border-radius: 50%;
-                        height: 100%;
-                        width: 100%;
-                        object-fit: cover;
-                        object-position: center;
-                    }
-                }
 
                 h3 {
                     color: var(--white);
@@ -76,58 +53,13 @@ main {
 
                 .formParent {
                     .formItem {
-                        margin-top: 20px;
+                        margin: 20px 0;
                         width: 100%;
                         height: 60px;
                         background-color: var(--background-color-1);
                         border-radius: var(--radius);
                         position: relative;
                         overflow: hidden;
-
-                        label {
-                            color: var(--gray);
-                            position: absolute;
-                            font-size: 15px;
-                            left: 20px;
-                            top: 50%;
-                            transform: translateY(-50%);
-                            pointer-events: none;
-                        }
-
-                        label.focus {
-                            top: 15px;
-                            font-size: 13px;
-                            opacity: 0.6;
-                        }
-
-                        i {
-                            color: var(--gray);
-                            position: absolute;
-                            transform: translateY(-50%);
-                            top: 50%;
-                            right: 0;
-                            font-size: 14px;
-                            display: none;
-                            cursor: pointer;
-                            padding: 20px;
-                            transition: 0s;
-                        }
-
-                        input {
-                            height: 100%;
-                            width: 100%;
-                            background-color: transparent;
-                            padding: 10px;
-                            padding-left: 20px;
-                            padding-top: 30px;
-                            accent-color: var(--gray);
-                            color: var(--gray);
-                            font-size: 15px;
-                        }
-
-                        #password {
-                            padding-right: 60px;
-                        }
 
                         button {
                             color: var(--light);
@@ -171,4 +103,4 @@ main {
 // ------ ----- ------ ---- -----------
 // Import Media Styles From Components.
 // ------ ----- ------ ---- -----------
-@import "./components/style-media.scss";
+@import "./components/email-media.scss";

@@ -12,6 +12,7 @@ mix.setPublicPath('public');
 // ---- -----
 
 mix.sass('resources/scss/users/style.scss', 'css/users/style.css');
+mix.sass('resources/scss/emails/email.scss', 'css/emails/email.css');
 
 // -- -----
 // JS Files
