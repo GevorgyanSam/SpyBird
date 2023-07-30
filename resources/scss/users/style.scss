@@ -75,6 +75,23 @@ main {
                 }
 
                 .formParent {
+                    .policy {
+                        margin-top: 20px;
+                        width: 100%;
+                        color: var(--gray);
+                        font-size: 13px;
+                        font-weight: 400;
+                        line-height: 21px;
+
+                        a {
+                            color: var(--blue);
+
+                            &:hover {
+                            color: var(--blue-hover);
+                            }
+                        }
+                    }
+
                     .formItem {
                         margin-top: 20px;
                         width: 100%;

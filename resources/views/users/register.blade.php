@@ -36,6 +36,7 @@
                                 <div class="formItem">
                                     <button type="submit">create account</button>
                                 </div>
+                                <div class="policy">creating an account implies acceptance of our <a href="{{ route('privacy.terms') }}">terms</a> and <a href="{{ route('privacy.policy') }}">privacy policy</a>.</div>
                             </x-form>
                         </div>
                     </div>
