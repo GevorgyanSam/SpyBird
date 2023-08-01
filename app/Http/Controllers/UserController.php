@@ -52,4 +52,22 @@ class UserController extends Controller
         return view('users.lockscreen');
     }
 
+    // ---- ------ -- --- --- ------ -------------- ---- ----
+    // This Method Is For Two Factor Authentication Page View
+    // ---- ------ -- --- --- ------ -------------- ---- ----
+
+    public function twoFactor ()
+    {
+        return view('users.two-factor');
+    }
+
+    // ---- ------ -- --- ---- ----- -------------- ---- ----
+    // This Method Is For Lost Email Authentication Page View
+    // ---- ------ -- --- ---- ----- -------------- ---- ----
+
+    public function lostEmail ()
+    {
+        return view('users.lost-email');
+    }
+
 }

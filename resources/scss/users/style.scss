@@ -87,7 +87,7 @@ main {
                             color: var(--blue);
 
                             &:hover {
-                            color: var(--blue-hover);
+                                color: var(--blue-hover);
                             }
                         }
                     }
@@ -109,12 +109,24 @@ main {
                             top: 50%;
                             transform: translateY(-50%);
                             pointer-events: none;
-                        }
 
-                        label.focus {
-                            top: 15px;
-                            font-size: 13px;
-                            opacity: 0.6;
+                            &.focus {
+                                top: 15px;
+                                font-size: 13px;
+                                opacity: 0.6;
+                            }
+
+                            &.error {
+                                color: var(--error-color);
+                            }
+
+                            &.error + input {
+                                border-bottom: 1px solid var(--error-color);
+                            }
+
+                            &.error + input::selection {
+                                color: var(--error-color);
+                            }
                         }
 
                         i {
@@ -140,6 +152,17 @@ main {
                             accent-color: var(--gray);
                             color: var(--gray);
                             font-size: 15px;
+                            border-radius: var(--radius);
+                        }
+
+                        input::-webkit-outer-spin-button,
+                        input::-webkit-inner-spin-button {
+                            -webkit-appearance: none;
+                            margin: 0;
+                        }
+
+                        input[type="number"] {
+                            -moz-appearance: textfield;
                         }
 
                         #password {

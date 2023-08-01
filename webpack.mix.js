@@ -24,6 +24,8 @@ mix.js(['resources/js/components/mode.js', 'resources/js/users/register.js'], 'j
 mix.js(['resources/js/components/mode.js', 'resources/js/users/password-reset.js'], 'js/users/password-reset.js');
 mix.js(['resources/js/components/mode.js', 'resources/js/users/lockscreen.js'], 'js/users/lockscreen.js');
 mix.js(['resources/js/components/mode.js', 'resources/js/users/token.js'], 'js/users/token.js');
+mix.js(['resources/js/components/mode.js', 'resources/js/users/two-factor.js'], 'js/users/two-factor.js');
+mix.js(['resources/js/components/mode.js', 'resources/js/users/lost-email.js'], 'js/users/lost-email.js');
 
 // ---- ------ ------
 // Copy Assets Folder

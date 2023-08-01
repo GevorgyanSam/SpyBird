@@ -17,6 +17,8 @@ Route::middleware('guest')->group(function () {
         Route::get('/password-reset', 'reset')->name('reset');
         Route::get('/lockscreen', 'lockscreen')->name('lockscreen');
         Route::get('/password-reset/{token}', 'token')->name('token');
+        Route::get('/two-factor-authentication', 'twoFactor')->name('two-factor');
+        Route::get('/lost-email-authentication', 'lostEmail')->name('lost-email');
 
     });
 
