@@ -53,4 +53,7 @@
             </div>
         </main>
     </x-slot>
+    <x-slot:scripts>
+        <script src="{{ asset('js/privacy/privacy.js') }}"></script>
+    </x-slot>
 </x-app>

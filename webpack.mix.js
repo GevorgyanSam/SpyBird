@@ -14,6 +14,7 @@ mix.setPublicPath('public');
 mix.sass('resources/scss/users/style.scss', 'css/users/style.css');
 mix.sass('resources/scss/emails/email.scss', 'css/emails/email.css');
 mix.sass('resources/scss/privacy/privacy.scss', 'css/privacy/privacy.css');
+mix.sass('resources/scss/pages/style.scss', 'css/pages/style.css');
 
 // -- -----
 // JS Files
@@ -26,6 +27,8 @@ mix.js(['resources/js/components/mode.js', 'resources/js/users/lockscreen.js'], 
 mix.js(['resources/js/components/mode.js', 'resources/js/users/token.js'], 'js/users/token.js');
 mix.js(['resources/js/components/mode.js', 'resources/js/users/two-factor.js'], 'js/users/two-factor.js');
 mix.js(['resources/js/components/mode.js', 'resources/js/users/lost-email.js'], 'js/users/lost-email.js');
+mix.js(['resources/js/components/mode.js', 'resources/js/privacy/privacy.js'], 'js/privacy/privacy.js');
+mix.js(['resources/js/components/mode.js', 'resources/js/pages/script.js'], 'js/pages/script.js');
 
 // ---- ------ ------
 // Copy Assets Folder
