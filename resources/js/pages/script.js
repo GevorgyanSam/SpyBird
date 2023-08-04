@@ -33,3 +33,23 @@ function changeColorMode ()
 }
 
 changeColorMode();
+
+// ---- ------ -- --- -------- --- --- ----- -------
+// This Method Is For Changing The App Aside Content
+// ---- ------ -- --- -------- --- --- ----- -------
+
+function changePages ()
+{
+
+    const pages = {
+        actions: $('.navParent li:not(.mode)'),
+    }
+
+    pages.actions.click(function () {
+        pages.actions.removeClass('active');
+        $(this).addClass('active');
+    })
+
+}
+
+changePages();
