@@ -43,13 +43,42 @@ function changePages ()
 
     const pages = {
         actions: $('.navParent li:not(.mode)'),
+        content: $('.asideParent > div'),
     }
 
     pages.actions.click(function () {
         pages.actions.removeClass('active');
         $(this).addClass('active');
+        let content = $(this).attr('data-content');
+        let parent = $(`.${content}`);
+        pages.content.css({
+            display: 'none',
+        });
+        parent.css({
+            display: 'block',
+        });
     })
 
 }
 
 changePages();
+
+// ---- ------ -- --- -------- --- ------- -------
+// This Method Is For Toggling App Ssearch Content
+// ---- ------ -- --- -------- --- ------- -------
+
+function switchSearch ()
+{
+
+    const switches = $('.switchParent > div');
+
+    switches.click(function () {
+
+        switches.removeClass('active');
+        $(this).addClass('active');
+
+    });
+
+}
+
+switchSearch();

@@ -19,18 +19,18 @@
                 </div>
                 <div class="item">
                     <ul>
-                        <li class="active" id="chat" title="Chat">
+                        <li id="search" title="Search" data-content="searchParent">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                        <li class="active" id="chat" title="Chat" data-content="chatParent">
                             <i class="fa-solid fa-comments">
                                 <div class="count">2</div>
                             </i>
                         </li>
-                        <li id="search" title="Search">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </li>
-                        <li id="friends" title="Friends">
+                        <li id="friends" title="Friends" data-content="friendsParent">
                             <i class="fa-solid fa-user-group"></i>
                         </li>
-                        <li id="notifications" title="Notifications">
+                        <li id="notifications" title="Notifications" data-content="notificationsParent">
                             <i class="fa-solid fa-bell">
                                 <div class="count">9+</div>
                             </i>
@@ -42,7 +42,7 @@
                         <li class="mode" title="Color Mode">
                             <i class="fa-solid fa-moon"></i>
                         </li>
-                        <li id="settings" title="Settings">
+                        <li id="settings" title="Settings" data-content="settingsParent">
                             <i class="fa-solid fa-gear"></i>
                         </li>
                     </ul>
@@ -56,6 +56,11 @@
 
         <aside>
             <div class="asideParent">
+
+        <!-- ----- ----- ---- ----- ----- -->
+        <!-- ----- ----- Chat ----- ----- -->
+        <!-- ----- ----- ---- ----- ----- -->
+
                 <div class="chatParent">
                     <h3>Chat</h3>
                     <x-form method="post">
@@ -218,6 +223,48 @@
                             </div>
                         </div>
                     </a>
+                </div>
+
+        <!-- ----- ----- ------ ----- ----- -->
+        <!-- ----- ----- Search ----- ----- -->
+        <!-- ----- ----- ------ ----- ----- -->
+
+                <div class="searchParent">
+                    <h3>Search</h3>
+                    <x-form method="post">
+                        <div class="formItem">
+                            <input type="text" placeholder="Search People">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
+                    </x-form>
+                    <div class="switchParent">
+                        <div class="familiar active">suggested contacts</div>
+                        <div class="nearby">people nearby</div>
+                    </div>
+                </div>
+
+        <!-- ----- ----- ------- ----- ----- -->
+        <!-- ----- ----- Friends ----- ----- -->
+        <!-- ----- ----- ------- ----- ----- -->
+
+                <div class="friendsParent">
+                    <h3>Friends</h3>
+                </div>
+
+        <!-- ----- ----- ------------- ----- ----- -->
+        <!-- ----- ----- Notifications ----- ----- -->
+        <!-- ----- ----- ------------- ----- ----- -->
+
+                <div class="notificationsParent">
+                    <h3>Notifications</h3>
+                </div>
+
+        <!-- ----- ----- -------- ----- ----- -->
+        <!-- ----- ----- Settings ----- ----- -->
+        <!-- ----- ----- -------- ----- ----- -->
+
+                <div class="settingsParent">
+                    <h3>Settings</h3>
                 </div>
             </div>
         </aside>
