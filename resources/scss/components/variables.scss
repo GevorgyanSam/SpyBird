@@ -1,6 +1,7 @@
 :root {
     --background-color-1: rgb(26,29,33);
     --background-color-2: rgb(22, 25, 28);
+    --background-color-3: rgb(30, 33, 38);
     --white: white;
     --light: white;
     --gray: rgb(167, 166, 168);
@@ -15,6 +16,7 @@
 body.light {
     --background-color-1:rgb(246, 249, 251);
     --background-color-2:rgb(255, 255, 255);
+    --background-color-3: rgb(235, 241, 247);
     --white:rgb(41, 57, 81);
     --gray:rgb(149, 170, 201);
 }

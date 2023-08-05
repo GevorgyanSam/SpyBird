@@ -96,6 +96,178 @@ aside {
         background-color: var(--background-color-1);
         height: 100vh;
         width: 410px;
+
+        .chatParent {
+            padding: 20px;
+            height: 100%;
+            overflow-y: scroll;
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
+
+            h3 {
+                color: var(--gray);
+                font-family: var(--font-family-1);
+                letter-spacing: 1px;
+                font-weight: 400;
+                font-size: 22px;
+                margin-top: 15px;
+                margin-bottom: 35px;
+            }
+
+            .formItem {
+                width: 100%;
+                height: 55px;
+                border-radius: var(--radius);
+                background-color: var(--background-color-3);
+                position: relative;
+                margin-bottom: 20px;
+
+                input {
+                    height: 100%;
+                    width: 100%;
+                    border-radius: var(--radius);
+                    background-color: transparent;
+                    padding-left: 55px;
+                    padding-right: 20px;
+                    font-size: 15px;
+                    color: var(--gray);
+                    accent-color: var(--gray);
+                    caret-color: var(--gray);
+                    font-family: var(--font-family-1);
+
+                    &::placeholder {
+                        color: var(--gray);
+                    }
+                }
+
+                i {
+                    color: var(--gray);
+                    position: absolute;
+                    transform: translateY(-50%);
+                    top: 50%;
+                    left: 20px;
+                    font-size: 16px;
+                    pointer-events: none;
+                }
+            }
+
+            .chat {
+                width: 100%;
+                height: 110px;
+                background-color: var(--background-color-2);
+                border-radius: var(--radius);
+                margin: 15px 0;
+                display: flex;
+                justify-content: start;
+                padding: 20px;
+                gap: 15px;
+
+                > div {
+                    height: 100%;
+                }
+
+                &:last-child {
+                    margin-bottom: 10px;
+                }
+
+                .avatar {
+                    text-transform: uppercase;
+                    height: 42px;
+                    width: 42px;
+                    border-radius: 50%;
+                    background-color: var(--blue);
+                    color: white;
+                    display: grid;
+                    place-items: center;
+                    font-size: 15px;
+                    font-weight: 400;
+                    font-family: var(--font-family-1);
+                    position: relative;
+
+                    img {
+                        border-radius: 50%;
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        object-position: center;
+                    }
+
+                    &.active {
+                        &::before {
+                            transition: var(--transition);
+                            content: "";
+                            position: absolute;
+                            height: 8px;
+                            width: 8px;
+                            background-color: limegreen;
+                            border-radius: 50%;
+                            bottom: 0;
+                            right: 0;
+                            border: 2px solid var(--background-color-2);
+                        }
+                    }
+                }
+
+                .chatInfo {
+                    width: 100%;
+                    display: grid;
+                    grid-template-columns: 80% 20%;
+                    grid-template-rows: repeat(2, 1fr);
+                    gap: 5px;
+                    align-items: center;
+
+                    .name {
+                        text-transform: capitalize;
+                        font-size: 15px;
+                        font-weight: 400;
+                        font-family: var(--font-family-1);
+                        color: var(--white);
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        overflow-x: hidden;
+                    }
+
+                    .time {
+                        text-align: center;
+                        opacity: 0.7;
+                        font-size: 10px;
+                        font-weight: 400;
+                        font-family: var(--font-family-1);
+                        color: var(--gray);
+                    }
+
+                    .message {
+                        display: -webkit-box;
+                        -webkit-line-clamp: 2;
+                        -webkit-box-orient: vertical;
+                        overflow: hidden;
+                        color: var(--gray);
+                        font-size: 14px;
+                        line-height: 20px;
+                    }
+
+                    .unread {
+                        margin: 0 auto;
+
+                        .count {
+                            height: 19px;
+                            width: 19px;
+                            background-color: var(--blue);
+                            border-radius: 50%;
+                            overflow: hidden;
+                            display: grid;
+                            place-items: center;
+                            font-size: 10px;
+                            font-weight: 400;
+                            font-family: var(--font-family-1);
+                            color: white;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

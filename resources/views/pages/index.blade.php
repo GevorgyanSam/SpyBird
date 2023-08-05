@@ -21,7 +21,7 @@
                     <ul>
                         <li class="active" id="chat" title="Chat">
                             <i class="fa-solid fa-comments">
-                                <div class="count">4</div>
+                                <div class="count">2</div>
                             </i>
                         </li>
                         <li id="search" title="Search">
@@ -56,7 +56,169 @@
 
         <aside>
             <div class="asideParent">
-
+                <div class="chatParent">
+                    <h3>Chat</h3>
+                    <x-form method="post">
+                        <div class="formItem">
+                            <input type="text" placeholder="Search Messages">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
+                    </x-form>
+                    <a href="#">
+                        <div class="chat">
+                            <div>
+                                <div class="avatar active">
+                                    <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/1.jpg">
+                                </div>
+                            </div>
+                            <div class="chatInfo">
+                                <div class="name">william pearson</div>
+                                <div class="time">12:45</div>
+                                <div class="message">Hello! Yeah, I'm going to meet friend of mine at the departments stores now.</div>
+                                <div class="unread">
+                                    <div class="count">4</div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#">
+                        <div class="chat">
+                            <div>
+                                <div class="avatar active">
+                                    <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/2.jpg">
+                                </div>
+                            </div>
+                            <div class="chatInfo">
+                                <div class="name">ollie chandler</div>
+                                <div class="time">12:45</div>
+                                <div class="message">I'm going to meet my friend of mine at the departments stores as soon as possible.</div>
+                                <div class="unread">
+                                    <div class="count">2</div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#">
+                        <div class="chat">
+                            <div>
+                                <div class="avatar active">
+                                    m
+                                </div>
+                            </div>
+                            <div class="chatInfo">
+                                <div class="name">mike</div>
+                                <div class="time">12:45</div>
+                                <div class="message">Hello! Yeah, I'm going to meet friend of mine at the departments stores now.</div>
+                                <div class="unread"></div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#">
+                        <div class="chat">
+                            <div>
+                                <div class="avatar">
+                                    <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/3.jpg">
+                                </div>
+                            </div>
+                            <div class="chatInfo">
+                                <div class="name">nick</div>
+                                <div class="time">12:45</div>
+                                <div class="message">I'm going to meet my friend of mine at the departments stores as soon as possible.</div>
+                                <div class="unread"></div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#">
+                        <div class="chat">
+                            <div>
+                                <div class="avatar">
+                                    j
+                                </div>
+                            </div>
+                            <div class="chatInfo">
+                                <div class="name">james</div>
+                                <div class="time">12:45</div>
+                                <div class="message">I'm going to meet my friend</div>
+                                <div class="unread"></div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#">
+                        <div class="chat">
+                            <div>
+                                <div class="avatar active">
+                                    <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/4.jpg">
+                                </div>
+                            </div>
+                            <div class="chatInfo">
+                                <div class="name">robert</div>
+                                <div class="time">12:45</div>
+                                <div class="message">I'm going to meet my friend of mine at the departments stores as soon as possible.</div>
+                                <div class="unread"></div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#">
+                        <div class="chat">
+                            <div>
+                                <div class="avatar">
+                                    j
+                                </div>
+                            </div>
+                            <div class="chatInfo">
+                                <div class="name">james</div>
+                                <div class="time">12:45</div>
+                                <div class="message">I'm going to meet my friend</div>
+                                <div class="unread"></div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#">
+                        <div class="chat">
+                            <div>
+                                <div class="avatar active">
+                                    <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/4.jpg">
+                                </div>
+                            </div>
+                            <div class="chatInfo">
+                                <div class="name">robert</div>
+                                <div class="time">12:45</div>
+                                <div class="message">I'm going to meet my friend of mine at the departments stores as soon as possible.</div>
+                                <div class="unread"></div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#">
+                        <div class="chat">
+                            <div>
+                                <div class="avatar">
+                                    <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/3.jpg">
+                                </div>
+                            </div>
+                            <div class="chatInfo">
+                                <div class="name">nick</div>
+                                <div class="time">12:45</div>
+                                <div class="message">I'm going to meet my friend of mine at the departments stores as soon as possible.</div>
+                                <div class="unread"></div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#">
+                        <div class="chat">
+                            <div>
+                                <div class="avatar active">
+                                    m
+                                </div>
+                            </div>
+                            <div class="chatInfo">
+                                <div class="name">mike</div>
+                                <div class="time">12:45</div>
+                                <div class="message">Hello! Yeah, I'm going to meet friend of mine at the departments stores now.</div>
+                                <div class="unread"></div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
             </div>
         </aside>
 
