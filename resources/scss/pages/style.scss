@@ -119,6 +119,10 @@ aside {
                 display: none;
             }
 
+            &.active {
+                display: block;
+            }
+
             h3 {
                 color: var(--gray);
                 font-family: var(--font-family-1);
@@ -168,8 +172,6 @@ aside {
         }
 
         .chatParent {
-            display: block;
-
             .chat {
                 width: 100%;
                 height: 110px;
@@ -316,6 +318,63 @@ aside {
 
                     &.active {
                         background-color: var(--background-color-1);
+                    }
+                }
+            }
+
+            .personParent {
+                .person {
+                    height: 90px;
+                    width: 100%;
+                    background-color: var(--background-color-2);
+                    border-radius: var(--radius);
+                    margin: 15px 0;
+                    padding: 20px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-start;
+
+                    &:last-child {
+                        margin-bottom: 10px;
+                    }
+
+                    .avatar {
+                        text-transform: uppercase;
+                        height: 45px;
+                        width: 45px;
+                        border-radius: 50%;
+                        background-color: var(--blue);
+                        color: white;
+                        display: grid;
+                        place-items: center;
+                        font-size: 15px;
+                        font-weight: 400;
+                        font-family: var(--font-family-1);
+                        position: relative;
+                        margin-left: 5px;
+
+                        img {
+                            border-radius: 50%;
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                            object-position: center;
+                        }
+
+                        &.active {
+                            &::before {
+                                transition: var(--transition);
+                                content: "";
+                                position: absolute;
+                                height: 8px;
+                                width: 8px;
+                                background-color: limegreen;
+                                border-radius: 50%;
+                                bottom: 0;
+                                right: 0;
+                                border: 2px solid var(--background-color-2);
+                            }
+                        }
                     }
                 }
             }

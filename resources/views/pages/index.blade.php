@@ -61,7 +61,7 @@
         <!-- ----- ----- Chat ----- ----- -->
         <!-- ----- ----- ---- ----- ----- -->
 
-                <div class="chatParent">
+                <div class="chatParent active">
                     <h3>Chat</h3>
                     <x-form method="post">
                         <div class="formItem">
@@ -240,6 +240,28 @@
                     <div class="switchParent">
                         <div class="familiar active">suggested contacts</div>
                         <div class="nearby">people nearby</div>
+                    </div>
+                    <div class="personParent">
+                        <div class="person">
+                            <div class="avatar active">
+                                <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/1.jpg">
+                            </div>
+                        </div>
+                        <div class="person">
+                            <div class="avatar">
+                                <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/2.jpg">
+                            </div>
+                        </div>
+                        <div class="person">
+                            <div class="avatar active">
+                                w
+                            </div>
+                        </div>
+                        <div class="person">
+                            <div class="avatar">
+                                w
+                            </div>
+                        </div>
                     </div>
                 </div>
 

@@ -51,12 +51,8 @@ function changePages ()
         $(this).addClass('active');
         let content = $(this).attr('data-content');
         let parent = $(`.${content}`);
-        pages.content.css({
-            display: 'none',
-        });
-        parent.css({
-            display: 'block',
-        });
+        pages.content.removeClass('active');
+        parent.addClass('active');
     })
 
 }
