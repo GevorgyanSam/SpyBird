@@ -4,10 +4,17 @@
 
 function checkMode ()
 {
-    let mode = localStorage.getItem('mode');
-    if (mode == 'light')
+    const mode = {
+        storage: localStorage.getItem('mode'),
+        btn: $('.mode'),
+        icon: $('.mode i')
+    }
+
+    if (mode.storage == 'light')
     {
         $('body').addClass('light');
+        mode.icon.removeClass('fa-moon');
+        mode.icon.addClass('fa-sun');
     }
 }
 

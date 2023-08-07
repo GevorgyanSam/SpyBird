@@ -46,13 +46,27 @@ function changePages ()
         content: $('.asideParent > div'),
     }
 
+    let current = sessionStorage.getItem('current-page');
+    if (current != undefined)
+    {
+        let btn = $(`.navParent li#${current}`);
+        pages.actions.removeClass('active');
+        btn.addClass('active');
+        let content = $(`.${btn.attr('data-content')}`);
+        pages.content.removeClass('active');
+        content.addClass('active');
+    }
+
     pages.actions.click(function () {
+
+        let current = $(this).attr('id');
+        sessionStorage.setItem('current-page', current);
         pages.actions.removeClass('active');
         $(this).addClass('active');
-        let content = $(this).attr('data-content');
-        let parent = $(`.${content}`);
+        let content = $(`.${$(this).attr('data-content')}`);
         pages.content.removeClass('active');
-        parent.addClass('active');
+        content.addClass('active');
+
     })
 
 }

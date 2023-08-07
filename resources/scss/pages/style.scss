@@ -334,6 +334,11 @@ aside {
                     align-items: center;
                     justify-content: flex-start;
 
+                    &:hover .personInfo h4 {
+                        color: var(--blue);
+                        opacity: .7;
+                    }
+
                     &:last-child {
                         margin-bottom: 10px;
                     }
@@ -351,7 +356,7 @@ aside {
                         font-weight: 400;
                         font-family: var(--font-family-1);
                         position: relative;
-                        margin-left: 5px;
+                        margin: 0 5px;
 
                         img {
                             border-radius: 50%;
@@ -374,6 +379,48 @@ aside {
                                 right: 0;
                                 border: 2px solid var(--background-color-2);
                             }
+                        }
+                    }
+
+                    .personInfo {
+                        width: 100%;
+                        margin-left: 15px;
+                        overflow-x: hidden;
+
+                        h4 {
+                            text-transform: capitalize;
+                            font-size: 16px;
+                            font-weight: 400;
+                            font-family: var(--font-family-1);
+                            color: var(--white);
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                            overflow-x: hidden;
+                        }
+
+                        .status {
+                            color: var(--gray);
+                            font-size: 14px;
+                            font-family: var(--font-family-1);
+                            font-weight: 400;
+                            margin-top: 7px;
+                        }
+                    }
+
+                    .personSettings {
+                        padding: 15px;
+                        border-radius: 50%;
+                        display: grid;
+                        place-items: center;
+                        margin-left: 10px;
+
+                        &:hover i {
+                            color: var(--white);
+                        }
+
+                        i {
+                            color: var(--gray);
+                            transition: var(--transition);
                         }
                     }
                 }

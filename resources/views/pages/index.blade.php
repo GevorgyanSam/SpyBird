@@ -242,26 +242,166 @@
                         <div class="nearby">people nearby</div>
                     </div>
                     <div class="personParent">
-                        <div class="person">
-                            <div class="avatar active">
-                                <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/1.jpg">
+                        <a href="#">
+                            <div class="person">
+                                <div>
+                                    <div class="avatar active">
+                                        <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/1.jpg">
+                                    </div>
+                                </div>
+                                <div class="personInfo">
+                                    <h4>william pearson</h4>
+                                    <div class="status">online</div>
+                                </div>
+                                <div class="personSettings">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                </div>
                             </div>
-                        </div>
-                        <div class="person">
-                            <div class="avatar">
-                                <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/2.jpg">
+                        </a>
+                        <a href="#">
+                            <div class="person">
+                                <div>
+                                    <div class="avatar active">
+                                        m
+                                    </div>
+                                </div>
+                                <div class="personInfo">
+                                    <h4>mike</h4>
+                                    <div class="status">online</div>
+                                </div>
+                                <div class="personSettings">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                </div>
                             </div>
-                        </div>
-                        <div class="person">
-                            <div class="avatar active">
-                                w
+                        </a>
+                        <a href="#">
+                            <div class="person">
+                                <div>
+                                    <div class="avatar">
+                                        <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/2.jpg">
+                                    </div>
+                                </div>
+                                <div class="personInfo">
+                                    <h4>ollie chandler</h4>
+                                    <div class="status">last seen 3 days ago</div>
+                                </div>
+                                <div class="personSettings">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                </div>
                             </div>
-                        </div>
-                        <div class="person">
-                            <div class="avatar">
-                                w
+                        </a>
+                        <a href="#">
+                            <div class="person">
+                                <div>
+                                    <div class="avatar">
+                                        j
+                                    </div>
+                                </div>
+                                <div class="personInfo">
+                                    <h4>james</h4>
+                                    <div class="status">last seen a long time ago</div>
+                                </div>
+                                <div class="personSettings">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                </div>
                             </div>
-                        </div>
+                        </a>
+                        <a href="#">
+                            <div class="person">
+                                <div>
+                                    <div class="avatar active">
+                                        <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/1.jpg">
+                                    </div>
+                                </div>
+                                <div class="personInfo">
+                                    <h4>william pearson</h4>
+                                    <div class="status">online</div>
+                                </div>
+                                <div class="personSettings">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#">
+                            <div class="person">
+                                <div>
+                                    <div class="avatar active">
+                                        m
+                                    </div>
+                                </div>
+                                <div class="personInfo">
+                                    <h4>mike</h4>
+                                    <div class="status">online</div>
+                                </div>
+                                <div class="personSettings">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#">
+                            <div class="person">
+                                <div>
+                                    <div class="avatar">
+                                        <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/2.jpg">
+                                    </div>
+                                </div>
+                                <div class="personInfo">
+                                    <h4>ollie chandler</h4>
+                                    <div class="status">last seen 3 days ago</div>
+                                </div>
+                                <div class="personSettings">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#">
+                            <div class="person">
+                                <div>
+                                    <div class="avatar">
+                                        j
+                                    </div>
+                                </div>
+                                <div class="personInfo">
+                                    <h4>james</h4>
+                                    <div class="status">last seen a long time ago</div>
+                                </div>
+                                <div class="personSettings">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#">
+                            <div class="person">
+                                <div>
+                                    <div class="avatar active">
+                                        <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/1.jpg">
+                                    </div>
+                                </div>
+                                <div class="personInfo">
+                                    <h4>william pearson</h4>
+                                    <div class="status">online</div>
+                                </div>
+                                <div class="personSettings">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#">
+                            <div class="person">
+                                <div>
+                                    <div class="avatar active">
+                                        m
+                                    </div>
+                                </div>
+                                <div class="personInfo">
+                                    <h4>mike</h4>
+                                    <div class="status">online</div>
+                                </div>
+                                <div class="personSettings">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                </div>
+                            </div>
+                        </a>
                     </div>
                 </div>
 
