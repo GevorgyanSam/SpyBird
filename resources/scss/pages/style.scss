@@ -172,123 +172,157 @@ aside {
         }
 
         .chatParent {
-            .chat {
+            .chatItem {
                 width: 100%;
-                height: 110px;
                 background-color: var(--background-color-2);
                 border-radius: var(--radius);
                 margin: 15px 0;
-                display: flex;
-                justify-content: start;
-                padding: 20px;
-                gap: 15px;
 
-                > div {
-                    height: 100%;
-                }
+                .chat {
+                    padding: 20px;
+                    height: 110px;
+                    display: flex;
+                    justify-content: start;
+                    gap: 15px;
 
-                &:last-child {
-                    margin-bottom: 10px;
-                }
-
-                .avatar {
-                    text-transform: uppercase;
-                    height: 42px;
-                    width: 42px;
-                    border-radius: 50%;
-                    background-color: var(--blue);
-                    color: white;
-                    display: grid;
-                    place-items: center;
-                    font-size: 15px;
-                    font-weight: 400;
-                    font-family: var(--font-family-1);
-                    position: relative;
-
-                    img {
-                        border-radius: 50%;
-                        width: 100%;
+                    > div {
                         height: 100%;
-                        object-fit: cover;
-                        object-position: center;
                     }
 
-                    &.active {
-                        &::before {
-                            transition: var(--transition);
-                            content: "";
-                            position: absolute;
-                            height: 8px;
-                            width: 8px;
-                            background-color: limegreen;
+                    &:last-child {
+                        margin-bottom: 10px;
+                    }
+
+                    .avatar {
+                        text-transform: uppercase;
+                        height: 42px;
+                        width: 42px;
+                        border-radius: 50%;
+                        background-color: var(--blue);
+                        color: white;
+                        display: grid;
+                        place-items: center;
+                        font-size: 15px;
+                        font-weight: 400;
+                        font-family: var(--font-family-1);
+                        position: relative;
+
+                        img {
                             border-radius: 50%;
-                            bottom: 0;
-                            right: 0;
-                            border: 2px solid var(--background-color-2);
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                            object-position: center;
+                        }
+
+                        &.active {
+                            &::before {
+                                transition: var(--transition);
+                                content: "";
+                                position: absolute;
+                                height: 8px;
+                                width: 8px;
+                                background-color: limegreen;
+                                border-radius: 50%;
+                                bottom: 0;
+                                right: 0;
+                                border: 2px solid var(--background-color-2);
+                            }
+                        }
+                    }
+
+                    .chatInfo {
+                        width: 100%;
+                        display: grid;
+                        grid-template-columns: 80% 20%;
+                        grid-template-rows: repeat(2, 1fr);
+                        gap: 5px;
+                        align-items: center;
+
+                        .name {
+                            text-transform: capitalize;
+                            font-size: 15px;
+                            font-weight: 400;
+                            font-family: var(--font-family-1);
+                            color: var(--white);
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                            overflow-x: hidden;
+                        }
+
+                        .time {
+                            text-align: center;
+                            opacity: 0.7;
+                            font-size: 10px;
+                            font-weight: 400;
+                            font-family: var(--font-family-1);
+                            color: var(--gray);
+                        }
+
+                        .message {
+                            display: -webkit-box;
+                            -webkit-line-clamp: 2;
+                            -webkit-box-orient: vertical;
+                            overflow: hidden;
+                            color: var(--gray);
+                            font-size: 14px;
+                            line-height: 20px;
+                        }
+
+                        .unread {
+                            margin: 0 auto;
+
+                            .count {
+                                height: 19px;
+                                width: 19px;
+                                background-color: var(--blue);
+                                border-radius: 50%;
+                                overflow: hidden;
+                                display: grid;
+                                place-items: center;
+                                font-size: 10px;
+                                font-weight: 400;
+                                font-family: var(--font-family-1);
+                                color: white;
+                            }
                         }
                     }
                 }
 
-                .chatInfo {
-                    width: 100%;
-                    display: grid;
-                    grid-template-columns: 80% 20%;
-                    grid-template-rows: repeat(2, 1fr);
-                    gap: 5px;
+                .group {
+                    border-top: 3px solid var(--background-color-1);
+                    padding: 15px 20px;
+                    display: flex;
                     align-items: center;
+                    justify-content: space-between;
+                    gap: 15px;
 
                     .name {
-                        text-transform: capitalize;
-                        font-size: 15px;
-                        font-weight: 400;
-                        font-family: var(--font-family-1);
-                        color: var(--white);
-                        white-space: nowrap;
-                        text-overflow: ellipsis;
-                        overflow-x: hidden;
-                    }
-
-                    .time {
-                        text-align: center;
-                        opacity: 0.7;
-                        font-size: 10px;
-                        font-weight: 400;
-                        font-family: var(--font-family-1);
-                        color: var(--gray);
-                    }
-
-                    .message {
-                        display: -webkit-box;
-                        -webkit-line-clamp: 2;
-                        -webkit-box-orient: vertical;
+                        display: flex;
+                        align-items: center;
+                        gap: 15px;
                         overflow: hidden;
-                        color: var(--gray);
-                        font-size: 14px;
-                        line-height: 20px;
-                    }
 
-                    .unread {
-                        margin: 0 auto;
+                        img {
+                            width: 20px;
+                        }
 
-                        .count {
-                            height: 19px;
-                            width: 19px;
-                            background-color: var(--blue);
-                            border-radius: 50%;
-                            overflow: hidden;
-                            display: grid;
-                            place-items: center;
-                            font-size: 10px;
+                        span {
+                            font-size: 15px;
                             font-weight: 400;
                             font-family: var(--font-family-1);
-                            color: white;
+                            color: var(--white);
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                            overflow-x: hidden;
                         }
                     }
                 }
             }
         }
 
-        .searchParent {
+        .searchParent,
+        .friendsParent {
             .switchParent {
                 display: flex;
                 align-items: center;
@@ -333,11 +367,6 @@ aside {
                     display: flex;
                     align-items: center;
                     justify-content: flex-start;
-
-                    &:hover .personInfo h4 {
-                        color: var(--blue);
-                        opacity: .7;
-                    }
 
                     &:last-child {
                         margin-bottom: 10px;
@@ -396,6 +425,11 @@ aside {
                             white-space: nowrap;
                             text-overflow: ellipsis;
                             overflow-x: hidden;
+
+                            &:hover {
+                                color: var(--blue);
+                                opacity: 0.7;
+                            }
                         }
 
                         .status {
@@ -413,6 +447,8 @@ aside {
                         display: grid;
                         place-items: center;
                         margin-left: 10px;
+                        position: relative;
+                        cursor: pointer;
 
                         &:hover i {
                             color: var(--white);
@@ -421,6 +457,67 @@ aside {
                         i {
                             color: var(--gray);
                             transition: var(--transition);
+                        }
+
+                        .dropdownMenu {
+                            display: none;
+                            z-index: 1;
+                            position: absolute;
+                            width: 200px;
+                            padding: 7px;
+                            top: 45px;
+                            right: 0;
+                            border-radius: var(--radius);
+                            background-color: var(--background-color-2);
+                            border: 1px solid var(--background-color-1);
+                            box-shadow: 0 0 20px 1px var(--background-color-3);
+                            animation: DropdownAnimation
+                                var(--animation-duration) forwards;
+                            opacity: 0;
+
+                            @keyframes DropdownAnimation {
+                                0% {
+                                    opacity: 0;
+                                }
+
+                                100% {
+                                    opacity: 1;
+                                }
+                            }
+
+                            &.active {
+                                display: block;
+                            }
+
+                            .dropdownItem {
+                                cursor: pointer;
+                                width: 100%;
+                                padding: 12px;
+                                padding-left: 15px;
+                                border-radius: var(--radius);
+                                color: var(--gray);
+                                font-family: var(--font-family-1);
+                                font-size: 14px;
+                                font-weight: 400;
+                                background-color: transparent;
+                                text-transform: capitalize;
+
+                                &:hover {
+                                    background-color: var(--background-color-1);
+                                    color: var(--white);
+                                }
+
+                                &.danger {
+                                    color: var(--error-color);
+                                }
+                            }
+
+                            .line {
+                                height: 2px;
+                                width: 100%;
+                                background-color: var(--background-color-3);
+                                margin: 8px 0;
+                            }
                         }
                     }
                 }
