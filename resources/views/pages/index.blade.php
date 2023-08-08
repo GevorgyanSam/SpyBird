@@ -22,7 +22,7 @@
                         <li id="search" title="Search" data-content="searchParent">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </li>
-                        <li class="active" id="chat" title="Chat" data-content="chatParent">
+                        <li id="chat" title="Chat" data-content="chatParent">
                             <i class="fa-solid fa-comments">
                                 <div class="count">2</div>
                             </i>
@@ -31,9 +31,7 @@
                             <i class="fa-solid fa-user-group"></i>
                         </li>
                         <li id="notifications" title="Notifications" data-content="notificationsParent">
-                            <i class="fa-solid fa-bell">
-                                <div class="count">9+</div>
-                            </i>
+                            <i class="fa-solid fa-bell"></i>
                         </li>
                     </ul>
                 </div>
@@ -56,178 +54,6 @@
 
         <aside>
             <div class="asideParent">
-
-        <!-- ----- ----- ---- ----- ----- -->
-        <!-- ----- ----- Chat ----- ----- -->
-        <!-- ----- ----- ---- ----- ----- -->
-
-                <div class="chatParent active">
-                    <h3>Chat</h3>
-                    <x-form method="post">
-                        <div class="formItem">
-                            <input type="text" placeholder="Search Messages">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </div>
-                    </x-form>
-                    <a href="#">
-                        <div class="chatItem">
-                            <div class="chat">
-                                <div>
-                                    <div class="avatar active">
-                                        <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/2.jpg">
-                                    </div>
-                                </div>
-                                <div class="chatInfo">
-                                    <div class="name">ollie chandler</div>
-                                    <div class="time">12:45</div>
-                                    <div class="message">I'm going to meet my friend of mine at the departments stores as soon as possible.</div>
-                                    <div class="unread">
-                                        <div class="count">2</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="group">
-                                <div class="name">
-                                    <img src="{{ asset('assets/icon.png') }}">
-                                    <span>WEB Dev Group</span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="#">
-                        <div class="chatItem">
-                            <div class="chat">
-                                <div>
-                                    <div class="avatar active">
-                                        <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/1.jpg">
-                                    </div>
-                                </div>
-                                <div class="chatInfo">
-                                    <div class="name">william pearson</div>
-                                    <div class="time">12:45</div>
-                                    <div class="message">I'm going to meet my friend of mine at the departments stores as soon as possible.</div>
-                                    <div class="unread">
-                                        <div class="count">2</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="#">
-                        <div class="chatItem">
-                            <div class="chat">
-                                <div>
-                                    <div class="avatar active">
-                                        a
-                                    </div>
-                                </div>
-                                <div class="chatInfo">
-                                    <div class="name">adam black</div>
-                                    <div class="time">12:45</div>
-                                    <div class="message">I'm going to meet my friend of mine at the departments stores as soon as possible.</div>
-                                    <div class="unread"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="#">
-                        <div class="chatItem">
-                            <div class="chat">
-                                <div>
-                                    <div class="avatar">
-                                        <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/3.jpg">
-                                    </div>
-                                </div>
-                                <div class="chatInfo">
-                                    <div class="name">jack</div>
-                                    <div class="time">12:45</div>
-                                    <div class="message">I'm going to meet my friend of mine at the departments stores as soon as possible.</div>
-                                    <div class="unread"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="#">
-                        <div class="chatItem">
-                            <div class="chat">
-                                <div>
-                                    <div class="avatar active">
-                                        c
-                                    </div>
-                                </div>
-                                <div class="chatInfo">
-                                    <div class="name">chris</div>
-                                    <div class="time">12:45</div>
-                                    <div class="message">I'm going to meet my friend of mine at the departments stores as soon as possible.</div>
-                                    <div class="unread"></div>
-                                </div>
-                            </div>
-                            <div class="group">
-                                <div class="name">
-                                    <img src="{{ asset('assets/icon.png') }}">
-                                    <span>Another Group Name</span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="#">
-                        <div class="chatItem">
-                            <div class="chat">
-                                <div>
-                                    <div class="avatar active">
-                                        a
-                                    </div>
-                                </div>
-                                <div class="chatInfo">
-                                    <div class="name">adam black</div>
-                                    <div class="time">12:45</div>
-                                    <div class="message">I'm going to meet my friend of mine at the departments stores as soon as possible.</div>
-                                    <div class="unread"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="#">
-                        <div class="chatItem">
-                            <div class="chat">
-                                <div>
-                                    <div class="avatar">
-                                        <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/3.jpg">
-                                    </div>
-                                </div>
-                                <div class="chatInfo">
-                                    <div class="name">jack</div>
-                                    <div class="time">12:45</div>
-                                    <div class="message">I'm going to meet my friend of mine at the departments stores as soon as possible.</div>
-                                    <div class="unread"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="#">
-                        <div class="chatItem">
-                            <div class="chat">
-                                <div>
-                                    <div class="avatar active">
-                                        c
-                                    </div>
-                                </div>
-                                <div class="chatInfo">
-                                    <div class="name">chris</div>
-                                    <div class="time">12:45</div>
-                                    <div class="message">I'm going to meet my friend of mine at the departments stores as soon as possible.</div>
-                                    <div class="unread"></div>
-                                </div>
-                            </div>
-                            <div class="group">
-                                <div class="name">
-                                    <img src="{{ asset('assets/icon.png') }}">
-                                    <span>Another Group Name</span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
 
         <!-- ----- ----- ------ ----- ----- -->
         <!-- ----- ----- Search ----- ----- -->
@@ -262,7 +88,7 @@
                                 <i class="fa-solid fa-ellipsis-vertical"></i>
                                 <div class="dropdownMenu">
                                     <div class="dropdownItem">send message</div>
-                                    <div class="dropdownItem">add friend</div>
+                                    <div class="dropdownItem">send friend request</div>
                                     <div class="line"></div>
                                     <div class="dropdownItem danger">block user</div>
                                 </div>
@@ -284,7 +110,7 @@
                                 <i class="fa-solid fa-ellipsis-vertical"></i>
                                 <div class="dropdownMenu">
                                     <div class="dropdownItem">send message</div>
-                                    <div class="dropdownItem">add friend</div>
+                                    <div class="dropdownItem">send friend request</div>
                                     <div class="line"></div>
                                     <div class="dropdownItem danger">block user</div>
                                 </div>
@@ -306,7 +132,7 @@
                                 <i class="fa-solid fa-ellipsis-vertical"></i>
                                 <div class="dropdownMenu">
                                     <div class="dropdownItem">send message</div>
-                                    <div class="dropdownItem">add friend</div>
+                                    <div class="dropdownItem">send friend request</div>
                                     <div class="line"></div>
                                     <div class="dropdownItem danger">block user</div>
                                 </div>
@@ -328,7 +154,7 @@
                                 <i class="fa-solid fa-ellipsis-vertical"></i>
                                 <div class="dropdownMenu">
                                     <div class="dropdownItem">send message</div>
-                                    <div class="dropdownItem">add friend</div>
+                                    <div class="dropdownItem">send friend request</div>
                                     <div class="line"></div>
                                     <div class="dropdownItem danger">block user</div>
                                 </div>
@@ -350,7 +176,7 @@
                                 <i class="fa-solid fa-ellipsis-vertical"></i>
                                 <div class="dropdownMenu">
                                     <div class="dropdownItem">send message</div>
-                                    <div class="dropdownItem">add friend</div>
+                                    <div class="dropdownItem">send friend request</div>
                                     <div class="line"></div>
                                     <div class="dropdownItem danger">block user</div>
                                 </div>
@@ -372,7 +198,7 @@
                                 <i class="fa-solid fa-ellipsis-vertical"></i>
                                 <div class="dropdownMenu">
                                     <div class="dropdownItem">send message</div>
-                                    <div class="dropdownItem">add friend</div>
+                                    <div class="dropdownItem">send friend request</div>
                                     <div class="line"></div>
                                     <div class="dropdownItem danger">block user</div>
                                 </div>
@@ -394,7 +220,7 @@
                                 <i class="fa-solid fa-ellipsis-vertical"></i>
                                 <div class="dropdownMenu">
                                     <div class="dropdownItem">send message</div>
-                                    <div class="dropdownItem">add friend</div>
+                                    <div class="dropdownItem">send friend request</div>
                                     <div class="line"></div>
                                     <div class="dropdownItem danger">block user</div>
                                 </div>
@@ -416,7 +242,7 @@
                                 <i class="fa-solid fa-ellipsis-vertical"></i>
                                 <div class="dropdownMenu">
                                     <div class="dropdownItem">send message</div>
-                                    <div class="dropdownItem">add friend</div>
+                                    <div class="dropdownItem">send friend request</div>
                                     <div class="line"></div>
                                     <div class="dropdownItem danger">block user</div>
                                 </div>
@@ -438,7 +264,7 @@
                                 <i class="fa-solid fa-ellipsis-vertical"></i>
                                 <div class="dropdownMenu">
                                     <div class="dropdownItem">send message</div>
-                                    <div class="dropdownItem">add friend</div>
+                                    <div class="dropdownItem">send friend request</div>
                                     <div class="line"></div>
                                     <div class="dropdownItem danger">block user</div>
                                 </div>
@@ -460,7 +286,7 @@
                                 <i class="fa-solid fa-ellipsis-vertical"></i>
                                 <div class="dropdownMenu">
                                     <div class="dropdownItem">send message</div>
-                                    <div class="dropdownItem">add friend</div>
+                                    <div class="dropdownItem">send friend request</div>
                                     <div class="line"></div>
                                     <div class="dropdownItem danger">block user</div>
                                 </div>
@@ -482,7 +308,7 @@
                                 <i class="fa-solid fa-ellipsis-vertical"></i>
                                 <div class="dropdownMenu">
                                     <div class="dropdownItem">send message</div>
-                                    <div class="dropdownItem">add friend</div>
+                                    <div class="dropdownItem">send friend request</div>
                                     <div class="line"></div>
                                     <div class="dropdownItem danger">block user</div>
                                 </div>
@@ -504,10 +330,194 @@
                                 <i class="fa-solid fa-ellipsis-vertical"></i>
                                 <div class="dropdownMenu">
                                     <div class="dropdownItem">send message</div>
-                                    <div class="dropdownItem">add friend</div>
+                                    <div class="dropdownItem">send friend request</div>
                                     <div class="line"></div>
                                     <div class="dropdownItem danger">block user</div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+        <!-- ----- ----- ---- ----- ----- -->
+        <!-- ----- ----- Chat ----- ----- -->
+        <!-- ----- ----- ---- ----- ----- -->
+
+                <div class="chatParent">
+                    <h3>Chat</h3>
+                    <div>
+                        <x-form method="post">
+                            <div class="formItem">
+                                <input type="text" placeholder="Search Messages">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </div>
+                        </x-form>
+                        <a href="#">
+                            <div class="chatItem">
+                                <div class="chat">
+                                    <div>
+                                        <div class="avatar active">
+                                            <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/2.jpg">
+                                        </div>
+                                    </div>
+                                    <div class="chatInfo">
+                                        <div class="name">ollie chandler</div>
+                                        <div class="time">12:45</div>
+                                        <div class="message">I'm going to meet my friend of mine at the departments stores as soon as possible.</div>
+                                        <div class="unread">
+                                            <div class="count">2</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="group">
+                                    <div class="name">
+                                        <img src="{{ asset('assets/icon.png') }}">
+                                        <span>WEB Dev Group</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#">
+                            <div class="chatItem">
+                                <div class="chat">
+                                    <div>
+                                        <div class="avatar active">
+                                            <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/1.jpg">
+                                        </div>
+                                    </div>
+                                    <div class="chatInfo">
+                                        <div class="name">william pearson</div>
+                                        <div class="time">12:45</div>
+                                        <div class="message">I'm going to meet my friend of mine at the departments stores as soon as possible.</div>
+                                        <div class="unread">
+                                            <div class="count">2</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#">
+                            <div class="chatItem">
+                                <div class="chat">
+                                    <div>
+                                        <div class="avatar active">
+                                            a
+                                        </div>
+                                    </div>
+                                    <div class="chatInfo">
+                                        <div class="name">adam black</div>
+                                        <div class="time">12:45</div>
+                                        <div class="message">I'm going to meet my friend of mine at the departments stores as soon as possible.</div>
+                                        <div class="unread"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#">
+                            <div class="chatItem">
+                                <div class="chat">
+                                    <div>
+                                        <div class="avatar">
+                                            <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/3.jpg">
+                                        </div>
+                                    </div>
+                                    <div class="chatInfo">
+                                        <div class="name">jack</div>
+                                        <div class="time">12:45</div>
+                                        <div class="message">I'm going to meet my friend of mine at the departments stores as soon as possible.</div>
+                                        <div class="unread"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#">
+                            <div class="chatItem">
+                                <div class="chat">
+                                    <div>
+                                        <div class="avatar active">
+                                            c
+                                        </div>
+                                    </div>
+                                    <div class="chatInfo">
+                                        <div class="name">chris</div>
+                                        <div class="time">12:45</div>
+                                        <div class="message">I'm going to meet my friend of mine at the departments stores as soon as possible.</div>
+                                        <div class="unread"></div>
+                                    </div>
+                                </div>
+                                <div class="group">
+                                    <div class="name">
+                                        <img src="{{ asset('assets/icon.png') }}">
+                                        <span>Another Group Name</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#">
+                            <div class="chatItem">
+                                <div class="chat">
+                                    <div>
+                                        <div class="avatar active">
+                                            a
+                                        </div>
+                                    </div>
+                                    <div class="chatInfo">
+                                        <div class="name">adam black</div>
+                                        <div class="time">12:45</div>
+                                        <div class="message">I'm going to meet my friend of mine at the departments stores as soon as possible.</div>
+                                        <div class="unread"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#">
+                            <div class="chatItem">
+                                <div class="chat">
+                                    <div>
+                                        <div class="avatar">
+                                            <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/3.jpg">
+                                        </div>
+                                    </div>
+                                    <div class="chatInfo">
+                                        <div class="name">jack</div>
+                                        <div class="time">12:45</div>
+                                        <div class="message">I'm going to meet my friend of mine at the departments stores as soon as possible.</div>
+                                        <div class="unread"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#">
+                            <div class="chatItem">
+                                <div class="chat">
+                                    <div>
+                                        <div class="avatar active">
+                                            c
+                                        </div>
+                                    </div>
+                                    <div class="chatInfo">
+                                        <div class="name">chris</div>
+                                        <div class="time">12:45</div>
+                                        <div class="message">I'm going to meet my friend of mine at the departments stores as soon as possible.</div>
+                                        <div class="unread"></div>
+                                    </div>
+                                </div>
+                                <div class="group">
+                                    <div class="name">
+                                        <img src="{{ asset('assets/icon.png') }}">
+                                        <span>Another Group Name</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="emptyParent">
+                        <div class="content">
+                            <div class="item">
+                                <i class="fa-solid fa-comments"></i>
+                            </div>
+                            <div class="item">
+                                <h3>Ready to chat? <br> Select someone from your friends list and start a conversation!</h3>
                             </div>
                         </div>
                     </div>
@@ -519,33 +529,45 @@
 
                 <div class="friendsParent">
                     <h3>Friends</h3>
-                    <x-form method="post">
-                        <div class="formItem">
-                            <input type="text" placeholder="Search People">
-                            <i class="fa-solid fa-magnifying-glass"></i>
+                    <div>
+                        <x-form method="post">
+                            <div class="formItem">
+                                <input type="text" placeholder="Search People">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </div>
+                        </x-form>
+                        <div class="personParent">
+                            <div class="person">
+                                <div>
+                                    <div class="avatar active">
+                                        <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/1.jpg">
+                                    </div>
+                                </div>
+                                <div class="personInfo">
+                                    <a href="#">
+                                        <h4>william pearson</h4>
+                                    </a>
+                                    <div class="status">online</div>
+                                </div>
+                                <div class="personSettings">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                    <div class="dropdownMenu">
+                                        <div class="dropdownItem">send message</div>
+                                        <div class="dropdownItem">remove from friends</div>
+                                        <div class="line"></div>
+                                        <div class="dropdownItem danger">block user</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </x-form>
-                    <div class="personParent">
-                        <div class="person">
-                            <div>
-                                <div class="avatar active">
-                                    <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/1.jpg">
-                                </div>
+                    </div>
+                    <div class="emptyParent">
+                        <div class="content">
+                            <div class="item">
+                                <i class="fa-solid fa-user-group"></i>
                             </div>
-                            <div class="personInfo">
-                                <a href="#">
-                                    <h4>william pearson</h4>
-                                </a>
-                                <div class="status">online</div>
-                            </div>
-                            <div class="personSettings">
-                                <i class="fa-solid fa-ellipsis-vertical"></i>
-                                <div class="dropdownMenu">
-                                    <div class="dropdownItem">send message</div>
-                                    <div class="dropdownItem">remove from friends</div>
-                                    <div class="line"></div>
-                                    <div class="dropdownItem danger">block user</div>
-                                </div>
+                            <div class="item">
+                                <h3>No friends yet? <br> You can start by looking for people to hang out with.</h3>
                             </div>
                         </div>
                     </div>
@@ -557,6 +579,16 @@
 
                 <div class="notificationsParent">
                     <h3>Notifications</h3>
+                    <div class="emptyParent active">
+                        <div class="content">
+                            <div class="item">
+                                <i class="fa-solid fa-bell"></i>
+                            </div>
+                            <div class="item">
+                                <h3>Keep an eye on your notifications to stay in the loop and never miss out on important updates and messages.</h3>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
         <!-- ----- ----- -------- ----- ----- -->
