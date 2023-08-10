@@ -52,11 +52,11 @@ nav {
                     position: relative;
 
                     &.active i {
-                        color: var(--blue);
+                        color: var(--primary-color);
                     }
 
                     &:hover i {
-                        color: var(--blue);
+                        color: var(--primary-color);
                     }
 
                     i {
@@ -70,7 +70,7 @@ nav {
                             left: 20px;
                             height: 20px;
                             width: 20px;
-                            background-color: var(--blue);
+                            background-color: var(--primary-color);
                             color: white;
                             font-size: 11px;
                             border-radius: 50%;
@@ -235,7 +235,7 @@ aside {
                         height: 42px;
                         width: 42px;
                         border-radius: 50%;
-                        background-color: var(--blue);
+                        background-color: var(--primary-color);
                         color: white;
                         display: grid;
                         place-items: center;
@@ -312,7 +312,7 @@ aside {
                             .count {
                                 height: 19px;
                                 width: 19px;
-                                background-color: var(--blue);
+                                background-color: var(--primary-color);
                                 border-radius: 50%;
                                 overflow: hidden;
                                 display: grid;
@@ -340,8 +340,9 @@ aside {
                         gap: 15px;
                         overflow: hidden;
 
-                        img {
+                        svg {
                             width: 20px;
+                            height: 20px;
                         }
 
                         span {
@@ -414,7 +415,7 @@ aside {
                         height: 45px;
                         width: 45px;
                         border-radius: 50%;
-                        background-color: var(--blue);
+                        background-color: var(--primary-color);
                         color: white;
                         display: grid;
                         place-items: center;
@@ -464,7 +465,7 @@ aside {
                             overflow-x: hidden;
 
                             &:hover {
-                                color: var(--blue);
+                                color: var(--primary-color);
                                 opacity: 0.7;
                             }
                         }

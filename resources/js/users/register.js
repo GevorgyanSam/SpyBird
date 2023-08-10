@@ -1,7 +1,7 @@
 // ------ ---- ------- ---- -----------
 // Import Form Methods From Components.
 // ------ ---- ------- ---- -----------
-import { focus, eye } from '../components/form-functions';
+import { focus, eye } from "../components/form-functions";
 
 const form = {
     name: {

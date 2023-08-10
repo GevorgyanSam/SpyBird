@@ -56,10 +56,10 @@ main {
                     line-height: 25px;
 
                     a {
-                        color: var(--blue);
+                        color: var(--primary-color);
 
                         &:hover {
-                            color: var(--blue-hover);
+                            color: var(--primary-color-hover);
                         }
                     }
 
@@ -70,7 +70,7 @@ main {
                             position: relative;
 
                             &::before {
-                                content: '';
+                                content: "";
                                 position: absolute;
                                 top: 50%;
                                 left: 0;

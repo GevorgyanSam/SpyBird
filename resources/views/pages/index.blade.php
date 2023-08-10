@@ -371,7 +371,7 @@
                                 </div>
                                 <div class="group">
                                     <div class="name">
-                                        <img src="{{ asset('assets/icon.png') }}">
+                                        <x-logo color="rgb(39, 135, 245)"></x-logo>
                                         <span>WEB Dev Group</span>
                                     </div>
                                 </div>
@@ -447,7 +447,7 @@
                                 </div>
                                 <div class="group">
                                     <div class="name">
-                                        <img src="{{ asset('assets/icon.png') }}">
+                                        <x-logo color="rgb(39, 135, 245)"></x-logo>
                                         <span>Another Group Name</span>
                                     </div>
                                 </div>
@@ -504,7 +504,7 @@
                                 </div>
                                 <div class="group">
                                     <div class="name">
-                                        <img src="{{ asset('assets/icon.png') }}">
+                                        <x-logo color="rgb(39, 135, 245)"></x-logo>
                                         <span>Another Group Name</span>
                                     </div>
                                 </div>

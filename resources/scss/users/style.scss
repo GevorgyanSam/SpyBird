@@ -46,7 +46,7 @@ main {
                     height: 70px;
                     overflow: hidden;
                     border-radius: 50%;
-                    background-color: var(--blue);
+                    background-color: var(--primary-color);
                     color: var(--light);
                     font-family: var(--font-family-1);
                     font-size: 22px;
@@ -84,10 +84,10 @@ main {
                         line-height: 21px;
 
                         a {
-                            color: var(--blue);
+                            color: var(--primary-color);
 
                             &:hover {
-                                color: var(--blue-hover);
+                                color: var(--primary-color-hover);
                             }
                         }
                     }
@@ -173,13 +173,13 @@ main {
                             color: var(--light);
                             height: 100%;
                             width: 100%;
-                            background-color: var(--blue);
+                            background-color: var(--primary-color);
                             font-size: 15px;
                             text-transform: capitalize;
                             cursor: pointer;
 
                             &:hover {
-                                background-color: var(--blue-hover);
+                                background-color: var(--primary-color-hover);
                             }
                         }
                     }
@@ -197,10 +197,10 @@ main {
                 }
 
                 a {
-                    color: var(--blue);
+                    color: var(--primary-color);
 
                     &:hover {
-                        color: var(--blue-hover);
+                        color: var(--primary-color-hover);
                     }
                 }
             }

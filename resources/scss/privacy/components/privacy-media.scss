@@ -1,14 +1,11 @@
 @media only screen and (max-width: 980px) {
-
     nav {
-
         .navParent {
             height: 60px !important;
         }
     }
 
     main {
-
         .container {
             padding: 70px 0 !important;
 
@@ -23,19 +20,13 @@
             }
         }
     }
-
 }
 
 @media only screen and (max-width: 700px) {
-
     main {
-
         .container {
-
             .item {
-
                 .box {
-
                     h1 {
                         font-size: 20px !important;
                     }
@@ -56,5 +47,4 @@
             }
         }
     }
-
 }

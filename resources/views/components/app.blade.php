@@ -10,7 +10,7 @@
     <meta name="description" content="Chat Application">
     <meta name="subject" content="{{ env('APP_NAME') }}">
     <meta name="keywords" content="Chat">
-    <link rel="shortcut icon" href="{{ asset('assets/icon.ico') }}">
+    <link rel="shortcut icon" href="{{ asset('assets/icon.png') }}">
     {{ $styles ?? null }}
     <title>{{ env('APP_NAME') }} | {{ $title }}</title>
 </head>
