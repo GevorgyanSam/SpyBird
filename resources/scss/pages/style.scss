@@ -561,6 +561,174 @@ aside {
                 }
             }
         }
+
+        .notificationsParent {
+            .recentParent {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                padding: 0 10px;
+                margin-bottom: 20px;
+
+                .recent,
+                button {
+                    text-transform: capitalize;
+                    font-family: var(--font-family-1);
+                    color: var(--gray);
+                    font-size: 13px;
+                    background-color: transparent;
+                    font-weight: 400;
+                }
+
+                button {
+                    cursor: pointer;
+
+                    &:hover {
+                        opacity: 0.7;
+                    }
+                }
+            }
+
+            .report {
+                width: 100%;
+                background-color: var(--background-color-2);
+                border-radius: var(--radius);
+                margin: 15px 0;
+
+                &:last-child {
+                    margin-bottom: 10px;
+                }
+
+                .notice {
+                    padding: 20px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-start;
+                    gap: 15px;
+
+                    .avatar {
+                        text-transform: uppercase;
+                        height: 45px;
+                        width: 45px;
+                        border-radius: 50%;
+                        background-color: var(--primary-color);
+                        color: white;
+                        display: grid;
+                        place-items: center;
+                        font-size: 15px;
+                        font-weight: 400;
+                        font-family: var(--font-family-1);
+                        position: relative;
+                        margin: 0 5px;
+
+                        img {
+                            border-radius: 50%;
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                            object-position: center;
+                        }
+
+                        i {
+                            color: var(--light);
+                        }
+                    }
+
+                    .content {
+                        width: 100%;
+                        height: 100%;
+                        display: grid;
+                        gap: 5px;
+                        grid-template-columns: 80% 20%;
+                        grid-template-rows: repeat(2, 1fr);
+
+                        .name {
+                            text-transform: capitalize;
+                            font-size: 15px;
+                            font-weight: 400;
+                            font-family: var(--font-family-1);
+                            color: var(--white);
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                            overflow-x: hidden;
+                        }
+
+                        .time {
+                            text-align: center;
+                            opacity: 0.7;
+                            font-size: 10px;
+                            font-weight: 400;
+                            font-family: var(--font-family-1);
+                            color: var(--gray);
+                        }
+
+                        .message {
+                            color: var(--gray);
+                            font-size: 14px;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                            overflow-x: hidden;
+                            text-transform: capitalize;
+                        }
+
+                        .remove {
+                            text-align: center;
+                            cursor: pointer;
+
+                            &:hover i {
+                                color: var(--error-color);
+                            }
+
+                            i {
+                                color: var(--gray);
+                                font-size: 13px;
+                            }
+                        }
+                    }
+                }
+
+                .request {
+                    border-top: 3px solid var(--background-color-1);
+                    padding: 12px 20px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-around;
+
+                    button {
+                        cursor: pointer;
+                        width: 150px;
+                        padding: 9px 0;
+                        border-radius: var(--radius);
+                        background-color: transparent;
+                        text-transform: capitalize;
+                        font-size: 13px;
+                        font-family: var(--font-family-1);
+                        font-weight: 400;
+
+                        &.reject {
+                            color: var(--primary-color);
+                            background-color: var(--light-primary-color);
+
+                            &:hover {
+                                background-color: var(
+                                    --light-primary-color-hover
+                                );
+                            }
+                        }
+
+                        &.confirm {
+                            color: var(--light);
+                            background-color: var(--primary-color);
+
+                            &:hover {
+                                background-color: var(--primary-color-hover);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

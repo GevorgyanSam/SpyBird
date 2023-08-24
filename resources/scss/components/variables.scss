@@ -5,6 +5,8 @@
     --white: white;
     --light: white;
     --gray: rgb(167, 166, 168);
+    --light-primary-color: rgb(25, 42, 61);
+    --light-primary-color-hover: rgb(22, 37, 54);
     --primary-color: rgb(39, 135, 245);
     --primary-color-hover: rgb(15, 121, 244);
     --error-color: rgb(220, 53, 69);
@@ -18,10 +20,8 @@ body.light {
     --background-color-1: rgb(246, 249, 251);
     --background-color-2: rgb(255, 255, 255);
     --background-color-3: rgb(235, 241, 247);
+    --light-primary-color: rgb(223, 237, 254);
+    --light-primary-color-hover: rgb(213, 231, 254);
     --white: rgb(41, 57, 81);
     --gray: rgb(149, 170, 201);
-}
-
-body.spy {
-    --primary-color: rgb(108, 70, 117);
 }
