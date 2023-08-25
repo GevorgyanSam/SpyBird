@@ -1,3 +1,8 @@
+// ------ ---- ------- ---- -----------
+// Import Form Methods From Components.
+// ------ ---- ------- ---- -----------
+import { focus } from "../components/form-functions";
+
 // ---- ------ -- --- -------- --- ----- ----
 // This Method Is For Changing App Color Mode
 // ---- ------ -- --- -------- --- ----- ----
@@ -5,22 +10,36 @@
 function changeColorMode() {
     const mode = {
         btn: $(".mode"),
+        btn_settings: $(".accordion.theme"),
         icon: $(".mode i"),
+        icon_settings: $(".accordion.theme i"),
     };
 
-    mode.btn.click(function () {
+    const change = () => {
         let storage = localStorage.getItem("mode");
         if (storage == "light") {
             $("body").removeClass("light");
             localStorage.removeItem("mode");
             mode.icon.removeClass("fa-sun");
             mode.icon.addClass("fa-moon");
+            mode.icon_settings.removeClass("fa-sun");
+            mode.icon_settings.addClass("fa-moon");
         } else {
             $("body").addClass("light");
             localStorage.setItem("mode", "light");
             mode.icon.removeClass("fa-moon");
             mode.icon.addClass("fa-sun");
+            mode.icon_settings.removeClass("fa-moon");
+            mode.icon_settings.addClass("fa-sun");
         }
+    };
+
+    mode.btn.click(function () {
+        change();
+    });
+
+    mode.btn_settings.click(function () {
+        change();
     });
 }
 
@@ -114,3 +133,48 @@ function toggleDropdown() {
 }
 
 toggleDropdown();
+
+// ---- ------ -- --- ----- -- ---- ------
+// This Method Is For Focus On Form Inputs
+// ---- ------ -- --- ----- -- ---- ------
+
+function focusOnInput() {
+    const form = {
+        email: {
+            input: $("#email"),
+            label: $("label[for=email]"),
+        },
+        name: {
+            input: $("#name"),
+            label: $("label[for=name]"),
+        },
+    };
+
+    focus(form.email.input, form.email.label);
+    focus(form.name.input, form.name.label);
+}
+
+focusOnInput();
+
+// ---- ------ -- --- -------- -------- ---------
+// This Method Is For Toggling Settings Accordion
+// ---- ------ -- --- -------- -------- ---------
+
+function switchAccordion() {
+    const accordions = $(".accordion:not(.theme)");
+
+    accordions.each(function () {
+        const accordion = {
+            icon: $(this).find(".visible i"),
+            visible: $(this).find(".visible"),
+            hidden: $(this).find(".hidden"),
+        };
+
+        accordion.visible.click(() => {
+            accordion.icon.toggleClass("rotate");
+            accordion.hidden.toggleClass("active");
+        });
+    });
+}
+
+switchAccordion();

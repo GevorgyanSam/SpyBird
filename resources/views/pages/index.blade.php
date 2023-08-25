@@ -679,6 +679,64 @@
 
                 <div class="settingsParent">
                     <h3>Settings</h3>
+                    <div>
+                        <div class="profile">
+                            <div>
+                                <div class="avatar">
+                                    <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/1.jpg">
+                                </div>
+                            </div>
+                            <div class="profileInfo">
+                                <h4>william pearson</h4>
+                                <div class="email">william@gmail.com</div>
+                            </div>
+                            <div class="logout" title="Logout">
+                                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <h2>account</h2>
+                            <div class="box">
+                                <div class="accordion">
+                                    <div class="visible">
+                                        <div>
+                                            <h3>profile settings</h3>
+                                            <h4>change your profile settings</h4>
+                                        </div>
+                                        <div>
+                                            <i class="fa-solid fa-angle-right"></i>
+                                        </div>
+                                    </div>
+                                    <div class="hidden">
+                                        <x-form>
+                                            <div class="formItem">
+                                                <label for="name">name</label>
+                                                <input type="text" id="name" autocomplete="off">
+                                            </div>
+                                            <div class="formItem">
+                                                <label for="email">email</label>
+                                                <input type="email" id="email" autocomplete="off">
+                                            </div>
+                                            <div class="formItem">
+                                                <button type="submit">save</button>
+                                            </div>
+                                        </x-form>
+                                    </div>
+                                </div>
+                                <div class="accordion theme">
+                                    <div class="visible">
+                                        <div>
+                                            <h3>appearance</h3>
+                                            <h4>choose light or dark theme</h4>
+                                        </div>
+                                        <div>
+                                            <i class="fa-solid fa-moon"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </aside>

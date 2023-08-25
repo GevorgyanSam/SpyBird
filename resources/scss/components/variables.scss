@@ -5,6 +5,7 @@
     --white: white;
     --light: white;
     --gray: rgb(167, 166, 168);
+    --light-gray: rgba(167, 166, 168, 0.1);
     --light-primary-color: rgb(25, 42, 61);
     --light-primary-color-hover: rgb(22, 37, 54);
     --primary-color: rgb(39, 135, 245);
@@ -24,4 +25,5 @@ body.light {
     --light-primary-color-hover: rgb(213, 231, 254);
     --white: rgb(41, 57, 81);
     --gray: rgb(149, 170, 201);
+    --light-gray: rgba(149, 170, 201, 0.2);
 }
