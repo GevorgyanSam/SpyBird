@@ -832,9 +832,18 @@ aside {
                     margin-top: 15px;
                     background-color: var(--background-color-2);
 
-                    .accordion {
+                    .accordion,
+                    .static {
                         &.theme:hover i {
                             color: var(--primary-color);
+                        }
+
+                        &.devices .visible i {
+                            font-size: 12px;
+                        }
+
+                        &.devices:hover i {
+                            color: var(--error-color);
                         }
 
                         &:first-child .visible {
@@ -882,6 +891,43 @@ aside {
                                 &.rotate {
                                     transform: rotate(90deg);
                                 }
+                            }
+
+                            .checkbox {
+                                appearance: none;
+                                height: 18px;
+                                width: 35px;
+                                border-radius: var(--radius);
+                                background-color: var(--background-color-3);
+                                position: relative;
+
+                                &:checked {
+                                    background-color: var(--primary-color);
+
+                                    &::before {
+                                        left: 19px;
+                                    }
+                                }
+
+                                &::before {
+                                    content: "";
+                                    position: absolute;
+                                    border-radius: 50%;
+                                    left: 3px;
+                                    top: 50%;
+                                    transform: translateY(-50%);
+                                    height: 13px;
+                                    width: 13px;
+                                    background-color: var(--background-color-2);
+                                    transition: var(--transition);
+                                }
+                            }
+
+                            .active {
+                                height: 8px;
+                                width: 8px;
+                                border-radius: 50%;
+                                background-color: limegreen;
                             }
                         }
 
@@ -985,6 +1031,10 @@ aside {
 
                                 input[type="number"] {
                                     -moz-appearance: textfield;
+                                }
+
+                                input[type="file"] {
+                                    opacity: 0;
                                 }
 
                                 #password {

@@ -10,9 +10,9 @@ import { focus } from "../components/form-functions";
 function changeColorMode() {
     const mode = {
         btn: $(".mode"),
-        btn_settings: $(".accordion.theme"),
+        btn_settings: $(".static.theme"),
         icon: $(".mode i"),
-        icon_settings: $(".accordion.theme i"),
+        icon_settings: $(".static.theme i"),
     };
 
     const change = () => {
@@ -140,17 +140,12 @@ toggleDropdown();
 
 function focusOnInput() {
     const form = {
-        email: {
-            input: $("#email"),
-            label: $("label[for=email]"),
-        },
         name: {
             input: $("#name"),
             label: $("label[for=name]"),
         },
     };
 
-    focus(form.email.input, form.email.label);
     focus(form.name.input, form.name.label);
 }
 
@@ -161,7 +156,7 @@ focusOnInput();
 // ---- ------ -- --- -------- -------- ---------
 
 function switchAccordion() {
-    const accordions = $(".accordion:not(.theme)");
+    const accordions = $(".settingsParent .accordion");
 
     accordions.each(function () {
         const accordion = {

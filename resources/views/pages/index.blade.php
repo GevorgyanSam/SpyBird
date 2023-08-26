@@ -697,6 +697,19 @@
                         <div class="container">
                             <h2>account</h2>
                             <div class="box">
+                                <div class="static">
+                                    <label for="spy">
+                                        <div class="visible">
+                                            <div>
+                                                <h3>spy mode</h3>
+                                                <h4>switch to spy mode</h4>
+                                            </div>
+                                            <div>
+                                                <input type="checkbox" class="checkbox" id="spy">
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
                                 <div class="accordion">
                                     <div class="visible">
                                         <div>
@@ -710,12 +723,12 @@
                                     <div class="hidden">
                                         <x-form>
                                             <div class="formItem">
-                                                <label for="name">name</label>
-                                                <input type="text" id="name" autocomplete="off">
+                                                <label for="avatar">avatar</label>
+                                                <input type="file" id="avatar">
                                             </div>
                                             <div class="formItem">
-                                                <label for="email">email</label>
-                                                <input type="email" id="email" autocomplete="off">
+                                                <label for="name">name</label>
+                                                <input type="text" id="name" autocomplete="off">
                                             </div>
                                             <div class="formItem">
                                                 <button type="submit">save</button>
@@ -723,7 +736,7 @@
                                         </x-form>
                                     </div>
                                 </div>
-                                <div class="accordion theme">
+                                <div class="static theme">
                                     <div class="visible">
                                         <div>
                                             <h3>appearance</h3>
@@ -731,6 +744,84 @@
                                         </div>
                                         <div>
                                             <i class="fa-solid fa-moon"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <h2>security</h2>
+                            <div class="box">
+                                <div class="static">
+                                    <div class="visible">
+                                        <div>
+                                            <h3>password</h3>
+                                            <h4>password change request</h4>
+                                        </div>
+                                        <div>
+                                            <i class="fa-solid fa-key"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="static">
+                                    <label for="verification">
+                                        <div class="visible">
+                                            <div>
+                                                <h3>two-step verification</h3>
+                                                <h4>request two-step verification</h4>
+                                            </div>
+                                            <div>
+                                                <input type="checkbox" class="checkbox" id="verification">
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <h2>devices</h2>
+                            <div class="box">
+                                <div class="static devices">
+                                    <div class="visible">
+                                        <div>
+                                            <h3>linux - armenia, yerevan</h3>
+                                            <h4>26 aug 10:52</h4>
+                                        </div>
+                                        <div>
+                                            <div class="active"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="static devices">
+                                    <div class="visible">
+                                        <div>
+                                            <h3>windows - armenia, armavir</h3>
+                                            <h4>25 aug 10:52</h4>
+                                        </div>
+                                        <div>
+                                            <i class="fa-solid fa-trash"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="static devices">
+                                    <div class="visible">
+                                        <div>
+                                            <h3>iPhone - armenia, paraqar</h3>
+                                            <h4>16 sep 10:52</h4>
+                                        </div>
+                                        <div>
+                                            <i class="fa-solid fa-trash"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="static devices">
+                                    <div class="visible">
+                                        <div>
+                                            <h3>samsung - armenia, musaler</h3>
+                                            <h4>5 jan 10:52</h4>
+                                        </div>
+                                        <div>
+                                            <i class="fa-solid fa-trash"></i>
                                         </div>
                                     </div>
                                 </div>

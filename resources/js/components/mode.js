@@ -6,7 +6,7 @@ function checkMode() {
     const mode = {
         storage: localStorage.getItem("mode"),
         icon: $(".mode i"),
-        icon_settings: $(".accordion.theme i"),
+        icon_settings: $(".static.theme i"),
     };
 
     if (mode.storage == "light") {
