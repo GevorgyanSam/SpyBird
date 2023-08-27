@@ -768,7 +768,7 @@
                                         <div class="visible">
                                             <div>
                                                 <h3>two-step verification</h3>
-                                                <h4>request two-step verification</h4>
+                                                <h4>toggle two-step verification</h4>
                                             </div>
                                             <div>
                                                 <input type="checkbox" class="checkbox" id="verification">
@@ -822,6 +822,44 @@
                                         </div>
                                         <div>
                                             <i class="fa-solid fa-trash"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <h2>other</h2>
+                            <div class="box">
+                                <div class="static danger">
+                                    <div class="visible">
+                                        <div>
+                                            <h3>log out</h3>
+                                            <h4>signing out of your account</h4>
+                                        </div>
+                                        <div>
+                                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="static danger">
+                                    <div class="visible">
+                                        <div>
+                                            <h3>lock screen</h3>
+                                            <h4>your screen will be locked</h4>
+                                        </div>
+                                        <div>
+                                            <i class="fa-solid fa-lock"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="static danger">
+                                    <div class="visible">
+                                        <div>
+                                            <h3>delete account</h3>
+                                            <h4>request account termination</h4>
+                                        </div>
+                                        <div>
+                                            <i class="fa-solid fa-user-slash"></i>
                                         </div>
                                     </div>
                                 </div>

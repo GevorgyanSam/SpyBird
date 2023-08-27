@@ -846,6 +846,12 @@ aside {
                             color: var(--error-color);
                         }
 
+                        &.danger .visible {
+                            i {
+                                color: var(--error-color);
+                            }
+                        }
+
                         &:first-child .visible {
                             padding-top: 0;
                             border-top: none;
@@ -894,6 +900,7 @@ aside {
                             }
 
                             .checkbox {
+                                cursor: pointer;
                                 appearance: none;
                                 height: 18px;
                                 width: 35px;
