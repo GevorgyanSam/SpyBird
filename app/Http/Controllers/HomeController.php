@@ -16,4 +16,13 @@ class HomeController extends Controller
         return view('pages.index');
     }
 
+    // ---- ------ -- --- ---- ---- ----
+    // This Method Is For Chat Page View
+    // ---- ------ -- --- ---- ---- ----
+
+    public function room (int $id)
+    {
+        return view('pages.room');
+    }
+
 }

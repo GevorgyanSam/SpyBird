@@ -1,6 +1,6 @@
-<x-app title='Chat'>
+<x-app title='Room'>
     <x-slot:styles>
-        <link rel="stylesheet" href="{{ asset('css/pages/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/pages/room.css') }}">
     </x-slot>
     <x-slot:body>
 
@@ -19,18 +19,18 @@
                 </div>
                 <div class="item">
                     <ul>
-                        <li data-name="search" class="search" title="Search" data-content="searchParent">
+                        <li id="search" title="Search" data-content="searchParent">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </li>
-                        <li data-name="chat" class="chat" title="Chat" data-content="chatParent">
+                        <li id="chat" title="Chat" data-content="chatParent">
                             <i class="fa-solid fa-comments">
                                 <div class="count">2</div>
                             </i>
                         </li>
-                        <li data-name="friends" class="friends" title="Friends" data-content="friendsParent">
+                        <li id="friends" title="Friends" data-content="friendsParent">
                             <i class="fa-solid fa-user-group"></i>
                         </li>
-                        <li data-name="notifications" class="notifications" title="Notifications" data-content="notificationsParent">
+                        <li id="notifications" title="Notifications" data-content="notificationsParent">
                             <i class="fa-solid fa-bell"></i>
                         </li>
                     </ul>
@@ -40,30 +40,7 @@
                         <li class="mode" title="Color Mode">
                             <i class="fa-solid fa-moon"></i>
                         </li>
-                        <li data-name="settings" class="settings" title="Settings" data-content="settingsParent">
-                            <i class="fa-solid fa-gear"></i>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="mobileNavParent">
-                <div class="item">
-                    <ul>
-                        <li data-name="search" class="search" title="Search" data-content="searchParent">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </li>
-                        <li data-name="friends" class="friends" title="Friends" data-content="friendsParent">
-                            <i class="fa-solid fa-user-group"></i>
-                        </li>
-                        <li data-name="chat" class="chat" title="Chat" data-content="chatParent">
-                            <i class="fa-solid fa-comments">
-                                <div class="count">2</div>
-                            </i>
-                        </li>
-                        <li data-name="notifications" class="notifications" title="Notifications" data-content="notificationsParent">
-                            <i class="fa-solid fa-bell"></i>
-                        </li>
-                        <li data-name="settings" class="settings" title="Settings" data-content="settingsParent">
+                        <li id="settings" title="Settings" data-content="settingsParent">
                             <i class="fa-solid fa-gear"></i>
                         </li>
                     </ul>
@@ -899,18 +876,11 @@
 
         <main>
             <div class="mainParent">
-                <div class="content">
-                    <div class="item">
-                        <i class="fa-solid fa-comments"></i>
-                    </div>
-                    <div class="item">
-                        <h3>Pick a person from left menu, <br> and start your conversation.</h3>
-                    </div>
-                </div>
+                
             </div>
         </main>
     </x-slot>
     <x-slot:scripts>
-        <script src="{{ asset('js/pages/script.js') }}"></script>
+        <script src="{{ asset('js/pages/room.js') }}"></script>
     </x-slot>
 </x-app>

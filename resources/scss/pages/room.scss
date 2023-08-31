@@ -1,0 +1,10 @@
+@import "./style.scss";
+
+main {
+    .mainParent {
+        background-color: var(--background-color-2);
+        height: 100vh;
+        width: 100%;
+        display: block;
+    }
+}

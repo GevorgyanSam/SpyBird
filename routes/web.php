@@ -26,6 +26,7 @@ Route::middleware('guest')->group(function () {
     Route::controller(HomeController::class)->group(function () {
 
         Route::get('/', 'index')->name('index');
+        Route::get('/room/{id}', 'room')->name('room');
 
     });
 

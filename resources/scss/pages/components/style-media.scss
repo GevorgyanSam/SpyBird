@@ -1,0 +1,246 @@
+@media only screen and (max-width: 1200px) {
+    body {
+        display: block;
+    }
+
+    nav {
+        .navParent {
+            display: none;
+        }
+
+        .mobileNavParent {
+            display: block;
+        }
+    }
+
+    aside {
+        .asideParent {
+            height: calc(100vh - 100px);
+            width: 950px;
+            margin: 0 auto;
+
+            .chatParent {
+                .chatItem {
+                    .chat {
+                        height: 100px;
+                    }
+                }
+            }
+
+            .notificationsParent {
+                .report {
+                    .request {
+                        gap: 10px;
+
+                        button {
+                            width: 100%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    main {
+        .mainParent {
+            display: none;
+        }
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    nav {
+        .mobileNavParent {
+            width: calc(100% - 40px);
+        }
+    }
+
+    aside {
+        .asideParent {
+            width: 100%;
+        }
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    nav {
+        .mobileNavParent {
+            height: 60px;
+            padding: 0 20px;
+
+            .item {
+                ul {
+                    li {
+                        padding: 20px;
+
+                        i {
+                            font-size: 20px;
+
+                            .count {
+                                height: 17px;
+                                width: 17px;
+                                top: -12px;
+                                font-size: 9px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    aside {
+        .asideParent {
+            height: calc(100vh - 80px);
+        }
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    aside {
+        .asideParent {
+            > div {
+                h3 {
+                    margin-top: 10px;
+                    margin-bottom: 25px;
+                    font-size: 20px;
+                }
+            }
+
+            .searchParent,
+            .friendsParent {
+                .personParent {
+                    .person {
+                        height: 75px;
+
+                        .avatar {
+                            height: 40px;
+                            width: 40px;
+                        }
+
+                        .personInfo {
+                            h4 {
+                                font-size: 14px;
+                            }
+
+                            .status {
+                                font-size: 12px;
+                            }
+                        }
+
+                        .personSettings {
+                            i {
+                                font-size: 14px;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .notificationsParent {
+                .report {
+                    .notice {
+                        padding: 15px;
+
+                        .avatar {
+                            height: 40px;
+                            width: 40px;
+                        }
+
+                        .content {
+                            .name {
+                                font-size: 14px;
+                            }
+
+                            .message {
+                                font-size: 13px;
+                            }
+
+                            .remove {
+                                i {
+                                    font-size: 12px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .settingsParent {
+                .profile {
+                    height: 75px;
+
+                    .avatar {
+                        height: 40px;
+                        width: 40px;
+                    }
+
+                    .profileInfo {
+                        h4 {
+                            font-size: 14px;
+                        }
+
+                        .email {
+                            font-size: 13px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 450px) {
+    nav {
+        .mobileNavParent {
+            width: calc(100% - 20px);
+            padding: 0 10px;
+
+            .item {
+                ul {
+                    li {
+                        padding: 10px;
+
+                        i {
+                            font-size: 17px;
+
+                            .count {
+                                height: 17px;
+                                width: 17px;
+                                top: -12px;
+                                font-size: 9px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    aside {
+        .asideParent {
+            > div {
+                padding: 10px;
+
+                .emptyParent {
+                    .content {
+                        .item {
+                            i {
+                                font-size: 18px;
+                            }
+
+                            h3 {
+                                font-size: 13px;
+                            }
+                        }
+                    }
+                }
+
+                h3 {
+                    margin: 10px 0 15px 10px;
+                    font-size: 19px;
+                }
+            }
+        }
+    }
+}

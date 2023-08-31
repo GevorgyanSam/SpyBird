@@ -51,12 +51,12 @@ changeColorMode();
 
 function changePages() {
     const pages = {
-        actions: $(".navParent li:not(.mode)"),
+        actions: $("nav li:not(.mode)"),
         content: $(".asideParent > div"),
     };
 
     const setActivePage = (pageId) => {
-        const btn = $(`#${pageId}`);
+        const btn = $(`.${pageId}`);
         pages.actions.removeClass("active");
         btn.addClass("active");
         const content = $(`.${btn.data("content")}`);
@@ -74,7 +74,7 @@ function changePages() {
     setActivePage(current);
 
     pages.actions.click(function () {
-        setActivePage($(this).attr("id"));
+        setActivePage($(this).data("name"));
     });
 }
 
