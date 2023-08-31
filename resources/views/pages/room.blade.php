@@ -19,18 +19,18 @@
                 </div>
                 <div class="item">
                     <ul>
-                        <li id="search" title="Search" data-content="searchParent">
+                        <li data-name="search" class="search" title="Search" data-content="searchParent">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </li>
-                        <li id="chat" title="Chat" data-content="chatParent">
+                        <li data-name="chat" class="chat" title="Chat" data-content="chatParent">
                             <i class="fa-solid fa-comments">
                                 <div class="count">2</div>
                             </i>
                         </li>
-                        <li id="friends" title="Friends" data-content="friendsParent">
+                        <li data-name="friends" class="friends" title="Friends" data-content="friendsParent">
                             <i class="fa-solid fa-user-group"></i>
                         </li>
-                        <li id="notifications" title="Notifications" data-content="notificationsParent">
+                        <li data-name="notifications" class="notifications" title="Notifications" data-content="notificationsParent">
                             <i class="fa-solid fa-bell"></i>
                         </li>
                     </ul>
@@ -40,7 +40,30 @@
                         <li class="mode" title="Color Mode">
                             <i class="fa-solid fa-moon"></i>
                         </li>
-                        <li id="settings" title="Settings" data-content="settingsParent">
+                        <li data-name="settings" class="settings" title="Settings" data-content="settingsParent">
+                            <i class="fa-solid fa-gear"></i>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mobileNavParent">
+                <div class="item">
+                    <ul>
+                        <li data-name="search" class="search" title="Search" data-content="searchParent">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                        <li data-name="friends" class="friends" title="Friends" data-content="friendsParent">
+                            <i class="fa-solid fa-user-group"></i>
+                        </li>
+                        <li data-name="chat" class="chat" title="Chat" data-content="chatParent">
+                            <i class="fa-solid fa-comments">
+                                <div class="count">2</div>
+                            </i>
+                        </li>
+                        <li data-name="notifications" class="notifications" title="Notifications" data-content="notificationsParent">
+                            <i class="fa-solid fa-bell"></i>
+                        </li>
+                        <li data-name="settings" class="settings" title="Settings" data-content="settingsParent">
                             <i class="fa-solid fa-gear"></i>
                         </li>
                     </ul>
