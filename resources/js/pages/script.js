@@ -101,9 +101,9 @@ switchSearch();
 
 function toggleDropdown() {
     const dropdown = {
-        menu: $(".person .dropdownMenu"),
-        btn: $(".person .personSettings"),
-        item: $(".person .dropdownItem"),
+        menu: $(".dropdownMenu"),
+        btn: $(".personSettings, .dropdownParent"),
+        item: $(".dropdownItem"),
     };
 
     function closeDropdownMenu() {
@@ -124,8 +124,10 @@ function toggleDropdown() {
         if (
             !target.hasClass("personSettings") &&
             !target.hasClass("fa-solid fa-ellipsis-vertical") &&
+            !target.hasClass("fa-solid fa-ellipsis") &&
             !target.hasClass("line") &&
-            !target.hasClass("dropdownMenu")
+            !target.hasClass("dropdownMenu") &&
+            !target.hasClass("dropdownParent")
         ) {
             closeDropdownMenu();
         }

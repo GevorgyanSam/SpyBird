@@ -899,7 +899,49 @@
 
         <main>
             <div class="mainParent">
-                
+                <div class="roomParent">
+                    <div class="header">
+                        <div class="profile">
+                            <div>
+                                <div class="avatar active">
+                                    <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/1.jpg">
+                                </div>
+                            </div>
+                            <div>
+                                <div class="info">
+                                    <h2>william pearson</h2>
+                                    <h3>online</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="settings">
+                            <div class="dropdownParent">
+                                <i class="fa-solid fa-ellipsis"></i>
+                                <div class="dropdownMenu">
+                                    <div class="dropdownItem">delete chat</div>
+                                    <div class="line"></div>
+                                    <div class="dropdownItem danger">block user</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="main">
+                        <div class="box">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <h3>no messages yet, <br> start the conversation!</h3>
+                        </div>
+                    </div>
+                    <div class="footer">
+                        <x-form>
+                            <div class="formParent">
+                                <input type="text" placeholder="type your message ...">
+                                <button type="submit">
+                                    <i class="fa-solid fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </x-form>
+                    </div>
+                </div>
             </div>
         </main>
     </x-slot>
