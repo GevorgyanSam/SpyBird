@@ -1,0 +1,99 @@
+@media only screen and (max-width: 1200px) {
+    nav {
+        .mobileNavParent {
+            display: none;
+        }
+    }
+
+    aside {
+        .asideParent {
+            display: none;
+        }
+    }
+
+    main {
+        .mainParent {
+            .roomParent {
+                max-width: 1000px;
+
+                .header {
+                    .back {
+                        display: flex;
+                    }
+
+                    .profile {
+                        justify-content: center;
+
+                        > div:first-child {
+                            display: none;
+                        }
+
+                        .info {
+                            align-items: center;
+
+                            h2 {
+                                text-align: center;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    main {
+        .mainParent {
+            .roomParent {
+                max-width: 800px;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 700px) {
+    main {
+        .mainParent {
+            .roomParent {
+                width: 100%;
+
+                .header {
+                    padding: 15px 0;
+
+                    .back {
+                        width: 10%;
+                    }
+
+                    .profile {
+                        width: 80%;
+                    }
+
+                    .settings {
+                        width: 10%;
+                    }
+                }
+
+                .footer {
+                    .formParent {
+                        height: 55px;
+
+                        button {
+                            width: 37px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 450px) {
+    main {
+        .mainParent {
+            .roomParent {
+                padding: 0 10px;
+            }
+        }
+    }
+}

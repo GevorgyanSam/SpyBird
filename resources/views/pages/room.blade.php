@@ -901,6 +901,13 @@
             <div class="mainParent">
                 <div class="roomParent">
                     <div class="header">
+                        <div class="back">
+                            <a href="{{ route('index') }}">
+                                <div class="iconParent">
+                                    <i class="fa-solid fa-angle-left"></i>
+                                </div>
+                            </a>
+                        </div>
                         <div class="profile">
                             <div>
                                 <div class="avatar active">

@@ -32,6 +32,26 @@ main {
                     width: 100%;
                 }
 
+                .back {
+                    display: none;
+                    align-items: center;
+                    justify-content: start;
+
+                    .iconParent {
+                        cursor: pointer;
+                        padding: 10px;
+
+                        &:hover i {
+                            color: var(--white);
+                        }
+
+                        i {
+                            color: var(--gray);
+                            transition: var(--transition);
+                        }
+                    }
+                }
+
                 .profile {
                     height: 100%;
                     display: flex;

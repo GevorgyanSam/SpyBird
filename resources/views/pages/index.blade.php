@@ -375,7 +375,7 @@
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </div>
                         </x-form>
-                        <a href="#">
+                        <a href="{{ route('room', ['id' => 12]) }}">
                             <div class="chatItem">
                                 <div class="chat">
                                     <div>
@@ -400,7 +400,7 @@
                                 </div>
                             </div>
                         </a>
-                        <a href="#">
+                        <a href="{{ route('room', ['id' => 12]) }}">
                             <div class="chatItem">
                                 <div class="chat">
                                     <div>
@@ -419,7 +419,7 @@
                                 </div>
                             </div>
                         </a>
-                        <a href="#">
+                        <a href="{{ route('room', ['id' => 12]) }}">
                             <div class="chatItem">
                                 <div class="chat">
                                     <div>
@@ -436,7 +436,7 @@
                                 </div>
                             </div>
                         </a>
-                        <a href="#">
+                        <a href="{{ route('room', ['id' => 12]) }}">
                             <div class="chatItem">
                                 <div class="chat">
                                     <div>
@@ -453,7 +453,7 @@
                                 </div>
                             </div>
                         </a>
-                        <a href="#">
+                        <a href="{{ route('room', ['id' => 12]) }}">
                             <div class="chatItem">
                                 <div class="chat">
                                     <div>
@@ -476,7 +476,7 @@
                                 </div>
                             </div>
                         </a>
-                        <a href="#">
+                        <a href="{{ route('room', ['id' => 12]) }}">
                             <div class="chatItem">
                                 <div class="chat">
                                     <div>
@@ -493,7 +493,7 @@
                                 </div>
                             </div>
                         </a>
-                        <a href="#">
+                        <a href="{{ route('room', ['id' => 12]) }}">
                             <div class="chatItem">
                                 <div class="chat">
                                     <div>
@@ -510,7 +510,7 @@
                                 </div>
                             </div>
                         </a>
-                        <a href="#">
+                        <a href="{{ route('room', ['id' => 12]) }}">
                             <div class="chatItem">
                                 <div class="chat">
                                     <div>
