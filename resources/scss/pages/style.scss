@@ -87,7 +87,7 @@ nav {
 
     .navParent {
         background-color: var(--background-color-2);
-        height: 100vh;
+        height: 100cqh;
         width: 100px;
         padding: 25px;
         display: flex;
@@ -162,7 +162,7 @@ nav {
 aside {
     .asideParent {
         background-color: var(--background-color-1);
-        height: 100vh;
+        height: 100cqh;
         width: 410px;
 
         > div {
@@ -1157,7 +1157,7 @@ main {
 
     .mainParent {
         background-color: var(--background-color-2);
-        height: 100vh;
+        height: 100cqh;
         width: 100%;
         display: grid;
         place-items: center;

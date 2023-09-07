@@ -175,3 +175,53 @@ function switchAccordion() {
 }
 
 switchAccordion();
+
+// ---- ------ -- --- --------- -- ---- ------ -----
+// This Method Is For Switching To Full Screen Mode.
+// ---- ------ -- --- --------- -- ---- ------ -----
+
+function switchFullScreen() {
+    const fullscreen = {
+        button: $(".settingsParent .fullScreen"),
+        h4: $(".settingsParent .fullScreen h4"),
+        icon: $(".settingsParent .fullScreen i"),
+    };
+
+    function enterFullscreen() {
+        if (document.documentElement.requestFullscreen) {
+            document.documentElement.requestFullscreen();
+        } else if (document.documentElement.mozRequestFullScreen) {
+            document.documentElement.mozRequestFullScreen();
+        } else if (document.documentElement.webkitRequestFullscreen) {
+            document.documentElement.webkitRequestFullscreen();
+        } else if (document.documentElement.msRequestFullscreen) {
+            document.documentElement.msRequestFullscreen();
+        }
+    }
+
+    function exitFullscreen() {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
+    }
+
+    fullscreen.button.click(function () {
+        if (document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement || document.msFullscreenElement) {
+            exitFullscreen();
+            fullscreen.h4.text('Switch to Full Screen Mode');
+            fullscreen.icon.removeClass('fa-compress').addClass('fa-expand');
+        } else {
+            enterFullscreen();
+            fullscreen.h4.text('Exit Full Screen Mode');
+            fullscreen.icon.removeClass('fa-expand').addClass('fa-compress');
+        }
+    });
+}
+
+switchFullScreen();

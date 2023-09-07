@@ -773,6 +773,22 @@
                             </div>
                         </div>
                         <div class="container">
+                            <h2>view</h2>
+                            <div class="box">
+                                <div class="static fullScreen">
+                                    <div class="visible">
+                                        <div>
+                                            <h3>full screen</h3>
+                                            <h4>switch to full screen mode</h4>
+                                        </div>
+                                        <div>
+                                            <i class="fa-solid fa-expand"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
                             <h2>security</h2>
                             <div class="box">
                                 <div class="static">
