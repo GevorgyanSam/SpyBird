@@ -949,9 +949,87 @@
                         </div>
                     </div>
                     <div class="main">
-                        <div class="box">
-                            <i class="fa-solid fa-paper-plane"></i>
-                            <h3>no messages yet, <br> start the conversation!</h3>
+                        <div class="emptyParent">
+                            <div class="box">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <h3>no messages yet, <br> start the conversation!</h3>
+                            </div>
+                        </div>
+                        <div class="chatArea">
+                            <div class="message-date">sep 9</div>
+                            <div class="message message-left">
+                                <div class="content">
+                                    Lorem ipsum dolor sit amet
+                                </div>
+                                <div class="content-date">16:00</div>
+                            </div>
+                            <div class="message message-left">
+                                <div class="content">
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta modi sit vero repellendus! Itaque, ipsum?
+                                </div>
+                                <div class="content-date">16:01</div>
+                            </div>
+                            <div class="message message-right">
+                                <div class="content">
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta modi sit vero repellendus! Itaque, ipsum?
+                                </div>
+                                <div class="content-date">16:05</div>
+                            </div>
+                            <div class="message message-right">
+                                <div class="content">
+                                    Lorem ipsum dolor sit amet
+                                </div>
+                                <div class="content-date">16:10</div>
+                            </div>
+                            <div class="message message-left">
+                                <div class="content">
+                                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consectetur fugit expedita illum ipsa doloremque veniam quis eaque, optio, itaque aperiam quaerat quas commodi ut distinctio adipisci esse ab voluptates accusamus.
+                                </div>
+                                <div class="content-date">16:15</div>
+                            </div>
+                            <div class="message message-right">
+                                <div class="content">
+                                    i trust you
+                                </div>
+                                <div class="content-date">16:20</div>
+                            </div>
+                            <div class="message message-left">
+                                <div class="content">
+                                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consectetur fugit expedita
+                                </div>
+                                <div class="content-date">16:25</div>
+                            </div>
+                            <div class="message message-left">
+                                <div class="content">
+                                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consectetur fugit expedita
+                                </div>
+                                <div class="content-date">16:25</div>
+                            </div>
+                            <div class="message message-right">
+                                <div class="content">
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores, unde!
+                                </div>
+                                <div class="content-date">16:20</div>
+                            </div>
+                            <div class="message message-right">
+                                <div class="content">
+                                    Lorem, ipsum.
+                                </div>
+                                <div class="content-date">16:20</div>
+                            </div>
+                            <div class="message-date">sep 10</div>
+                            <div class="message message-right">
+                                <div class="content">
+                                    hey how are you ?
+                                </div>
+                                <div class="content-date">12:20</div>
+                            </div>
+                            <div class="message message-left">
+                                <div class="content">
+                                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Placeat molestias aut ut? Non saepe ullam nesciunt deleniti perspiciatis quo corrupti.
+                                </div>
+                                <div class="content-date">16:24</div>
+                            </div>
                         </div>
                     </div>
                     <div class="footer">
