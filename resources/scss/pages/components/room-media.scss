@@ -81,6 +81,10 @@
                         button {
                             width: 37px;
                         }
+
+                        input {
+                            padding: 0 15px;
+                        }
                     }
                 }
             }
@@ -93,6 +97,35 @@
         .mainParent {
             .roomParent {
                 padding: 0 10px;
+
+                .main {
+                    .chatArea {
+                        .message-date {
+                            margin: 15px 0;
+                            font-size: 12px;
+                        }
+
+                        .message {
+                            .content {
+                                max-width: 80cqw;
+                                padding: 10px 15px;
+                                font-size: 14px;
+                            }
+
+                            .content-date {
+                                font-size: 9px;
+                            }
+                        }
+                    }
+                }
+
+                .footer {
+                    .formParent {
+                        input {
+                            font-size: 14px;
+                        }
+                    }
+                }
             }
         }
     }

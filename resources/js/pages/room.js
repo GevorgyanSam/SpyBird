@@ -23,7 +23,7 @@ function sendMessage() {
 
     form.button.click((e) => {
         e.preventDefault();
-        scrollToBottom();
+        scrollAndFocus();
     })
 }
 
