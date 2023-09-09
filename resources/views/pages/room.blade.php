@@ -1033,9 +1033,9 @@
                         </div>
                     </div>
                     <div class="footer">
-                        <x-form>
+                        <x-form method="post">
                             <div class="formParent">
-                                <input type="text" placeholder="type your message ...">
+                                <input type="text" placeholder="type your message ..." autocomplete="off">
                                 <button type="submit">
                                     <i class="fa-solid fa-paper-plane"></i>
                                 </button>
