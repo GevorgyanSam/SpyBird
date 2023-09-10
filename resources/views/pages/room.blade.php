@@ -997,19 +997,34 @@
                                 <div class="content">
                                     Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consectetur fugit expedita
                                 </div>
-                                <div class="content-date">16:25</div>
+                                <div class="content-date">
+                                    16:25
+                                    <div class="liked">
+                                        <i class="fa-solid fa-heart"></i>
+                                    </div>
+                                </div>
                             </div>
                             <div class="message message-left">
                                 <div class="content">
                                     Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consectetur fugit expedita
                                 </div>
-                                <div class="content-date">16:25</div>
+                                <div class="content-date">
+                                    16:25
+                                    <div class="liked">
+                                        <i class="fa-solid fa-heart"></i>
+                                    </div>
+                                </div>
                             </div>
                             <div class="message message-right">
                                 <div class="content">
                                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores, unde!
                                 </div>
-                                <div class="content-date">16:20</div>
+                                <div class="content-date">
+                                    <div class="liked">
+                                        <i class="fa-solid fa-heart"></i>
+                                    </div>
+                                    16:20
+                                </div>
                             </div>
                             <div class="message message-right">
                                 <div class="content">
