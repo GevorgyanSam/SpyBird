@@ -321,6 +321,7 @@ main {
                         &.message-left {
                             justify-content: start;
                             align-items: start;
+                            transform-origin: left;
 
                             .content {
                                 background-color: var(--background-color-1);
@@ -331,6 +332,7 @@ main {
                         &.message-right {
                             justify-content: end;
                             align-items: end;
+                            transform-origin: right;
 
                             .content {
                                 background-color: var(--primary-color);

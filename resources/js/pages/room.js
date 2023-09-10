@@ -28,3 +28,64 @@ function sendMessage() {
 }
 
 sendMessage();
+
+// ---- ------ -- --- -------- - -------
+// This Method Is For Deleting A Message
+// ---- ------ -- --- -------- - -------
+
+function removeMessage() {
+    const message = $(".chatArea .message-right");
+    message.each(function () {
+        let self = $(this);
+        self.children('.content').dblclick(function () {
+            removeMessageAnimation(self)
+        });
+    })
+}
+
+removeMessage();
+
+// ---- ------ -- -- --------- --- -------- - -------
+// This Method Is An Animation For Deleting A Message
+// ---- ------ -- -- --------- --- -------- - -------
+
+function removeMessageAnimation(item) {
+    item.css({
+        transform: 'scale(0)',
+    })
+    setTimeout(() => {
+        item.animate({
+            height: 0
+        }, 100)
+    }, 200);
+}
+
+// ---- ------ -- --- ------ - -------
+// This Method Is For Liking A Message
+// ---- ------ -- --- ------ - -------
+
+function likeMessage() {
+    const message = $(".chatArea .message-left");
+    message.each(function () {
+        let self = $(this);
+        self.children('.content').dblclick(function () {
+            let liked = self.children('.content-date').children('.liked');
+            if (!liked.hasClass('liked')) {
+                likeMessageAnimation(self);
+            }
+        });
+    })
+}
+
+likeMessage();
+
+// ---- ------ -- -- --------- -- ------ - -------
+// This Method Is An Animation Of Liking A Message
+// ---- ------ -- -- --------- -- ------ - -------
+
+function likeMessageAnimation(item) {
+    let liked = $("<div>");
+    liked.addClass("liked");
+    liked.html('<i class="fa-solid fa-heart"></i>')
+    item.children('.content-date').append(liked);
+}
