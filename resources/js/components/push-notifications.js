@@ -7,7 +7,7 @@ export function notify(
     body,
     action = false,
     tag = false,
-    icon = "assets/icon.png"
+    icon = "../assets/icon.png"
 ) {
     if (Notification.permission != "granted") {
         Notification.requestPermission();
@@ -15,7 +15,7 @@ export function notify(
         const notification = new Notification(title, {
             body: body,
             icon: icon,
-            badge: "assets/icon.png",
+            badge: "../assets/icon.png",
             tag: tag,
             requireInteraction: false,
         });

@@ -397,37 +397,6 @@ aside {
                         }
                     }
                 }
-
-                .group {
-                    border-top: 3px solid var(--background-color-1);
-                    padding: 15px 20px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    gap: 15px;
-
-                    .name {
-                        display: flex;
-                        align-items: center;
-                        gap: 15px;
-                        overflow: hidden;
-
-                        svg {
-                            width: 20px;
-                            height: 20px;
-                        }
-
-                        span {
-                            font-size: 15px;
-                            font-weight: 400;
-                            font-family: var(--font-family-1);
-                            color: var(--white);
-                            white-space: nowrap;
-                            text-overflow: ellipsis;
-                            overflow-x: hidden;
-                        }
-                    }
-                }
             }
         }
 

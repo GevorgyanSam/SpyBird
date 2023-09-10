@@ -2,6 +2,7 @@
 // Import Form Methods From Components.
 // ------ ---- ------- ---- -----------
 import { focus } from "../components/form-functions";
+import { notify } from "../components/push-notifications";
 
 // ---- ------ -- --- -------- --- ----- ----
 // This Method Is For Changing App Color Mode
@@ -225,3 +226,39 @@ function switchFullScreen() {
 }
 
 switchFullScreen();
+
+// ---- ------ -- --- --------- -- --- ------ -----
+// This Method Is For Switching To Spy Screen Mode.
+// ---- ------ -- --- --------- -- --- ------ -----
+
+function switchSpyMode() {
+    const checkbox = $(".settingsParent .spy input[type=checkbox]")
+    checkbox.change((e) => {
+        if (e.target.checked) {
+            notify("Switch To Spy Mode", "This Feature Is Under Construction");
+            setTimeout(() => {
+                e.target.checked = false;
+            }, 1000)
+        }
+    })
+}
+
+switchSpyMode();
+
+// ---- ------ -- --- --- ---- ------------
+// This Method Is For Two Step Verification
+// ---- ------ -- --- --- ---- ------------
+
+function switchTwoStepVerification() {
+    const checkbox = $(".settingsParent .verification input[type=checkbox]")
+    checkbox.change((e) => {
+        if (e.target.checked) {
+            notify("Two Step Verification", "This Feature Is Under Construction");
+            setTimeout(() => {
+                e.target.checked = false;
+            }, 1000)
+        }
+    })
+}
+
+switchTwoStepVerification();

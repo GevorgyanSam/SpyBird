@@ -375,7 +375,7 @@
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </div>
                         </x-form>
-                        <a href="{{ route('room', ['id' => 12]) }}">
+                        <a href="{{ route('room', ['id' => 1]) }}">
                             <div class="chatItem">
                                 <div class="chat">
                                     <div>
@@ -392,15 +392,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="group">
-                                    <div class="name">
-                                        <x-logo color="rgb(39, 135, 245)"></x-logo>
-                                        <span>WEB Dev Group</span>
-                                    </div>
-                                </div>
                             </div>
                         </a>
-                        <a href="{{ route('room', ['id' => 12]) }}">
+                        <a href="{{ route('room', ['id' => 1]) }}">
                             <div class="chatItem">
                                 <div class="chat">
                                     <div>
@@ -419,7 +413,7 @@
                                 </div>
                             </div>
                         </a>
-                        <a href="{{ route('room', ['id' => 12]) }}">
+                        <a href="{{ route('room', ['id' => 1]) }}">
                             <div class="chatItem">
                                 <div class="chat">
                                     <div>
@@ -436,7 +430,7 @@
                                 </div>
                             </div>
                         </a>
-                        <a href="{{ route('room', ['id' => 12]) }}">
+                        <a href="{{ route('room', ['id' => 1]) }}">
                             <div class="chatItem">
                                 <div class="chat">
                                     <div>
@@ -453,7 +447,7 @@
                                 </div>
                             </div>
                         </a>
-                        <a href="{{ route('room', ['id' => 12]) }}">
+                        <a href="{{ route('room', ['id' => 1]) }}">
                             <div class="chatItem">
                                 <div class="chat">
                                     <div>
@@ -468,15 +462,9 @@
                                         <div class="unread"></div>
                                     </div>
                                 </div>
-                                <div class="group">
-                                    <div class="name">
-                                        <x-logo color="rgb(39, 135, 245)"></x-logo>
-                                        <span>Another Group Name</span>
-                                    </div>
-                                </div>
                             </div>
                         </a>
-                        <a href="{{ route('room', ['id' => 12]) }}">
+                        <a href="{{ route('room', ['id' => 1]) }}">
                             <div class="chatItem">
                                 <div class="chat">
                                     <div>
@@ -493,7 +481,7 @@
                                 </div>
                             </div>
                         </a>
-                        <a href="{{ route('room', ['id' => 12]) }}">
+                        <a href="{{ route('room', ['id' => 1]) }}">
                             <div class="chatItem">
                                 <div class="chat">
                                     <div>
@@ -510,7 +498,7 @@
                                 </div>
                             </div>
                         </a>
-                        <a href="{{ route('room', ['id' => 12]) }}">
+                        <a href="{{ route('room', ['id' => 1]) }}">
                             <div class="chatItem">
                                 <div class="chat">
                                     <div>
@@ -523,12 +511,6 @@
                                         <div class="time">12:45</div>
                                         <div class="message">I'm going to meet my friend of mine at the departments stores as soon as possible.</div>
                                         <div class="unread"></div>
-                                    </div>
-                                </div>
-                                <div class="group">
-                                    <div class="name">
-                                        <x-logo color="rgb(39, 135, 245)"></x-logo>
-                                        <span>Another Group Name</span>
                                     </div>
                                 </div>
                             </div>
@@ -720,7 +702,7 @@
                         <div class="container">
                             <h2>account</h2>
                             <div class="box">
-                                <div class="static">
+                                <div class="static spy">
                                     <label for="spy">
                                         <div class="visible">
                                             <div>
@@ -802,7 +784,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="static">
+                                <div class="static verification">
                                     <label for="verification">
                                         <div class="visible">
                                             <div>

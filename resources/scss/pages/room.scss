@@ -297,10 +297,10 @@ main {
 
                             .liked {
                                 transform: scale(0);
-                                animation: show var(--animation-duration)
+                                animation: showLiked var(--animation-duration)
                                     forwards;
 
-                                @keyframes show {
+                                @keyframes showLiked {
                                     0% {
                                         transform: scale(0);
                                     }
