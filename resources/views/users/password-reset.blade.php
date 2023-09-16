@@ -22,7 +22,7 @@
                             <x-form method="post">
                                 <div class="formItem">
                                     <label for="email">Email</label>
-                                    <input type="email" id="email" autocomplete="off" autofocus>
+                                    <input type="email" id="email" autocomplete="off">
                                 </div>
                                 <div class="formItem">
                                     <button type="submit">send reset link</button>

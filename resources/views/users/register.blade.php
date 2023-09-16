@@ -22,7 +22,7 @@
                             <x-form method="post">
                                 <div class="formItem">
                                     <label for="name">Name</label>
-                                    <input type="text" id="name" autocomplete="off" autofocus>
+                                    <input type="text" id="name" autocomplete="off">
                                 </div>
                                 <div class="formItem">
                                     <label for="email">Email</label>

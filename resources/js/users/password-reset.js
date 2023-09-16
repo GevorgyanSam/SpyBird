@@ -11,3 +11,4 @@ const form = {
 };
 
 focus(form.email.input, form.email.label);
+form.email.input.focus();

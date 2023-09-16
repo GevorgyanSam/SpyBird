@@ -13,3 +13,4 @@ const form = {
 
 focus(form.password.input, form.password.label);
 eye(form.password.input, form.password.icon);
+form.password.input.focus();

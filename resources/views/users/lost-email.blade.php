@@ -26,7 +26,7 @@
                             <x-form method="post">
                                 <div class="formItem">
                                     <label for="code">backup code</label>
-                                    <input type="number" id="code" autocomplete="off" autofocus>
+                                    <input type="number" id="code" autocomplete="off">
                                 </div>
                                 <div class="formItem">
                                     <button type="submit">verify</button>

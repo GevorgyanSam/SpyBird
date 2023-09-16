@@ -18,3 +18,4 @@ const form = {
 focus(form.email.input, form.email.label);
 focus(form.password.input, form.password.label);
 eye(form.password.input, form.password.icon);
+form.email.input.focus();

@@ -26,7 +26,7 @@
                             <x-form method="post">
                                 <div class="formItem">
                                     <label for="password">Password</label>
-                                    <input type="password" id="password" autocomplete="off" autofocus>
+                                    <input type="password" id="password" autocomplete="off">
                                     <i class="fa-solid fa-eye-slash" id="eye"></i>
                                 </div>
                                 <div class="formItem">

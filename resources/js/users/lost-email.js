@@ -11,3 +11,4 @@ const form = {
 };
 
 focus(form.code.input, form.code.label);
+form.code.input.focus();

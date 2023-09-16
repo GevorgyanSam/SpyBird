@@ -20,3 +20,4 @@ focus(form.password.input, form.password.label);
 eye(form.password.input, form.password.icon);
 focus(form.password_confirmation.input, form.password_confirmation.label);
 eye(form.password_confirmation.input, form.password_confirmation.icon);
+form.password.input.focus();
