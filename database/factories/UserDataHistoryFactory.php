@@ -10,7 +10,7 @@ class UserDataHistoryFactory extends Factory
     {
         return [
             'user_id' => fake()->numberBetween(1, 100),
-            'type' => 'name_change',
+            'type' => fake()->randomElement(['name_change', 'avatar_change', 'password_change']),
             'from' => fake()->name(),
             'to' => fake()->name(),
             'created_at' => fake()->dateTime()

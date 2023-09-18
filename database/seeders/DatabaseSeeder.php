@@ -10,6 +10,11 @@ use Database\Seeders\UserDataHistorySeeder;
 use Database\Seeders\MessageSeeder;
 use Database\Seeders\RoomSeeder;
 use Database\Seeders\RoomMemeberSeeder;
+use Database\Seeders\TwoFactorAuthenticationSeeder;
+use Database\Seeders\BackupCodeSeeder;
+use Database\Seeders\FriendSeeder;
+use Database\Seeders\NotificationSeeder;
+use Database\Seeders\BlockedUserSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,5 +27,10 @@ class DatabaseSeeder extends Seeder
         $this->call(MessageSeeder::class);
         $this->call(RoomSeeder::class);
         $this->call(RoomMemeberSeeder::class);
+        $this->call(TwoFactorAuthenticationSeeder::class);
+        $this->call(BackupCodeSeeder::class);
+        $this->call(FriendSeeder::class);
+        $this->call(NotificationSeeder::class);
+        $this->call(BlockedUserSeeder::class);
     }
 }
