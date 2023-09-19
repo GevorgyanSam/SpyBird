@@ -15,13 +15,28 @@ Route::middleware('guest')->group(function () {
 
         Route::get('/login', 'login')->name('login');
         Route::get('/register', 'register')->name('register');
+        Route::post('/register', 'registerAuth')->name('register-auth');
         Route::get('/password-reset', 'reset')->name('reset');
-        Route::get('/lockscreen', 'lockscreen')->name('lockscreen');
         Route::get('/password-reset/{token}', 'token')->name('token');
         Route::get('/two-factor-authentication', 'twoFactor')->name('two-factor');
         Route::get('/lost-email-authentication', 'lostEmail')->name('lost-email');
 
     });
+
+    Route::controller(PrivacyController::class)->name('privacy.')->group(function () {
+
+        Route::get('/privacy-policy', 'policy')->name('policy');
+        Route::get('/terms-of-service', 'terms')->name('terms');
+
+    });
+
+});
+
+// ----- ------ --- --- ------------- -----
+// These Routes Are For Authenticated Users
+// ----- ------ --- --- ------------- -----
+
+Route::middleware('auth')->group(function () {
 
     Route::controller(HomeController::class)->group(function () {
 
@@ -30,15 +45,10 @@ Route::middleware('guest')->group(function () {
 
     });
 
-});
+    Route::controller(UserController::class)->name('user.')->group(function () {
 
-// ----- ------ --- --- ----- --- ------- ------
-// These Routes Are For Terms And Privacy Policy
-// ----- ------ --- --- ----- --- ------- ------
+        Route::get('/lockscreen', 'lockscreen')->name('lockscreen');
 
-Route::controller(PrivacyController::class)->name('privacy.')->group(function () {
-
-    Route::get('/privacy-policy', 'policy')->name('policy');
-    Route::get('/terms-of-service', 'terms')->name('terms');
+    });
 
 });

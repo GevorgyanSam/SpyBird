@@ -23,4 +23,7 @@ focus(form.name.input, form.name.label);
 focus(form.email.input, form.email.label);
 focus(form.password.input, form.password.label);
 eye(form.password.input, form.password.icon);
-form.name.input.focus();
+
+if (form.name.input.val().length == 0) {
+    form.name.input.focus();
+}

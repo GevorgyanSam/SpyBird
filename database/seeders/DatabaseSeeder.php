@@ -15,6 +15,7 @@ use Database\Seeders\BackupCodeSeeder;
 use Database\Seeders\FriendSeeder;
 use Database\Seeders\NotificationSeeder;
 use Database\Seeders\BlockedUserSeeder;
+use Database\Seeders\PersonalAccessTokenSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -32,5 +33,6 @@ class DatabaseSeeder extends Seeder
         $this->call(FriendSeeder::class);
         $this->call(NotificationSeeder::class);
         $this->call(BlockedUserSeeder::class);
+        $this->call(PersonalAccessTokenSeeder::class);
     }
 }

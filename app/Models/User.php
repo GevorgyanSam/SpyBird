@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -17,7 +17,7 @@ class User extends Authenticatable
     protected $keyType = 'int';
     protected $guarded = [];
     protected $attributes = [
-        'status' => 1,
+        'status' => 0,
         'two_factor_authentication' => 0
     ];
     protected $casts = [
@@ -31,9 +31,22 @@ class User extends Authenticatable
         'password',
         'status',
         'two_factor_authentication',
+        'email_verified_at',
         'created_at',
         'updated_at'
     ];
     public $incrementing = true;
     public $timestamps = false;
+    public function setNameAttribute($value)
+    {
+        return $this->attributes['name'] = strtolower($value);
+    }
+    public function setEmailAttribute($value)
+    {
+        return $this->attributes['email'] = strtolower($value);
+    }
+    public function setPasswordAttribute($value)
+    {
+        return $this->attributes['password'] = Hash::make($value);
+    }
 }

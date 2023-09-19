@@ -3,6 +3,11 @@
 // ---- ------ -- --- ------ ------ -- ----- -----
 
 export function focus(input, label) {
+
+    if (input.val() != 0) {
+        label.addClass("focus");
+    }
+
     input.focus(function () {
         if (input.val() == 0) {
             label.addClass("focus");
