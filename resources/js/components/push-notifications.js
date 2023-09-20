@@ -2,7 +2,7 @@
 // This Is A Method For Push Notifications
 // ---- -- - ------ --- ---- -------------
 
-export function notify(
+function notify(
     title,
     body,
     action = false,
@@ -27,3 +27,5 @@ export function notify(
         }
     }
 }
+
+export default notify;

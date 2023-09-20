@@ -6,6 +6,8 @@ export function focus(input, label) {
 
     if (input.val() != 0) {
         label.addClass("focus");
+    } else {
+        label.removeClass("focus");
     }
 
     input.focus(function () {

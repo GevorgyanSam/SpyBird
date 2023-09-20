@@ -34,17 +34,13 @@ class UserController extends Controller
     {
         $rules = [
             'name' => ['bail', 'required'],
-            'email' => ['bail', 'required', 'email:rfc,dns', 'unique:users'],
+            'email' => ['bail', 'required', 'email', 'unique:users'],
             'password' => ['bail', 'required', 'min:8']
         ];
         $messages = [
             'required' => 'enter :attribute',
             'min' => 'at least :min characters',
             'unique' => ':attribute already exists',
-            'email' => [
-                'rfc' => 'enter valid :attribute address',
-                'dns' => 'enter valid :attribute address'
-            ]
         ];
         $request->validate($rules, $messages);
         $newUser = User::create([
@@ -61,7 +57,7 @@ class UserController extends Controller
             'token' => $newToken->token
         ];
         Mail::to($newUser->email)->send(new VerifyEmail($emailData));
-        return redirect()->route('user.login');
+        return response()->json(['success' => true], 200);
     }
 
     // ---- ------ -- --- -------- ----- ---- ----
