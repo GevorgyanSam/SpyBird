@@ -57,6 +57,7 @@ function register() {
                         label.text(label.attr("for"));
                         focus(input, label);
                     });
+                    passwordLabel.nextAll("input + i").css("display", "none");
                     nameLabel.siblings("input").focus();
                     notify('Registration Success', 'Check Your Email To Confirm Your Email');
                 }
