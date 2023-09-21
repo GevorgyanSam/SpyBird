@@ -26,6 +26,7 @@ class RouteServiceProvider extends ServiceProvider
     {
 
         Route::pattern('id', '[0-9]+');
+        Route::pattern('token', '[A-Za-z0-9]+');
 
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
