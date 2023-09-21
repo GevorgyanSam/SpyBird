@@ -65,13 +65,13 @@
                         <h2>5. Data Security</h2>
                         <h4>We take reasonable measures to protect your personal information from unauthorized access, loss, misuse, or alteration. However, no method of transmission over the Internet or electronic storage is completely secure.</h4>
                         <h2>6. Your Choices</h2>
-                        <h4>You can access, update, or delete your personal information through the App's settings. If you have any questions or requests, please contact us at <a href="#">{{ env('MAIL_FROM_ADDRESS') }}</a></h4>
+                        <h4>You can access, update, or delete your personal information through the App's settings. If you have any questions or requests, please contact us at <a href="mailto:{{ env('MAIL_FROM_ADDRESS') }}">{{ env('MAIL_FROM_ADDRESS') }}</a></h4>
                         <h2>7. Children's Privacy</h2>
                         <h4>The App is not intended for children under the age of 18. We do not knowingly collect personal information from children under 18. If you are a parent or guardian and believe that your child has provided us with personal information, please contact us.</h4>
                         <h2>8. Changes to this Privacy Policy</h2>
                         <h4>We may update this Privacy Policy from time to time. The updated version will be posted on this page, and the effective date will be revised accordingly.</h4>
                         <h2>9. Contact Us</h2>
-                        <h4>If you have any questions or concerns about this Privacy Policy or our privacy practices, please contact us at <a href="#">{{ env('MAIL_FROM_ADDRESS') }}</a></h4>
+                        <h4>If you have any questions or concerns about this Privacy Policy or our privacy practices, please contact us at <a href="mailto:{{ env('MAIL_FROM_ADDRESS') }}">{{ env('MAIL_FROM_ADDRESS') }}</a></h4>
                     </div>
                 </div>
             </div>

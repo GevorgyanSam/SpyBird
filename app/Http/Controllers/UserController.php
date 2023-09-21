@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use App\Mail\VerifyEmail;
+use App\Models\Guest;
 use App\Models\User;
 use App\Models\PersonalAccessToken;
 
@@ -16,8 +17,12 @@ class UserController extends Controller
     // This Method Is For Login Page View
     // ---- ------ -- --- ----- ---- ----
 
-    public function login()
+    public function login(Request $request)
     {
+        Guest::create([
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent()
+        ]);
         return view('users.login');
     }
 

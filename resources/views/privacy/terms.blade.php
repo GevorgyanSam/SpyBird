@@ -47,7 +47,7 @@
                         <h3>Modifications to the App and Terms of Service:</h3>
                         <h4>We reserve the right to modify, suspend, or discontinue the App or any part thereof at any time without notice. We may also revise these Terms of Service from time to time. By continuing to use the App after any such changes, you accept and agree to be bound by the updated Terms of Service.</h4>
                         <h2>Contact Us:</h2>
-                        <h4>If you have any questions or concerns about these Terms of Service or the App, please contact us at <a href="#">{{ env('MAIL_FROM_ADDRESS') }}</a></h4>
+                        <h4>If you have any questions or concerns about these Terms of Service or the App, please contact us at <a href="mailto:{{ env('MAIL_FROM_ADDRESS') }}">{{ env('MAIL_FROM_ADDRESS') }}</a></h4>
                     </div>
                 </div>
             </div>
