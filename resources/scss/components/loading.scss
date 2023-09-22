@@ -1,5 +1,5 @@
 section#loading {
-    position: absolute;
+    position: fixed;
     height: 100%;
     width: 100%;
     background-color: var(--loading-background);
@@ -7,7 +7,7 @@ section#loading {
     display: none;
     place-items: center;
     opacity: 0;
-    animation: showLoader .2s linear forwards;
+    animation: showLoader 0.2s linear forwards;
 
     @keyframes showLoader {
         0% {
@@ -19,33 +19,60 @@ section#loading {
     }
 
     .loader {
-        top: -40px;
-        background-color: var(--primary-color);
+        margin-top: -40px;
+        border-radius: 50%;
         height: 80px;
         width: 80px;
-        border-radius: 50%;
         position: relative;
-        animation: loading 1s forwards infinite linear;
+        animation: loading 1.5s forwards linear infinite;
 
         @keyframes loading {
             0% {
                 transform: rotate(0deg);
+                height: 80px;
+                width: 80px;
+            }
+            50% {
+                height: 30px;
+                width: 30px;
             }
             100% {
                 transform: rotate(360deg);
+                height: 80px;
+                width: 80px;
             }
         }
 
-        &::before {
-            content: "";
-            border-radius: 50%;
+        .item {
             position: absolute;
-            background-color: var(--background-color-1);
-            width: 85px;
-            height: 75px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            height: 10px;
+            width: 10px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+
+            &:nth-child(1) {
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            &:nth-child(2) {
+                top: 50%;
+                right: 0;
+                transform: translateY(-50%);
+            }
+
+            &:nth-child(3) {
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            &:nth-child(4) {
+                top: 50%;
+                left: 0;
+                transform: translateY(-50%);
+            }
         }
     }
 }
