@@ -59,7 +59,6 @@ function register() {
                     });
                     passwordLabel.nextAll("input + i").css("display", "none");
                     nameLabel.siblings("input").focus();
-                    location.href = '/';
                     notify('Registration Success', 'Check Your Email To Confirm Your Email');
                 }
             },

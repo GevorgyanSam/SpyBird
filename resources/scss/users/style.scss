@@ -2,10 +2,6 @@
 // Import Global Style Rules, Variables, Icons, Fonts.
 // ------ ------ ----- ------ ---------- ------ ------
 @import "../components/global.scss";
-// ------ ------ ------- -------
-// Import Global Loading Styles.
-// ------ ------ ------- -------
-@import "../components/loading.scss";
 
 body {
     background: var(--background-color-1);

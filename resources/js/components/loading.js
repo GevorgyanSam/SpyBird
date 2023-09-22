@@ -1,3 +1,7 @@
+// ---- -- - ------ --- ------- ---------
+// This Is A Method For Loading Animation
+// ---- -- - ------ --- ------- ---------
+
 function loading(status) {
 
     const loading = $("section#loading");

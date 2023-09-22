@@ -1,0 +1,119 @@
+section#push-notification {
+    .notification {
+        border-radius: var(--radius);
+        background-color: var(--background-color-1);
+        border-bottom: 1px solid var(--primary-color);
+        padding: 15px;
+        position: fixed;
+        top: -85px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 99999999;
+        display: none;
+        align-items: center;
+        justify-content: start;
+        animation: notifyShow var(--animation-duration) forwards ease,
+            notifyHide var(--animation-duration) forwards ease 5s;
+
+        @keyframes notifyShow {
+            0% {
+                top: -85px;
+            }
+            100% {
+                top: 15px;
+            }
+        }
+
+        @keyframes notifyHide {
+            0% {
+                top: 15px;
+            }
+            100% {
+                top: -85px;
+            }
+        }
+
+        div:first-child {
+            padding-right: 10px;
+            border-right: 1px solid var(--primary-color);
+        }
+
+        div:last-child {
+            padding-left: 20px;
+        }
+
+        svg {
+            height: 35px;
+        }
+
+        h3,
+        h4 {
+            font-weight: 400;
+            text-transform: capitalize;
+            font-family: var(--font-family-1);
+            white-space: nowrap;
+        }
+
+        h3 {
+            color: var(--white);
+            font-size: 16px;
+        }
+
+        h4 {
+            color: var(--gray);
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    section#push-notification {
+        .notification {
+            div:first-child {
+                display: none !important;
+            }
+
+            div:last-child {
+                padding: 0 !important;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 380px) {
+    section#push-notification {
+        .notification {
+            width: 100% !important;
+
+            div {
+                width: 100% !important;
+            }
+
+            h3,
+            h4 {
+                width: 100% !important;
+                text-overflow: ellipsis !important;
+                overflow: hidden !important;
+            }
+
+            @keyframes notifyShow {
+                0% {
+                    top: -85px;
+                }
+                100% {
+                    top: 5px;
+                }
+            }
+
+            @keyframes notifyHide {
+                0% {
+                    top: 5px;
+                }
+                100% {
+                    top: -85px;
+                }
+            }
+        }
+    }
+}
