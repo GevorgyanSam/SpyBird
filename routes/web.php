@@ -16,17 +16,11 @@ Route::middleware('guest')->group(function () {
         Route::get('/login', 'login')->name('login');
         Route::get('/register', 'register')->name('register');
         Route::post('/register', 'registerAuth')->name('register-auth');
+        Route::get('/register/verify-email/{token}', 'verifyEmail')->name('verify-email');
         Route::get('/password-reset', 'reset')->name('reset');
         Route::get('/password-reset/{token}', 'token')->name('token');
         Route::get('/two-factor-authentication', 'twoFactor')->name('two-factor');
         Route::get('/lost-email-authentication', 'lostEmail')->name('lost-email');
-
-    });
-
-    Route::controller(PrivacyController::class)->name('privacy.')->group(function () {
-
-        Route::get('/privacy-policy', 'policy')->name('policy');
-        Route::get('/terms-of-service', 'terms')->name('terms');
 
     });
 
@@ -50,5 +44,16 @@ Route::middleware('auth')->group(function () {
         Route::get('/lockscreen', 'lockscreen')->name('lockscreen');
 
     });
+
+});
+
+// ----- ------ --- --- --- -----
+// These Routes Are For All Users
+// ----- ------ --- --- --- -----
+
+Route::controller(PrivacyController::class)->name('privacy.')->group(function () {
+
+    Route::get('/privacy-policy', 'policy')->name('policy');
+    Route::get('/terms-of-service', 'terms')->name('terms');
 
 });

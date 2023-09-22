@@ -65,6 +65,24 @@ class UserController extends Controller
         return response()->json(['success' => true], 200);
     }
 
+    public function verifyEmail(string $token)
+    {
+        $verifiable = PersonalAccessToken::where(['token' => $token, 'status' => 1])->first();
+        if (!empty($verifiable)) {
+            PersonalAccessToken::where(['token' => $token])->update([
+                'status' => 0,
+                'updated_at' => now()
+            ]);
+            User::where(['id' => $verifiable->user_id])->update([
+                'status' => 1,
+                'email_verified_at' => now()
+            ]);
+            return redirect()->route('user.login');
+        } else {
+            abort(404);
+        }
+    }
+
     // ---- ------ -- --- -------- ----- ---- ----
     // This Method Is For Password Reset Page View
     // ---- ------ -- --- -------- ----- ---- ----

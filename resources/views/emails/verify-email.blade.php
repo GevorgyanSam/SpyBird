@@ -5,7 +5,7 @@
     <h4>Just one more step! Click the button below to verify your email:</h4>
     <div class="formParent">
         <div class="formItem">
-            <a href="{{ $Data['token'] }}">
+            <a href="{{ route('user.verify-email', ['token' => $Data['token']]) }}">
                 <button>Verify Email</button>
             </a>
         </div>

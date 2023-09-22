@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -37,6 +38,10 @@ class User extends Authenticatable
     ];
     public $incrementing = true;
     public $timestamps = false;
+    public function getNameAttribute($value)
+    {
+        return Str::title($value);
+    }
     public function setNameAttribute($value)
     {
         return $this->attributes['name'] = strtolower($value);
