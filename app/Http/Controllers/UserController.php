@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use App\Mail\RegistrationSuccess;
 use App\Mail\VerifyEmail;
 use App\Models\Guest;
 use App\Models\User;
@@ -77,6 +78,8 @@ class UserController extends Controller
                 'status' => 1,
                 'email_verified_at' => now()
             ]);
+            $user = User::find($verifiable->user_id);
+            Mail::to($user->email)->send(new RegistrationSuccess(['name' => $user->name]));
             return redirect()->route('user.login');
         } else {
             abort(404);
