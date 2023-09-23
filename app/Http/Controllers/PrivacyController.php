@@ -9,7 +9,7 @@ class PrivacyController extends Controller
     // This Method Is For Privacy Policy Page View
     // ---- ------ -- --- ------- ------ ---- ----
 
-    public function policy ()
+    public function policy()
     {
         return view('privacy.policy');
     }
@@ -18,7 +18,7 @@ class PrivacyController extends Controller
     // This Method Is For Terms Of Service Page View
     // ---- ------ -- --- ----- -- ------- ---- ----
 
-    public function terms ()
+    public function terms()
     {
         return view('privacy.terms');
     }

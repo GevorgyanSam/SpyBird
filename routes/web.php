@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/', 'index')->name('index');
         Route::get('/room/{id}', 'room')->name('room');
+        Route::post('/logout', 'logout')->name('logout');
 
     });
 

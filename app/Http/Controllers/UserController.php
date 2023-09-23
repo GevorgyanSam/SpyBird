@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use App\Mail\RegistrationSuccess;
 use App\Mail\VerifyEmail;
 use App\Models\Guest;
 use App\Models\User;
+use App\Models\LoginInfo;
 use App\Models\PersonalAccessToken;
 
 class UserController extends Controller
@@ -66,7 +68,7 @@ class UserController extends Controller
         return response()->json(['success' => true], 200);
     }
 
-    public function verifyEmail(string $token)
+    public function verifyEmail(string $token, Request $request)
     {
         $verifiable = PersonalAccessToken::where(['token' => $token, 'status' => 1])->first();
         if (!empty($verifiable)) {
@@ -80,7 +82,13 @@ class UserController extends Controller
             ]);
             $user = User::find($verifiable->user_id);
             Mail::to($user->email)->send(new RegistrationSuccess(['name' => $user->name]));
-            return redirect()->route('user.login');
+            Auth::login($user);
+            LoginInfo::create([
+                'user_id' => $user->id,
+                'ip' => $request->ip(),
+                'user_agent' => $request->userAgent()
+            ]);
+            return redirect()->route('index');
         } else {
             abort(404);
         }

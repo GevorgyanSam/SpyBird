@@ -695,9 +695,11 @@
                                 <h4>william pearson</h4>
                                 <div class="email">william@gmail.com</div>
                             </div>
-                            <div class="logout" title="Logout">
-                                <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                            </div>
+                            <x-form method="post" action="{{ route('logout') }}">
+                                <button class="logout" title="Logout">
+                                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                                </button>
+                            </x-form>
                         </div>
                         <div class="container">
                             <h2>account</h2>
