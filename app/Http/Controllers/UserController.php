@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use App\Mail\RegistrationSuccess;
@@ -24,9 +25,52 @@ class UserController extends Controller
     {
         Guest::create([
             'ip' => $request->ip(),
-            'user_agent' => $request->userAgent()
+            'user_agent' => $request->userAgent(),
+            'created_at' => now()
         ]);
         return view('users.login');
+    }
+
+    // ---- ------ -- --- ----- -----
+    // This Method Is For Login Logic
+    // ---- ------ -- --- ----- -----
+
+    public function loginAuth(Request $request)
+    {
+        $rules = [
+            'email' => ['bail', 'required', 'email:rfc,dns,filter'],
+            'password' => ['bail', 'required', 'min:8']
+        ];
+        $messages = [
+            'email' => [
+                'enter valid :attribute address'
+            ],
+            'required' => 'enter :attribute',
+            'min' => 'at least :min characters',
+        ];
+        $request->validate($rules, $messages);
+        $credentials = User::where(['email' => $request->input('email'), 'status' => 1])->first();
+        if (empty($credentials)) {
+            return response()->json(['errors' => ['email' => ['Undefined Account']]], 422);
+        } else {
+            $check = Hash::check($request->input('password'), $credentials->password);
+            if (!$check) {
+                return response()->json(['errors' => ['password' => ['Wrong Password']]], 422);
+            }
+        }
+        LoginInfo::where(['user_id' => $credentials->id, 'status' => 1])->update([
+            'status' => 0,
+            'updated_at' => now()
+        ]);
+        Auth::login($credentials);
+        LoginInfo::create([
+            'user_id' => Auth::user()->id,
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+            'status' => 1,
+            'created_at' => now()
+        ]);
+        return response()->json(['success' => true], 200);
     }
 
     // ---- ------ -- --- ------------ ---- ----
@@ -38,14 +82,21 @@ class UserController extends Controller
         return view('users.register');
     }
 
+    // ---- ------ -- --- ------------ -----
+    // This Method Is For Registration Logic
+    // ---- ------ -- --- ------------ -----
+
     public function registerAuth(Request $request)
     {
         $rules = [
             'name' => ['bail', 'required'],
-            'email' => ['bail', 'required', 'email', 'unique:users'],
+            'email' => ['bail', 'required', 'email:rfc,dns,filter', 'unique:users'],
             'password' => ['bail', 'required', 'min:8']
         ];
         $messages = [
+            'email' => [
+                'enter valid :attribute address'
+            ],
             'required' => 'enter :attribute',
             'min' => 'at least :min characters',
             'unique' => ':attribute already exists',
@@ -54,11 +105,16 @@ class UserController extends Controller
         $newUser = User::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
-            'password' => $request->input('password')
+            'password' => $request->input('password'),
+            'status' => 0,
+            'two_factor_authentication' => 0,
+            'created_at' => now()
         ]);
         $newToken = PersonalAccessToken::create([
             'user_id' => $newUser->id,
-            'token' => Str::random(60)
+            'token' => Str::random(60),
+            'status' => 1,
+            'created_at' => now()
         ]);
         $emailData = [
             'name' => $newUser->name,
@@ -67,6 +123,10 @@ class UserController extends Controller
         Mail::to($newUser->email)->send(new VerifyEmail($emailData));
         return response()->json(['success' => true], 200);
     }
+
+    // ---- ------ -- --- --------- ----- ----- ------------
+    // This Method Is For Verifying Email After Registration
+    // ---- ------ -- --- --------- ----- ----- ------------
 
     public function verifyEmail(string $token, Request $request)
     {
@@ -86,7 +146,9 @@ class UserController extends Controller
             LoginInfo::create([
                 'user_id' => $user->id,
                 'ip' => $request->ip(),
-                'user_agent' => $request->userAgent()
+                'user_agent' => $request->userAgent(),
+                'status' => 1,
+                'created_at' => now()
             ]);
             return redirect()->route('index');
         } else {

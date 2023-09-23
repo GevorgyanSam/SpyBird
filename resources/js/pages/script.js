@@ -2,7 +2,7 @@
 // Import Form Methods From Components.
 // ------ ---- ------- ---- -----------
 import { focus } from "../components/form-functions";
-import { notify } from "../components/push-notifications";
+import notify from "../components/push-notifications";
 
 // ---- ------ -- --- -------- --- ----- ----
 // This Method Is For Changing App Color Mode

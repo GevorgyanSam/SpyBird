@@ -31,9 +31,9 @@ class HomeController extends Controller
     // This Method Is For Logout
     // ---- ------ -- --- ------
 
-    public function logout()
+    public function logout(Request $request)
     {
-        LoginInfo::where(['user_id' => Auth::user()->id])->update([
+        LoginInfo::where(['user_id' => Auth::user()->id, 'status' => 1, 'ip' => $request->ip(), 'user_agent' => $request->userAgent()])->update([
             'status' => 0,
             'updated_at' => now()
         ]);

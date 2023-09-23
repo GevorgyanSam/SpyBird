@@ -33,6 +33,10 @@ focus(form.password.input, form.password.label);
 eye(form.password.input, form.password.icon);
 form.name.input.focus();
 
+// ---- ------ -- --- ---- ------------
+// This Method Is For User Registration
+// ---- ------ -- --- ---- ------------
+
 function register() {
     const form = $("#form");
     const nameLabel = form.find("label[for=name]");

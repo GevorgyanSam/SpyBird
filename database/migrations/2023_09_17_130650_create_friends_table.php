@@ -13,8 +13,8 @@ return new class extends Migration {
             $table->foreignId('user_id');
             $table->foreignId('friend_user_id');
             $table->enum('verified', ['pending', 'accepted', 'rejected']);
-            $table->integer('status')->default(1);
-            $table->timestamp('created_at')->default(now());
+            $table->integer('status');
+            $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();
         });
     }

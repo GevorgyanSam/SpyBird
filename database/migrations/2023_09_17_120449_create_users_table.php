@@ -14,10 +14,10 @@ return new class extends Migration {
             $table->string('email', 255)->unique();
             $table->text('avatar')->nullable();
             $table->text('password');
-            $table->integer('status')->default(0);
-            $table->integer('two_factor_authentication')->default(0);
+            $table->integer('status');
+            $table->integer('two_factor_authentication');
             $table->timestamp('email_verified_at')->nullable();
-            $table->timestamp('created_at')->default(now());
+            $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();
         });
     }

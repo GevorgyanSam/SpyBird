@@ -17,10 +17,6 @@ class User extends Authenticatable
     protected $primaryKey = 'id';
     protected $keyType = 'int';
     protected $guarded = [];
-    protected $attributes = [
-        'status' => 0,
-        'two_factor_authentication' => 0
-    ];
     protected $casts = [
         'status' => 'boolean',
         'two_factor_authentication' => 'boolean'

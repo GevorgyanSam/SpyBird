@@ -13,9 +13,6 @@ class Room extends Model
     protected $primaryKey = 'id';
     protected $keyType = 'int';
     protected $guarded = [];
-    protected $attributes = [
-        'status' => 1
-    ];
     protected $casts = [
         'status' => 'boolean'
     ];

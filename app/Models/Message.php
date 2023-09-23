@@ -13,10 +13,6 @@ class Message extends Model
     protected $primaryKey = 'id';
     protected $keyType = 'int';
     protected $guarded = [];
-    protected $attributes = [
-        'status' => 1,
-        'liked' => 0
-    ];
     protected $casts = [
         'status' => 'boolean',
         'liked' => 'boolean'

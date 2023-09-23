@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->enum('type', ['name_change', 'avatar_change', 'password_change']);
             $table->string('from', 255);
             $table->string('to', 255);
-            $table->timestamp('created_at')->default(now());
+            $table->timestamp('created_at');
         });
     }
 

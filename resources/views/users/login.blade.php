@@ -3,6 +3,7 @@
         <link rel="stylesheet" href="{{ asset('css/users/style.css') }}">
     </x-slot>
     <x-slot:body>
+        <x-loading />
         <nav>
             <div class="navParent">
                 <div class="logo">
@@ -19,14 +20,14 @@
                         <h3>sign in</h3>
                         <h4>login to your account</h4>
                         <div class="formParent">
-                            <x-form method="post">
+                            <x-form id="form" method="post" action="{{ route('user.login-auth') }}">
                                 <div class="formItem">
                                     <label for="email">Email</label>
-                                    <input type="email" id="email" autocomplete="off">
+                                    <input type="email" id="email" autocomplete="off" name="email">
                                 </div>
                                 <div class="formItem">
                                     <label for="password">Password</label>
-                                    <input type="password" id="password" autocomplete="off">
+                                    <input type="password" id="password" autocomplete="off" name="password">
                                     <i class="fa-solid fa-eye-slash" id="eye"></i>
                                 </div>
                                 <div class="formItem">

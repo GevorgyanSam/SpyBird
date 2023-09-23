@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('room_id');
-            $table->timestamp('created_at')->default(now());
+            $table->timestamp('created_at');
         });
     }
 

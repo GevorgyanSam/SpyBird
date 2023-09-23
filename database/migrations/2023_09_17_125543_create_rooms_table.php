@@ -10,8 +10,8 @@ return new class extends Migration {
     {
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
-            $table->integer('status')->default(1);
-            $table->timestamp('created_at')->default(now());
+            $table->integer('status');
+            $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();
         });
     }

@@ -14,8 +14,8 @@ return new class extends Migration {
             $table->foreignId('sender_id');
             $table->enum('type', ['friend_request', 'password_change', 'name_change', 'avatar_change']);
             $table->string('content');
-            $table->integer('status')->default(1);
-            $table->timestamp('created_at')->default(now());
+            $table->integer('status');
+            $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();
         });
     }

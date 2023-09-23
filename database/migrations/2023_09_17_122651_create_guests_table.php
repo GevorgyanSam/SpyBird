@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->id();
             $table->ipAddress('ip');
             $table->text('user_agent');
-            $table->timestamp('created_at')->default(now());
+            $table->timestamp('created_at');
         });
     }
 

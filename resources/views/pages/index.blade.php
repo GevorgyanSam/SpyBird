@@ -3,6 +3,7 @@
         <link rel="stylesheet" href="{{ asset('css/pages/style.css') }}">
     </x-slot>
     <x-slot:body>
+        <x-notification />
 
         <!-- ----- ----- ---------- ----- ----- -->
         <!-- ----- ----- Navigation ----- ----- -->

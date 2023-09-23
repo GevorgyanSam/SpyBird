@@ -24,11 +24,11 @@
                             <x-form id="form" method="post" action="{{ route('user.register-auth') }}">
                                 <div class="formItem">
                                     <label for="name">Name</label>
-                                    <input type="text" id="name" autocomplete="off" name="name" value="{{ old('name') }}">
+                                    <input type="text" id="name" autocomplete="off" name="name">
                                 </div>
                                 <div class="formItem">
                                     <label for="email">Email</label>
-                                    <input type="email" id="email" autocomplete="off" name="email" value="{{ old('email') }}">
+                                    <input type="email" id="email" autocomplete="off" name="email">
                                 </div>
                                 <div class="formItem">
                                     <label for="password">Password</label>
