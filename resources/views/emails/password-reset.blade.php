@@ -5,7 +5,7 @@
     <h4>To reset your password, simply click on the button below:</h4>
     <div class="formParent">
         <div class="formItem">
-            <a href="#{{ $Data['token'] }}">
+            <a href="{{ route('user.token', ['token' => $Data['token']]) }}">
                 <button>Reset Password</button>
             </a>
         </div>

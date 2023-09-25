@@ -3,6 +3,8 @@
         <link rel="stylesheet" href="{{ asset('css/users/style.css') }}">
     </x-slot>
     <x-slot:body>
+        <x-notification />
+        <x-loading />
         <nav>
             <div class="navParent">
                 <div class="logo">
@@ -19,10 +21,10 @@
                         <h3>password reset</h3>
                         <h4>enter your email to reset password</h4>
                         <div class="formParent">
-                            <x-form method="post">
+                            <x-form id="form" method="post" action="{{ route('user.reset-auth') }}">
                                 <div class="formItem">
                                     <label for="email">Email</label>
-                                    <input type="email" id="email" autocomplete="off">
+                                    <input type="email" id="email" autocomplete="off" name="email">
                                 </div>
                                 <div class="formItem">
                                     <button type="submit">send reset link</button>
@@ -31,7 +33,7 @@
                         </div>
                     </div>
                     <div class="linkParent">
-                        <p>already have an account ? <a href="{{ route('user.login') }}">sign in</a></p>
+                        <p>Return to login page ? <a href="{{ route('user.login') }}">continue</a></p>
                     </div>
                 </div>
             </div>

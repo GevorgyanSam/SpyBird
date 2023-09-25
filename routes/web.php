@@ -19,6 +19,7 @@ Route::middleware('guest')->group(function () {
         Route::post('/register', 'registerAuth')->name('register-auth');
         Route::get('/register/verify-email/{token}', 'verifyEmail')->name('verify-email');
         Route::get('/password-reset', 'reset')->name('reset');
+        Route::post('/password-reset', 'resetAuth')->name('reset-auth');
         Route::get('/password-reset/{token}', 'token')->name('token');
         Route::get('/two-factor-authentication', 'twoFactor')->name('two-factor');
         Route::get('/lost-email-authentication', 'lostEmail')->name('lost-email');

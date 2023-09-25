@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use App\Mail\PasswordReset;
 use App\Mail\RegistrationSuccess;
 use App\Mail\VerifyEmail;
 use App\Models\Guest;
@@ -112,6 +113,7 @@ class UserController extends Controller
         ]);
         $newToken = PersonalAccessToken::create([
             'user_id' => $newUser->id,
+            'for' => 'registration',
             'token' => Str::random(60),
             'status' => 1,
             'created_at' => now()
@@ -130,7 +132,7 @@ class UserController extends Controller
 
     public function verifyEmail(string $token, Request $request)
     {
-        $verifiable = PersonalAccessToken::where(['token' => $token, 'status' => 1])->first();
+        $verifiable = PersonalAccessToken::where(['token' => $token, 'for' => 'registration', 'status' => 1])->first();
         if (!empty($verifiable)) {
             PersonalAccessToken::where(['token' => $token])->update([
                 'status' => 0,
@@ -165,11 +167,46 @@ class UserController extends Controller
         return view('users.password-reset');
     }
 
+    // ---- ------ -- --- ------- -------- ----- -----
+    // This Method Is For Sending Password Reset Email
+    // ---- ------ -- --- ------- -------- ----- -----
+
+    public function resetAuth(Request $request)
+    {
+        $rules = [
+            'email' => ['bail', 'required', 'email:rfc,dns,filter'],
+        ];
+        $messages = [
+            'email' => [
+                'enter valid :attribute address'
+            ],
+            'required' => 'enter :attribute',
+        ];
+        $request->validate($rules, $messages);
+        $user = User::where('email', $request->input('email'))->where('status', 1)->orWhereNull('email_verified_at')->first();
+        if (empty($user)) {
+            return response()->json(['errors' => ['email' => ['Undefined Account']]], 422);
+        }
+        $token = PersonalAccessToken::create([
+            'user_id' => $user->id,
+            'for' => 'password_reset',
+            'token' => Str::random(60),
+            'status' => 1,
+            'created_at' => now()
+        ]);
+        $emailData = [
+            'name' => $user->name,
+            'token' => $token->token
+        ];
+        Mail::to($user->email)->send(new PasswordReset($emailData));
+        return response()->json(['success' => true], 200);
+    }
+
     // ---- ------ -- --- ------ --- -------- ---- ----
     // This Method Is For Create New Password Page View
     // ---- ------ -- --- ------ --- -------- ---- ----
 
-    public function token()
+    public function token(string $token, Request $request)
     {
         return view('users.token');
     }
