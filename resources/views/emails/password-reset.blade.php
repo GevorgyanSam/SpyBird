@@ -11,6 +11,7 @@
         </div>
     </div>
     <h4>If you didn't ask for a reset, ignore this email, and your account stays safe.</h4>
+    <h4>For your safety, please note that this password reset link will be valid for 1 hour only.</h4>
     <h4>Thanks for being a part of SpyBird's real-time connections!</h4>
     <h4>Best regards,</h4>
     <h4>The SpyBird Team</h4>

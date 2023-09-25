@@ -17,10 +17,12 @@
                 <div class="item">
                     <div class="box">
                         <div class="avatar">
-                            <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/1.jpg">
-                            W
+                            @if($user->avatar)
+                            <img src="{{ $user->avatar }}">
+                            @endif
+                            {{ $user->name[0] }}
                         </div>
-                        <h3>william pearson</h3>
+                        <h3>{{ $user->name }}</h3>
                         <h4>create new password for your account</h4>
                         <div class="formParent">
                             <x-form method="post">
@@ -41,7 +43,7 @@
                         </div>
                     </div>
                     <div class="linkParent">
-                        <p>skip new password ? <a href="#">continue</a></p>
+                        <p>not your account ? <a href="{{ route('user.reset') }}">get back</a></p>
                     </div>
                 </div>
             </div>

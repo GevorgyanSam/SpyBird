@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -53,11 +54,10 @@ class UserController extends Controller
         $credentials = User::where(['email' => $request->input('email'), 'status' => 1])->first();
         if (empty($credentials)) {
             return response()->json(['errors' => ['email' => ['Undefined Account']]], 422);
-        } else {
-            $check = Hash::check($request->input('password'), $credentials->password);
-            if (!$check) {
-                return response()->json(['errors' => ['password' => ['Wrong Password']]], 422);
-            }
+        }
+        $check = Hash::check($request->input('password'), $credentials->password);
+        if (!$check) {
+            return response()->json(['errors' => ['password' => ['Wrong Password']]], 422);
         }
         LoginInfo::where(['user_id' => $credentials->id, 'status' => 1])->update([
             'status' => 0,
@@ -116,7 +116,8 @@ class UserController extends Controller
             'for' => 'registration',
             'token' => Str::random(60),
             'status' => 1,
-            'created_at' => now()
+            'created_at' => now(),
+            'expires_at' => Carbon::now()->addHours(1)
         ]);
         $emailData = [
             'name' => $newUser->name,
@@ -133,29 +134,31 @@ class UserController extends Controller
     public function verifyEmail(string $token, Request $request)
     {
         $verifiable = PersonalAccessToken::where(['token' => $token, 'for' => 'registration', 'status' => 1])->first();
-        if (!empty($verifiable)) {
-            PersonalAccessToken::where(['token' => $token])->update([
-                'status' => 0,
-                'updated_at' => now()
-            ]);
-            User::where(['id' => $verifiable->user_id])->update([
-                'status' => 1,
-                'email_verified_at' => now()
-            ]);
-            $user = User::find($verifiable->user_id);
-            Mail::to($user->email)->send(new RegistrationSuccess(['name' => $user->name]));
-            Auth::login($user);
-            LoginInfo::create([
-                'user_id' => $user->id,
-                'ip' => $request->ip(),
-                'user_agent' => $request->userAgent(),
-                'status' => 1,
-                'created_at' => now()
-            ]);
-            return redirect()->route('index');
-        } else {
+        if (empty($verifiable)) {
             abort(404);
         }
+        if ($verifiable->expires_at <= now()) {
+            abort(404);
+        }
+        PersonalAccessToken::where(['token' => $token])->update([
+            'status' => 0,
+            'updated_at' => now()
+        ]);
+        User::where(['id' => $verifiable->user_id])->update([
+            'status' => 1,
+            'email_verified_at' => now()
+        ]);
+        $user = User::find($verifiable->user_id);
+        Mail::to($user->email)->send(new RegistrationSuccess(['name' => $user->name]));
+        Auth::login($user);
+        LoginInfo::create([
+            'user_id' => $user->id,
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+            'status' => 1,
+            'created_at' => now()
+        ]);
+        return redirect()->route('index');
     }
 
     // ---- ------ -- --- -------- ----- ---- ----
@@ -192,7 +195,8 @@ class UserController extends Controller
             'for' => 'password_reset',
             'token' => Str::random(60),
             'status' => 1,
-            'created_at' => now()
+            'created_at' => now(),
+            'expires_at' => Carbon::now()->addHours(1)
         ]);
         $emailData = [
             'name' => $user->name,
@@ -208,7 +212,22 @@ class UserController extends Controller
 
     public function token(string $token, Request $request)
     {
-        return view('users.token');
+        $verifiable = PersonalAccessToken::where(['token' => $token, 'for' => 'password_reset', 'status' => 1])->first();
+        if (empty($verifiable)) {
+            abort(404);
+        }
+        if ($verifiable->expires_at <= now()) {
+            abort(404);
+        }
+        PersonalAccessToken::where(['token' => $token])->update([
+            'status' => 0,
+            'updated_at' => now()
+        ]);
+        $user = User::where('status', 1)->orWhereNull('email_verified_at')->find($verifiable->user_id);
+        if (empty($user)) {
+            abort(404);
+        }
+        return view('users.token', ['user' => $user]);
     }
 
     // ---- ------ -- --- ---- ------ ---- ----

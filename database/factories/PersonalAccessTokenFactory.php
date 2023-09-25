@@ -14,6 +14,7 @@ class PersonalAccessTokenFactory extends Factory
             'token' => fake()->asciify('************************************************************'),
             'status' => fake()->numberBetween(0, 1),
             'created_at' => fake()->dateTime(),
+            'expires_at' => fake()->dateTime(),
             'updated_at' => fake()->dateTime()
         ];
     }

@@ -22,6 +22,7 @@ class PersonalAccessToken extends Model
         'token',
         'status',
         'created_at',
+        'expires_at',
         'updated_at'
     ];
     public $incrementing = true;

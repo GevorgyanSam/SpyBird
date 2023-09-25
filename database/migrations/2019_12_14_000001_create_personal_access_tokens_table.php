@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('token', 255);
             $table->integer('status');
             $table->timestamp('created_at');
+            $table->timestamp('expires_at');
             $table->timestamp('updated_at')->nullable();
         });
     }
