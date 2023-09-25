@@ -144,6 +144,10 @@ class UserController extends Controller
             'status' => 0,
             'updated_at' => now()
         ]);
+        $user = User::find($verifiable->user_id);
+        if (!empty($user->email_verified_at)) {
+            abort(404);
+        }
         User::where(['id' => $verifiable->user_id])->update([
             'status' => 1,
             'email_verified_at' => now()
@@ -226,6 +230,12 @@ class UserController extends Controller
         $user = User::where('status', 1)->orWhereNull('email_verified_at')->find($verifiable->user_id);
         if (empty($user)) {
             abort(404);
+        }
+        if (empty($user->email_verified_at)) {
+            User::where('id', $user->id)->update([
+                'status' => 1,
+                'email_verified_at' => now()
+            ]);
         }
         return view('users.token', ['user' => $user]);
     }
