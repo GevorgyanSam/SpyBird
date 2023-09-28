@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use App\Mail\PasswordChange;
 use App\Mail\PasswordReset;
 use App\Mail\RegistrationSuccess;
 use App\Mail\VerifyEmail;
@@ -15,6 +16,8 @@ use App\Models\Guest;
 use App\Models\User;
 use App\Models\LoginInfo;
 use App\Models\PersonalAccessToken;
+use App\Models\PersonalAccessTokenEvent;
+use App\Models\UserDataHistory;
 
 class UserController extends Controller
 {
@@ -113,11 +116,17 @@ class UserController extends Controller
         ]);
         $newToken = PersonalAccessToken::create([
             'user_id' => $newUser->id,
-            'for' => 'registration',
+            'type' => 'registration',
             'token' => Str::random(60),
             'status' => 1,
             'created_at' => now(),
             'expires_at' => Carbon::now()->addHours(1)
+        ]);
+        PersonalAccessTokenEvent::create([
+            'token_id' => $newToken->id,
+            'type' => 'request',
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent()
         ]);
         $emailData = [
             'name' => $newUser->name,
@@ -133,7 +142,7 @@ class UserController extends Controller
 
     public function verifyEmail(string $token, Request $request)
     {
-        $verifiable = PersonalAccessToken::where(['token' => $token, 'for' => 'registration', 'status' => 1])->first();
+        $verifiable = PersonalAccessToken::where(['token' => $token, 'type' => 'registration', 'status' => 1])->first();
         if (empty($verifiable)) {
             abort(404);
         }
@@ -143,6 +152,13 @@ class UserController extends Controller
         PersonalAccessToken::where(['token' => $token])->update([
             'status' => 0,
             'updated_at' => now()
+        ]);
+        $tokenId = PersonalAccessToken::where('token', $token)->value('id');
+        PersonalAccessTokenEvent::create([
+            'token_id' => $tokenId,
+            'type' => 'usage',
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent()
         ]);
         $user = User::find($verifiable->user_id);
         if (!empty($user->email_verified_at)) {
@@ -196,11 +212,17 @@ class UserController extends Controller
         }
         $token = PersonalAccessToken::create([
             'user_id' => $user->id,
-            'for' => 'password_reset',
+            'type' => 'password_reset',
             'token' => Str::random(60),
             'status' => 1,
             'created_at' => now(),
             'expires_at' => Carbon::now()->addHours(1)
+        ]);
+        PersonalAccessTokenEvent::create([
+            'token_id' => $token->id,
+            'type' => 'request',
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent()
         ]);
         $emailData = [
             'name' => $user->name,
@@ -216,7 +238,7 @@ class UserController extends Controller
 
     public function token(string $token, Request $request)
     {
-        $verifiable = PersonalAccessToken::where(['token' => $token, 'for' => 'password_reset', 'status' => 1])->first();
+        $verifiable = PersonalAccessToken::where(['token' => $token, 'type' => 'password_reset', 'status' => 1])->first();
         if (empty($verifiable)) {
             abort(404);
         }
@@ -226,6 +248,13 @@ class UserController extends Controller
         PersonalAccessToken::where(['token' => $token])->update([
             'status' => 0,
             'updated_at' => now()
+        ]);
+        $tokenId = PersonalAccessToken::where('token', $token)->value('id');
+        PersonalAccessTokenEvent::create([
+            'token_id' => $tokenId,
+            'type' => 'usage',
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent()
         ]);
         $user = User::where('status', 1)->orWhereNull('email_verified_at')->find($verifiable->user_id);
         if (empty($user)) {
@@ -237,7 +266,40 @@ class UserController extends Controller
                 'email_verified_at' => now()
             ]);
         }
-        return view('users.token', ['user' => $user]);
+        return view('users.token', ['user' => $user, 'token' => $token]);
+    }
+
+    // ---- ------ -- --- ------ --- -------- -----
+    // This Method Is For Create New Password Logic
+    // ---- ------ -- --- ------ --- -------- -----
+
+    public function tokenAuth(Request $request)
+    {
+        $rules = [
+            'password' => ['bail', 'required', 'min:8', 'confirmed'],
+            'password_confirmation' => ['bail', 'required', 'min:8']
+        ];
+        $messages = [
+            'required' => 'enter :attribute',
+            'min' => 'at least :min characters',
+            'confirmed' => ':attribute does not match'
+        ];
+        $request->validate($rules, $messages);
+        $user = PersonalAccessToken::where('token', $request->input('token'))->first()->user;
+        User::find($user->id)->update([
+            'password' => $request->input('password'),
+            'updated_at' => now()
+        ]);
+        UserDataHistory::create([
+            'user_id' => $user->id,
+            'type' => 'password_change',
+            'created_at' => now()
+        ]);
+        $emailData = [
+            'name' => $user->name
+        ];
+        Mail::to($user->email)->send(new PasswordChange($emailData));
+        return response()->json(['success' => true], 200);
     }
 
     // ---- ------ -- --- ---- ------ ---- ----

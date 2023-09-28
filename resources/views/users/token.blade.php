@@ -3,6 +3,7 @@
         <link rel="stylesheet" href="{{ asset('css/users/style.css') }}">
     </x-slot>
     <x-slot:body>
+        <x-loading />
         <nav>
             <div class="navParent">
                 <div class="logo">
@@ -25,15 +26,16 @@
                         <h3>{{ $user->name }}</h3>
                         <h4>create new password for your account</h4>
                         <div class="formParent">
-                            <x-form method="post">
+                            <x-form id="form" method="post" action="{{ route('user.token-auth', ['token' => $token]) }}">
+                                <input type="hidden" value="{{ $token }}" name="token">
                                 <div class="formItem">
                                     <label for="password">New Password</label>
-                                    <input type="password" id="password" autocomplete="off">
+                                    <input type="password" id="password" autocomplete="off" name="password">
                                     <i class="fa-solid fa-eye-slash" id="eye"></i>
                                 </div>
                                 <div class="formItem">
                                     <label for="password_confirmation">Confirm Password</label>
-                                    <input type="password" id="password_confirmation" autocomplete="off">
+                                    <input type="password" id="password_confirmation" autocomplete="off" name="password_confirmation">
                                     <i class="fa-solid fa-eye-slash" id="eye_confirmation"></i>
                                 </div>
                                 <div class="formItem">

@@ -11,7 +11,7 @@ return new class extends Migration {
         Schema::create('personal_access_tokens', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->enum('for', ['registration', 'password_reset']);
+            $table->enum('type', ['registration', 'password_reset']);
             $table->string('token', 255);
             $table->integer('status');
             $table->timestamp('created_at');

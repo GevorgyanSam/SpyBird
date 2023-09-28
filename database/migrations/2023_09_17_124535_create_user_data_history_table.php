@@ -12,8 +12,8 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id');
             $table->enum('type', ['name_change', 'avatar_change', 'password_change']);
-            $table->string('from', 255);
-            $table->string('to', 255);
+            $table->string('from', 255)->nullable();
+            $table->string('to', 255)->nullable();
             $table->timestamp('created_at');
         });
     }
