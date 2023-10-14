@@ -21,7 +21,6 @@ const form = {
 focus(form.email.input, form.email.label);
 form.email.input.focus();
 
-
 // ---- ------ -- --- --------- --------
 // This Method Is For Resetting Password
 // ---- ------ -- --- --------- --------
@@ -38,13 +37,18 @@ function reset() {
             method: form.attr("method"),
             data: form.serialize(),
             success: function (response) {
-                if (response['success']) {
+                if (response["success"]) {
                     loading(false);
                     const input = emailLabel.siblings("input");
                     input.val("");
                     emailLabel.removeClass("error");
                     emailLabel.text(emailLabel.attr("for"));
-                    notify('check your email', 'a password reset link has been sent to your email');
+                    notify(
+                        "check your email",
+                        "a password reset link has been sent to your email"
+                    );
+                } else {
+                    location.reload();
                 }
             },
             error: function (error) {
@@ -52,7 +56,7 @@ function reset() {
                 if (error.status === 422) {
                     displayError(emailLabel, error.responseJSON.errors.email);
                 }
-            }
+            },
         });
     });
 

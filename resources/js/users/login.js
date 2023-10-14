@@ -41,9 +41,11 @@ function login() {
             method: form.attr("method"),
             data: form.serialize(),
             success: function (response) {
-                if (response['success']) {
+                if (response["success"]) {
                     loading(false);
-                    location.href = '/';
+                    location.href = "/";
+                } else {
+                    location.reload();
                 }
             },
             error: function (error) {
@@ -51,7 +53,7 @@ function login() {
                 if (error.status === 422) {
                     handleValidationErrors(error.responseJSON.errors);
                 }
-            }
+            },
         });
     });
 

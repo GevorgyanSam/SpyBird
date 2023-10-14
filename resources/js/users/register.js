@@ -51,10 +51,14 @@ function register() {
             method: form.attr("method"),
             data: form.serialize(),
             success: function (response) {
-                if (response['success']) {
+                if (response["success"]) {
                     loading(false);
-                    const fieldsToClear = [nameLabel, emailLabel, passwordLabel];
-                    fieldsToClear.forEach(label => {
+                    const fieldsToClear = [
+                        nameLabel,
+                        emailLabel,
+                        passwordLabel,
+                    ];
+                    fieldsToClear.forEach((label) => {
                         const input = label.siblings("input");
                         input.val("");
                         label.removeClass("error");
@@ -63,7 +67,12 @@ function register() {
                     });
                     passwordLabel.nextAll("input + i").css("display", "none");
                     nameLabel.siblings("input").focus();
-                    notify('Registration Success', 'Check Your Email To Confirm Your Email');
+                    notify(
+                        "Registration Success",
+                        "Check Your Email To Confirm Your Email"
+                    );
+                } else {
+                    location.reload();
                 }
             },
             error: function (error) {
@@ -71,7 +80,7 @@ function register() {
                 if (error.status === 422) {
                     handleValidationErrors(error.responseJSON.errors);
                 }
-            }
+            },
         });
     });
 

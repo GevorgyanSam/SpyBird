@@ -7,12 +7,12 @@ function notify(title, body) {
     $("#push-notification h4").text(body);
     let notification = $("#push-notification .notification");
     notification.css({
-        display: 'flex',
-    })
+        display: "flex",
+    });
     setTimeout(() => {
         notification.css({
-            display: 'none',
-        })
+            display: "none",
+        });
     }, 7000);
 }
 

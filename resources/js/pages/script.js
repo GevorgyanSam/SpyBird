@@ -213,14 +213,19 @@ function switchFullScreen() {
     }
 
     fullscreen.button.click(function () {
-        if (document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement || document.msFullscreenElement) {
+        if (
+            document.fullscreenElement ||
+            document.mozFullScreenElement ||
+            document.webkitFullscreenElement ||
+            document.msFullscreenElement
+        ) {
             exitFullscreen();
-            fullscreen.h4.text('Switch to Full Screen Mode');
-            fullscreen.icon.removeClass('fa-compress').addClass('fa-expand');
+            fullscreen.h4.text("Switch to Full Screen Mode");
+            fullscreen.icon.removeClass("fa-compress").addClass("fa-expand");
         } else {
             enterFullscreen();
-            fullscreen.h4.text('Exit Full Screen Mode');
-            fullscreen.icon.removeClass('fa-expand').addClass('fa-compress');
+            fullscreen.h4.text("Exit Full Screen Mode");
+            fullscreen.icon.removeClass("fa-expand").addClass("fa-compress");
         }
     });
 }
@@ -232,15 +237,15 @@ switchFullScreen();
 // ---- ------ -- --- --------- -- --- ------ -----
 
 function switchSpyMode() {
-    const checkbox = $(".settingsParent .spy input[type=checkbox]")
+    const checkbox = $(".settingsParent .spy input[type=checkbox]");
     checkbox.change((e) => {
         if (e.target.checked) {
             notify("Switch To Spy Mode", "This Feature Is Under Construction");
             setTimeout(() => {
                 e.target.checked = false;
-            }, 1000)
+            }, 1000);
         }
-    })
+    });
 }
 
 switchSpyMode();
@@ -250,15 +255,18 @@ switchSpyMode();
 // ---- ------ -- --- --- ---- ------------
 
 function switchTwoStepVerification() {
-    const checkbox = $(".settingsParent .verification input[type=checkbox]")
+    const checkbox = $(".settingsParent .verification input[type=checkbox]");
     checkbox.change((e) => {
         if (e.target.checked) {
-            notify("Two Step Verification", "This Feature Is Under Construction");
+            notify(
+                "Two Step Verification",
+                "This Feature Is Under Construction"
+            );
             setTimeout(() => {
                 e.target.checked = false;
-            }, 1000)
+            }, 1000);
         }
-    })
+    });
 }
 
 switchTwoStepVerification();

@@ -33,7 +33,9 @@ form.password.input.focus();
 function token() {
     const form = $("#form");
     const passwordLabel = form.find("label[for=password]");
-    const passwordConfirmationLabel = form.find("label[for=password_confirmation]");
+    const passwordConfirmationLabel = form.find(
+        "label[for=password_confirmation]"
+    );
 
     form.on("submit", (e) => {
         e.preventDefault();
@@ -43,9 +45,11 @@ function token() {
             method: form.attr("method"),
             data: form.serialize(),
             success: function (response) {
-                if (response['success']) {
+                if (response["success"]) {
                     loading(false);
-                    location.href = '/';
+                    location.href = "/";
+                } else {
+                    location.reload();
                 }
             },
             error: function (error) {
@@ -53,7 +57,7 @@ function token() {
                 if (error.status === 422) {
                     handleValidationErrors(error.responseJSON.errors);
                 }
-            }
+            },
         });
     });
 
@@ -67,8 +71,8 @@ function token() {
             label.text(errorText[0]);
             label.addClass("error");
         } else {
-            if (label.attr("for") == 'password_confirmation') {
-                label.text('password confirmation');
+            if (label.attr("for") == "password_confirmation") {
+                label.text("password confirmation");
                 label.removeClass("error");
             } else {
                 label.text(label.attr("for"));

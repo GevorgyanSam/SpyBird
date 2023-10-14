@@ -4,7 +4,7 @@
 
 function scrollAndFocus() {
     const chat = $(".main .chatArea");
-    const input = $(".roomParent .footer .formParent input")
+    const input = $(".roomParent .footer .formParent input");
     chat.scrollTop(chat[0].scrollHeight);
     input.focus();
 }
@@ -19,12 +19,12 @@ function sendMessage() {
     const form = {
         input: $(".roomParent .footer .formParent input"),
         button: $(".roomParent .footer .formParent button"),
-    }
+    };
 
     form.button.click((e) => {
         e.preventDefault();
         scrollAndFocus();
-    })
+    });
 }
 
 sendMessage();
@@ -37,10 +37,10 @@ function removeMessage() {
     const message = $(".chatArea .message-right");
     message.each(function () {
         let self = $(this);
-        self.children('.content').dblclick(function () {
-            removeMessageAnimation(self)
+        self.children(".content").dblclick(function () {
+            removeMessageAnimation(self);
         });
-    })
+    });
 }
 
 removeMessage();
@@ -51,12 +51,15 @@ removeMessage();
 
 function removeMessageAnimation(item) {
     item.css({
-        transform: 'scale(0)',
-    })
+        transform: "scale(0)",
+    });
     setTimeout(() => {
-        item.animate({
-            height: 0
-        }, 100)
+        item.animate(
+            {
+                height: 0,
+            },
+            100
+        );
     }, 200);
 }
 
@@ -68,13 +71,13 @@ function likeMessage() {
     const message = $(".chatArea .message-left");
     message.each(function () {
         let self = $(this);
-        self.children('.content').dblclick(function () {
-            let liked = self.children('.content-date').children('.liked');
-            if (!liked.hasClass('liked')) {
+        self.children(".content").dblclick(function () {
+            let liked = self.children(".content-date").children(".liked");
+            if (!liked.hasClass("liked")) {
                 likeMessageAnimation(self);
             }
         });
-    })
+    });
 }
 
 likeMessage();
@@ -86,6 +89,6 @@ likeMessage();
 function likeMessageAnimation(item) {
     let liked = $("<div>");
     liked.addClass("liked");
-    liked.html('<i class="fa-solid fa-heart"></i>')
-    item.children('.content-date').append(liked);
+    liked.html('<i class="fa-solid fa-heart"></i>');
+    item.children(".content-date").append(liked);
 }

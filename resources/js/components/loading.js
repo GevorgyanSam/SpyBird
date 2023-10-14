@@ -3,18 +3,16 @@
 // ---- -- - ------ --- ------- ---------
 
 function loading(status) {
-
     const loading = $("section#loading");
     if (status) {
         loading.css({
-            display: 'grid'
-        })
+            display: "grid",
+        });
     } else {
         loading.css({
-            display: 'none'
-        })
+            display: "none",
+        });
     }
-
 }
 
 export default loading;
