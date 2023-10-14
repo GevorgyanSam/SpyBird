@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-class PrivacyController extends Controller
+class TermsController extends Controller
 {
 
     // ---- ------ -- --- ------- ------ ---- ----

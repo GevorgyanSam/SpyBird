@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\PrivacyController;
+use App\Http\Controllers\TermsController;
 use App\Http\Controllers\HomeController;
 
 // ----- ------ --- --- ----- -----
@@ -55,7 +55,7 @@ Route::middleware('auth')->group(function () {
 // These Routes Are For All Users
 // ----- ------ --- --- --- -----
 
-Route::controller(PrivacyController::class)->name('privacy.')->group(function () {
+Route::controller(TermsController::class)->name('privacy.')->group(function () {
 
     Route::get('/privacy-policy', 'policy')->name('policy');
     Route::get('/terms-of-service', 'terms')->name('terms');
