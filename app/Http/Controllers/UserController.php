@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -46,8 +45,8 @@ class UserController extends Controller
         $failed_login_attempts = FailedLoginAttempt::where([
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent()
-        ])->where('created_at', '>', Carbon::now()->subHours(1))->get();
-        if (count($failed_login_attempts) >= 5) {
+        ])->where('created_at', '>', now()->subHours(1))->count();
+        if ($failed_login_attempts >= 5) {
             return response()->json(['errors' => ['title' => 'Too Many Requests', 'body' => 'Try Again After A While']], 429);
         }
         $rules = [
@@ -134,7 +133,7 @@ class UserController extends Controller
             'token' => Str::random(60),
             'status' => 1,
             'created_at' => now(),
-            'expires_at' => Carbon::now()->addHours(1)
+            'expires_at' => now()->addHours(1)
         ]);
         PersonalAccessTokenEvent::create([
             'token_id' => $newToken->id,
@@ -224,13 +223,17 @@ class UserController extends Controller
         if (empty($user)) {
             return response()->json(['errors' => ['email' => ['Undefined Account']]], 422);
         }
+        $old_tokens = PersonalAccessToken::where(['user_id' => $user->id, 'type' => 'password_reset'])->where('expires_at', '>', now())->count();
+        if ($old_tokens >= 2) {
+            return response()->json(['success' => true], 200);
+        }
         $token = PersonalAccessToken::create([
             'user_id' => $user->id,
             'type' => 'password_reset',
             'token' => Str::random(60),
             'status' => 1,
             'created_at' => now(),
-            'expires_at' => Carbon::now()->addHours(1)
+            'expires_at' => now()->addHours(1)
         ]);
         PersonalAccessTokenEvent::create([
             'token_id' => $token->id,
