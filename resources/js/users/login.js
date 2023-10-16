@@ -2,6 +2,10 @@
 // Import Form Methods From Components.
 // ------ ---- ------- ---- -----------
 import { focus, eye } from "../components/form-functions";
+// ------ ---- ------------ ---- -----------
+// Import Push Notification From Components.
+// ------ ---- ------------ ---- -----------
+import notify from "../components/push-notifications";
 // ------ ------- ------ ---- -----------
 // Import Loading Method From Components.
 // ------ ------- ------ ---- -----------
@@ -52,6 +56,12 @@ function login() {
                 loading(false);
                 if (error.status === 422) {
                     handleValidationErrors(error.responseJSON.errors);
+                }
+                if (error.status === 429) {
+                    notify(
+                        error.responseJSON.errors.title,
+                        error.responseJSON.errors.body
+                    );
                 }
             },
         });

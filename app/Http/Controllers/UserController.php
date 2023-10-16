@@ -18,6 +18,7 @@ use App\Models\LoginInfo;
 use App\Models\PersonalAccessToken;
 use App\Models\PersonalAccessTokenEvent;
 use App\Models\UserDataHistory;
+use App\Models\FailedLoginAttempt;
 
 class UserController extends Controller
 {
@@ -42,6 +43,13 @@ class UserController extends Controller
 
     public function loginAuth(Request $request)
     {
+        $failed_login_attempts = FailedLoginAttempt::where([
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent()
+        ])->where('created_at', '>', Carbon::now()->subHours(1))->get();
+        if (count($failed_login_attempts) >= 5) {
+            return response()->json(['errors' => ['title' => 'Too Many Requests', 'body' => 'Try Again After A While']], 429);
+        }
         $rules = [
             'email' => ['bail', 'required', 'email:rfc,dns,filter'],
             'password' => ['bail', 'required', 'min:8']
@@ -60,6 +68,12 @@ class UserController extends Controller
         }
         $check = Hash::check($request->input('password'), $credentials->password);
         if (!$check) {
+            FailedLoginAttempt::create([
+                'user_id' => $credentials->id,
+                'ip' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+                'created_at' => now()
+            ]);
             return response()->json(['errors' => ['password' => ['Wrong Password']]], 422);
         }
         LoginInfo::where(['user_id' => $credentials->id, 'status' => 1])->update([

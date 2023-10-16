@@ -3,6 +3,7 @@
         <link rel="stylesheet" href="{{ asset('css/users/style.css') }}">
     </x-slot>
     <x-slot:body>
+        <x-notification />
         <x-loading />
         <nav>
             <div class="navParent">

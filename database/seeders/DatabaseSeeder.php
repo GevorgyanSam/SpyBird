@@ -3,20 +3,6 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Database\Seeders\UserSeeder;
-use Database\Seeders\GuestSeeder;
-use Database\Seeders\LoginInfoSeeder;
-use Database\Seeders\UserDataHistorySeeder;
-use Database\Seeders\MessageSeeder;
-use Database\Seeders\RoomSeeder;
-use Database\Seeders\RoomMemeberSeeder;
-use Database\Seeders\TwoFactorAuthenticationSeeder;
-use Database\Seeders\BackupCodeSeeder;
-use Database\Seeders\FriendSeeder;
-use Database\Seeders\NotificationSeeder;
-use Database\Seeders\BlockedUserSeeder;
-use Database\Seeders\PersonalAccessTokenSeeder;
-use Database\Seeders\PersonalAccessTokenEventSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -36,5 +22,6 @@ class DatabaseSeeder extends Seeder
         $this->call(BlockedUserSeeder::class);
         $this->call(PersonalAccessTokenSeeder::class);
         $this->call(PersonalAccessTokenEventSeeder::class);
+        $this->call(FailedLoginAttemptSeeder::class);
     }
 }
