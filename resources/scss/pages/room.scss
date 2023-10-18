@@ -82,6 +82,10 @@ main {
                         font-family: var(--font-family-1);
                         position: relative;
 
+                        &:has(img) {
+                            background-color: transparent;
+                        }
+
                         img {
                             border-radius: 50%;
                             width: 100%;

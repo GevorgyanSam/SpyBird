@@ -17,10 +17,13 @@
                 <div class="item">
                     <div class="box">
                         <div class="avatar">
-                            <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/1.jpg">
-                            W
+                            @if (auth()->user()->avatar)
+                            <img src="{{ auth()->user()->avatar }}">
+                            @else
+                            {{ auth()->user()->name[0] }}
+                            @endif
                         </div>
-                        <h3>william pearson</h3>
+                        <h3>{{ auth()->user()->name }}</h3>
                         <h4>enter your password to unlock the screen</h4>
                         <div class="formParent">
                             <x-form method="post">

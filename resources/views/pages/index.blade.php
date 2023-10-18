@@ -100,7 +100,7 @@
                         <div class="person">
                             <div>
                                 <div class="avatar active">
-                                    <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/1.jpg">
+                                    <img src="https://imgs.search.brave.com/gQWYzwf_Qnt-Xf0GFD7hKey-F6mXq4jTdtBPhd5u8ew/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9mcmVl/cG5naW1nLmNvbS9z/dGF0aWMvaW1nL3lv/dXR1YmUucG5n">
                                 </div>
                             </div>
                             <div class="personInfo">
@@ -382,7 +382,7 @@
                                 <div class="chat">
                                     <div>
                                         <div class="avatar active">
-                                            <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/2.jpg">
+                                            <img src="https://imgs.search.brave.com/gQWYzwf_Qnt-Xf0GFD7hKey-F6mXq4jTdtBPhd5u8ew/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9mcmVl/cG5naW1nLmNvbS9z/dGF0aWMvaW1nL3lv/dXR1YmUucG5n">
                                         </div>
                                     </div>
                                     <div class="chatInfo">
@@ -547,7 +547,7 @@
                             <div class="person">
                                 <div>
                                     <div class="avatar active">
-                                        <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/1.jpg">
+                                        <img src="https://imgs.search.brave.com/gQWYzwf_Qnt-Xf0GFD7hKey-F6mXq4jTdtBPhd5u8ew/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9mcmVl/cG5naW1nLmNvbS9z/dGF0aWMvaW1nL3lv/dXR1YmUucG5n">
                                     </div>
                                 </div>
                                 <div class="personInfo">
@@ -650,7 +650,7 @@
                             <div class="notice">
                                 <div>
                                     <div class="avatar">
-                                        <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/3.jpg">
+                                        <img src="https://imgs.search.brave.com/gQWYzwf_Qnt-Xf0GFD7hKey-F6mXq4jTdtBPhd5u8ew/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9mcmVl/cG5naW1nLmNvbS9z/dGF0aWMvaW1nL3lv/dXR1YmUucG5n">
                                     </div>
                                 </div>
                                 <div class="content">
@@ -691,7 +691,7 @@
                             <div>
                                 <div class="avatar">
                                     @if(auth()->user()->avatar)
-                                        <img src="{{ auth()->user()->avatar }}">
+                                        <img src="{{ asset('storage/' . auth()->user()->avatar) }}">
                                     @else
                                         {{ auth()->user()->name[0] }}
                                     @endif
@@ -734,14 +734,14 @@
                                         </div>
                                     </div>
                                     <div class="hidden">
-                                        <x-form>
+                                        <x-form id="updateProfile" method="post" action="{{ route('update-profile') }}" enctype="multipart/form-data">
                                             <div class="formItem">
                                                 <label for="avatar">avatar</label>
-                                                <input type="file" id="avatar">
+                                                <input type="file" id="avatar" name="avatar" accept=".jpg, .jpeg, .png, .webp">
                                             </div>
                                             <div class="formItem">
                                                 <label for="name">name</label>
-                                                <input type="text" id="name" autocomplete="off">
+                                                <input type="text" id="name" name="name" autocomplete="off">
                                             </div>
                                             <div class="formItem">
                                                 <button type="submit">save</button>

@@ -307,3 +307,45 @@ function logout() {
 }
 
 logout();
+
+// ---- ------ -- --- ------- ---- ------- ----
+// This Method Is For Editing User Profile Data
+// ---- ------ -- --- ------- ---- ------- ----
+
+function editProfile() {
+    const form = $("form#updateProfile");
+    let file = form.find("input[type=file]");
+    let label = form.find("label[for=avatar]");
+    file.on("change", () => {
+        if (file[0].files.length) {
+            label.text(file[0].files[0].name);
+        } else {
+            label.text(label.attr("for"));
+        }
+    });
+    form.on("submit", (e) => {
+        e.preventDefault();
+        loading(true);
+        let formData = new FormData(form[0]);
+        $.ajax({
+            url: form.attr("action"),
+            method: form.attr("method"),
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                if (response["default"]) {
+                    loading(false);
+                } else if (response["refresh"]) {
+                    location.reload();
+                }
+            },
+            error: function (error) {
+                loading(false);
+                console.log(error.responseJSON);
+            },
+        });
+    });
+}
+
+editProfile();

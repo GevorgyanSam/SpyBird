@@ -53,6 +53,10 @@ main {
                     display: grid;
                     place-items: center;
 
+                    &:has(img) {
+                        background-color: transparent;
+                    }
+
                     img {
                         border-radius: 50%;
                         height: 100%;
