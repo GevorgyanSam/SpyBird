@@ -2,7 +2,14 @@
 // Import Form Methods From Components.
 // ------ ---- ------- ---- -----------
 import { focus } from "../components/form-functions";
+// ------ ---- ------------ ---- -----------
+// Import Push Notification From Components.
+// ------ ---- ------------ ---- -----------
 import notify from "../components/push-notifications";
+// ------ ------- ------ ---- -----------
+// Import Loading Method From Components.
+// ------ ------- ------ ---- -----------
+import loading from "../components/loading";
 
 // ---- ------ -- --- -------- --- ----- ----
 // This Method Is For Changing App Color Mode
@@ -270,3 +277,33 @@ function switchTwoStepVerification() {
 }
 
 switchTwoStepVerification();
+
+// ---- ------ -- --- ------
+// This Method Is For Logout
+// ---- ------ -- --- ------
+
+function logout() {
+    const logout = $("form#logout");
+    logout.on("submit", (e) => {
+        e.preventDefault();
+        loading(true);
+        $.ajax({
+            url: logout.attr("action"),
+            method: logout.attr("method"),
+            data: logout.serialize(),
+            success: function (response) {
+                if (response["success"]) {
+                    sessionStorage.removeItem("current-page");
+                    loading(false);
+                    location.reload();
+                }
+            },
+            error: function (error) {
+                loading(false);
+                console.log(error);
+            },
+        });
+    });
+}
+
+logout();

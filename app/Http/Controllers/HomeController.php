@@ -33,14 +33,14 @@ class HomeController extends Controller
 
     public function logout(Request $request)
     {
-        LoginInfo::where(['user_id' => Auth::user()->id, 'status' => 1, 'ip' => $request->ip(), 'user_agent' => $request->userAgent()])->update([
+        LoginInfo::where(['user_id' => Auth::user()->id, 'status' => 1])->update([
             'status' => 0,
             'updated_at' => now()
         ]);
         Auth::logout();
         session()->invalidate();
         session()->regenerateToken();
-        return redirect()->route('user.login');
+        return response()->json(['success' => true], 200);
     }
 
 }

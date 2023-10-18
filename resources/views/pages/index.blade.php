@@ -4,6 +4,7 @@
     </x-slot>
     <x-slot:body>
         <x-notification />
+        <x-loading />
 
         <!-- ----- ----- ---------- ----- ----- -->
         <!-- ----- ----- Navigation ----- ----- -->
@@ -689,14 +690,18 @@
                         <div class="profile">
                             <div>
                                 <div class="avatar">
-                                    <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/1.jpg">
+                                    @if(auth()->user()->avatar)
+                                        <img src="{{ auth()->user()->avatar }}">
+                                    @else
+                                        {{ auth()->user()->name[0] }}
+                                    @endif
                                 </div>
                             </div>
                             <div class="profileInfo">
-                                <h4>william pearson</h4>
-                                <div class="email">william@gmail.com</div>
+                                <h4>{{ auth()->user()->name }}</h4>
+                                <div class="email">{{ auth()->user()->email }}</div>
                             </div>
-                            <x-form method="post" action="{{ route('logout') }}">
+                            <x-form id="logout" method="post" action="{{ route('logout') }}">
                                 <button class="logout" title="Logout">
                                     <i class="fa-solid fa-arrow-right-from-bracket"></i>
                                 </button>
