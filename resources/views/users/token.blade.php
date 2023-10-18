@@ -19,9 +19,10 @@
                     <div class="box">
                         <div class="avatar">
                             @if($user->avatar)
-                            <img src="{{ $user->avatar }}">
+                                <img src="{{ asset('storage/' . $user->avatar) }}">
+                            @else
+                                {{ $user->name[0] }}
                             @endif
-                            {{ $user->name[0] }}
                         </div>
                         <h3>{{ $user->name }}</h3>
                         <h4>create new password for your account</h4>

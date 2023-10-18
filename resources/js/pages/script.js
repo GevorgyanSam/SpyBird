@@ -314,15 +314,19 @@ logout();
 
 function editProfile() {
     const form = $("form#updateProfile");
-    let file = form.find("input[type=file]");
-    let label = form.find("label[for=avatar]");
+    const file = form.find("input[type=file]");
+    const avatarLabel = form.find("label[for=avatar]");
+    const nameLabel = form.find("label[for=name]");
+
     file.on("change", () => {
+        avatarLabel.removeClass("error");
         if (file[0].files.length) {
-            label.text(file[0].files[0].name);
+            avatarLabel.text(file[0].files[0].name);
         } else {
-            label.text(label.attr("for"));
+            avatarLabel.text(avatarLabel.attr("for"));
         }
     });
+
     form.on("submit", (e) => {
         e.preventDefault();
         loading(true);
@@ -336,16 +340,34 @@ function editProfile() {
             success: function (response) {
                 if (response["default"]) {
                     loading(false);
+                    handleValidationErrors(response);
                 } else if (response["refresh"]) {
                     location.reload();
                 }
             },
             error: function (error) {
                 loading(false);
-                console.log(error.responseJSON);
+                if (error.status === 422) {
+                    handleValidationErrors(error.responseJSON.errors);
+                }
             },
         });
     });
+
+    function handleValidationErrors(errors) {
+        displayError(avatarLabel, errors.avatar);
+        displayError(nameLabel, errors.name);
+    }
+
+    function displayError(label, errorText) {
+        if (errorText) {
+            label.text(errorText[0]);
+            label.addClass("error");
+        } else {
+            label.text(label.attr("for"));
+            label.removeClass("error");
+        }
+    }
 }
 
 editProfile();

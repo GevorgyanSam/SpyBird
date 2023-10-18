@@ -37,11 +37,16 @@ class HomeController extends Controller
     public function updateProfile(Request $request)
     {
         $rules = [
-            'avatar' => ['bail', 'nullable', 'file', 'image', 'mimes:jpg,jpeg,png,webp', 'max:10000'],
+            'avatar' => ['bail', 'nullable', 'file', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5000'],
             'name' => ['bail', 'nullable']
         ];
-        $messages = [];
+        $messages = [
+            "max" => ":attribute is too big"
+        ];
         $request->validate($rules, $messages);
+        if (strtolower($request->name) == strtolower(auth()->user()->name)) {
+            return response()->json(["errors" => ["name" => ["You Are Using The Same Name"]]], 422);
+        }
         if ($request->hasFile("avatar") && $request->file("avatar")->isValid()) {
             $fileName = Str::random(10) . "_" . now()->timestamp . "_" . auth()->user()->id . "." . $request->file("avatar")->getClientOriginalExtension();
             $path = $request->file("avatar")->storeAs("assets", $fileName);
