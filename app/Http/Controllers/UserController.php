@@ -273,7 +273,7 @@ class UserController extends Controller
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent()
         ]);
-        $user = User::where('status', 1)->orWhereNull('email_verified_at')->find($verifiable->user_id);
+        $user = User::where(['id' => $verifiable->user_id, 'status' => 1])->orWhereNull('email_verified_at')->first();
         if (empty($user)) {
             abort(404);
         }
