@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PasswordReset;
 use App\Models\LoginInfo;
 use App\Models\User;
 use App\Models\UserDataHistory;
+use App\Models\PersonalAccessToken;
+use App\Models\PersonalAccessTokenEvent;
 
 class HomeController extends Controller
 {
@@ -79,6 +83,38 @@ class HomeController extends Controller
             return response()->json(["refresh" => true], 200);
         }
         return response()->json(["default" => true], 200);
+    }
+
+    // ---- ------ -- --- -------- -----
+    // This Method Is For Password Reset
+    // ---- ------ -- --- -------- -----
+
+    public function passwordReset(Request $request)
+    {
+        $old_tokens = PersonalAccessToken::where(['user_id' => auth()->user()->id, 'type' => 'password_reset'])->where('expires_at', '>', now())->count();
+        if ($old_tokens >= 2) {
+            return response()->json(['success' => true], 200);
+        }
+        $token = PersonalAccessToken::create([
+            'user_id' => auth()->user()->id,
+            'type' => 'password_reset',
+            'token' => Str::random(60),
+            'status' => 1,
+            'created_at' => now(),
+            'expires_at' => now()->addHours(1)
+        ]);
+        PersonalAccessTokenEvent::create([
+            'token_id' => $token->id,
+            'type' => 'request',
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent()
+        ]);
+        $emailData = [
+            'name' => auth()->user()->name,
+            'token' => $token->token
+        ];
+        Mail::to(auth()->user()->email)->send(new PasswordReset($emailData));
+        return response()->json(['success' => true], 200);
     }
 
     // ---- ------ -- --- ------

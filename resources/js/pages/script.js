@@ -283,14 +283,17 @@ switchTwoStepVerification();
 // ---- ------ -- --- ------
 
 function logout() {
-    const logout = $("form#logout");
-    logout.on("submit", (e) => {
+    const logout = $("form.logout-form");
+    logout.on("click", (e) => {
         e.preventDefault();
         loading(true);
         $.ajax({
             url: logout.attr("action"),
             method: logout.attr("method"),
             data: logout.serialize(),
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
             success: function (response) {
                 if (response["success"]) {
                     sessionStorage.removeItem("current-page");
@@ -371,3 +374,37 @@ function editProfile() {
 }
 
 editProfile();
+
+// ---- ------ -- --- -------- ----- -------
+// This Method Is For Password Reset Request
+// ---- ------ -- --- -------- ----- -------
+
+function passwordReset() {
+    const reset = $("form#passwordReset");
+    reset.on("click", (e) => {
+        e.preventDefault();
+        loading(true);
+        $.ajax({
+            url: reset.attr("action"),
+            method: reset.attr("method"),
+            data: reset.serialize(),
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            success: function (response) {
+                if (response["success"]) {
+                    loading(false);
+                    notify(
+                        "check your email",
+                        "a password reset link has been sent to your email"
+                    );
+                }
+            },
+            error: function (error) {
+                loading(false);
+            },
+        });
+    });
+}
+
+passwordReset();

@@ -701,7 +701,7 @@
                                 <h4>{{ auth()->user()->name }}</h4>
                                 <div class="email">{{ auth()->user()->email }}</div>
                             </div>
-                            <x-form id="logout" method="post" action="{{ route('logout') }}">
+                            <x-form class="logout-form" method="post" action="{{ route('logout') }}">
                                 <button class="logout" title="Logout">
                                     <i class="fa-solid fa-arrow-right-from-bracket"></i>
                                 </button>
@@ -781,16 +781,18 @@
                         <div class="container">
                             <h2>security</h2>
                             <div class="box">
-                                <div class="static">
-                                    <div class="visible">
-                                        <div>
-                                            <h3>password</h3>
-                                            <h4>password change request</h4>
+                                <div class="static reset">
+                                    <x-form id="passwordReset" method="post" action="{{ route('password-reset') }}">
+                                        <div class="visible">
+                                            <div>
+                                                <h3>password</h3>
+                                                <h4>password change request</h4>
+                                            </div>
+                                            <div>
+                                                <i class="fa-solid fa-key"></i>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <i class="fa-solid fa-key"></i>
-                                        </div>
-                                    </div>
+                                    </x-form>
                                 </div>
                                 <div class="static verification">
                                     <label for="verification">
@@ -860,15 +862,17 @@
                             <h2>other</h2>
                             <div class="box">
                                 <div class="static danger">
-                                    <div class="visible">
-                                        <div>
-                                            <h3>log out</h3>
-                                            <h4>signing out of your account</h4>
+                                    <x-form class="logout-form" method="post" action="{{ route('logout') }}">
+                                        <div class="visible">
+                                            <div>
+                                                <h3>log out</h3>
+                                                <h4>signing out of your account</h4>
+                                            </div>
+                                            <div>
+                                                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                                        </div>
-                                    </div>
+                                    </x-form>
                                 </div>
                                 <div class="static danger">
                                     <div class="visible">

@@ -312,6 +312,10 @@ class UserController extends Controller
             'type' => 'password_change',
             'created_at' => now()
         ]);
+        LoginInfo::where(['user_id' => $user->id, 'status' => 1])->update([
+            'status' => 0,
+            'updated_at' => now()
+        ]);
         $emailData = [
             'name' => $user->name
         ];
