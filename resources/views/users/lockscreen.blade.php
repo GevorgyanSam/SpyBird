@@ -17,10 +17,10 @@
                 <div class="item">
                     <div class="box">
                         <div class="avatar">
-                            @if (auth()->user()->avatar)
-                            <img src="{{ auth()->user()->avatar }}">
+                            @if(auth()->user()->avatar)
+                                <img src="{{ asset('storage/' . auth()->user()->avatar) }}">
                             @else
-                            {{ auth()->user()->name[0] }}
+                                {{ auth()->user()->name[0] }}
                             @endif
                         </div>
                         <h3>{{ auth()->user()->name }}</h3>

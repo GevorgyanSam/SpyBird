@@ -239,9 +239,9 @@ function switchFullScreen() {
 
 switchFullScreen();
 
-// ---- ------ -- --- --------- -- --- ------ -----
-// This Method Is For Switching To Spy Screen Mode.
-// ---- ------ -- --- --------- -- --- ------ -----
+// ---- ------ -- --- --------- -- --- -----
+// This Method Is For Switching To Spy Mode.
+// ---- ------ -- --- --------- -- --- -----
 
 function switchSpyMode() {
     const checkbox = $(".settingsParent .spy input[type=checkbox]");
@@ -256,6 +256,24 @@ function switchSpyMode() {
 }
 
 switchSpyMode();
+
+// ---- ------ -- --- --------- -- --------- -----
+// This Method Is For Switching To Invisible Mode.
+// ---- ------ -- --- --------- -- --------- -----
+
+function switchInvisibleMode() {
+    const checkbox = $(".settingsParent .invisible input[type=checkbox]");
+    checkbox.change((e) => {
+        if (e.target.checked) {
+            notify("Switch To Invisible Mode", "This Feature Is Under Construction");
+            setTimeout(() => {
+                e.target.checked = false;
+            }, 1000);
+        }
+    });
+}
+
+switchInvisibleMode();
 
 // ---- ------ -- --- --- ---- ------------
 // This Method Is For Two Step Verification

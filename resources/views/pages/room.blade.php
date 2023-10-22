@@ -708,7 +708,7 @@
                             </x-form>
                         </div>
                         <div class="container">
-                            <h2>account</h2>
+                            <h2>features</h2>
                             <div class="box">
                                 <div class="static spy">
                                     <label for="spy">
@@ -723,6 +723,24 @@
                                         </div>
                                     </label>
                                 </div>
+                                <div class="static invisible">
+                                    <label for="invisible">
+                                        <div class="visible">
+                                            <div>
+                                                <h3>invisible mode</h3>
+                                                <h4>switch to invisible mode</h4>
+                                            </div>
+                                            <div>
+                                                <input type="checkbox" class="checkbox" id="invisible">
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <h2>account</h2>
+                            <div class="box">
                                 <div class="accordion">
                                     <div class="visible">
                                         <div>
