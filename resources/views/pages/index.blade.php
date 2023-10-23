@@ -843,50 +843,23 @@
                         <div class="container">
                             <h2>devices</h2>
                             <div class="box">
+                                @foreach ($devices as $device)
                                 <div class="static devices">
                                     <div class="visible">
                                         <div>
-                                            <h3>linux - armenia, yerevan</h3>
-                                            <h4>26 aug 10:52</h4>
+                                            <h3>{{ $device['platform'] }} - {{ $device['location'] }}</h3>
+                                            <h4>{{ $device['date'] }}</h4>
                                         </div>
                                         <div>
+                                            @if ($device['status'])
                                             <div class="active"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="static devices">
-                                    <div class="visible">
-                                        <div>
-                                            <h3>windows - armenia, armavir</h3>
-                                            <h4>25 aug 10:52</h4>
-                                        </div>
-                                        <div>
+                                            @else
                                             <i class="fa-solid fa-trash"></i>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
-                                <div class="static devices">
-                                    <div class="visible">
-                                        <div>
-                                            <h3>iPhone - armenia, paraqar</h3>
-                                            <h4>16 sep 10:52</h4>
-                                        </div>
-                                        <div>
-                                            <i class="fa-solid fa-trash"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="static devices">
-                                    <div class="visible">
-                                        <div>
-                                            <h3>samsung - armenia, musaler</h3>
-                                            <h4>5 jan 10:52</h4>
-                                        </div>
-                                        <div>
-                                            <i class="fa-solid fa-trash"></i>
-                                        </div>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                         <div class="container">

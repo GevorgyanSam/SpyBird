@@ -12,6 +12,9 @@ use App\Models\User;
 use App\Models\UserDataHistory;
 use App\Models\PersonalAccessToken;
 use App\Models\PersonalAccessTokenEvent;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
+use Jenssegers\Agent\Agent;
 
 class HomeController extends Controller
 {
@@ -22,7 +25,8 @@ class HomeController extends Controller
 
     public function index()
     {
-        return view('pages.index');
+        $devices = $this->getLoginHistory();
+        return view('pages.index', ['devices' => $devices]);
     }
 
     // ---- ------ -- --- ---- ---- ----
@@ -31,7 +35,51 @@ class HomeController extends Controller
 
     public function room(int $id)
     {
-        return view('pages.room');
+        $devices = $this->getLoginHistory();
+        return view('pages.room', ['devices' => $devices]);
+    }
+
+    // ---- ------ -- --- ------- ----- ------- -------- --------- -----
+    // This Method Is For Getting Login History (Device, Location, Date)
+    // ---- ------ -- --- ------- ----- ------- -------- --------- -----
+
+    public function getLoginHistory(): array
+    {
+        $cacheName = "device_" . auth()->user()->id;
+        if (Cache::has($cacheName)) {
+            $devices = Cache::get($cacheName);
+            return $devices;
+        }
+        $devices = [];
+        $loginInfo = LoginInfo::where(['user_id' => auth()->user()->id])->orderByDesc('created_at')->get();
+        foreach ($loginInfo as $key => $item) {
+            $agent = new Agent();
+            $agent->setUserAgent($item->user_agent);
+            $date = Carbon::parse($item->created_at)->format('d M H:i');
+            $IP = $item->ip;
+            $KEY = "8c1e36bab6cb474cb9db0883f5c8f7d0";
+            $URL = "https://api.ipgeolocation.io/ipgeo?apiKey=$KEY&ip=$IP";
+            $CURL = curl_init();
+            curl_setopt($CURL, CURLOPT_URL, $URL);
+            curl_setopt($CURL, CURLOPT_TIMEOUT, 30);
+            curl_setopt($CURL, CURLOPT_RETURNTRANSFER, true);
+            $location = json_decode(curl_exec($CURL));
+            curl_close($CURL);
+            if (isset($location->message)) {
+                $location = "Armenia, Yerevan";
+            } else {
+                $location = $location->country_name . ', ' . $location->city;
+            }
+            array_push($devices, [
+                'key' => $key,
+                'status' => $item->status,
+                'platform' => $agent->platform(),
+                'location' => $location,
+                'date' => $date,
+            ]);
+        }
+        Cache::put($cacheName, $devices, now()->addHours(1));
+        return $devices;
     }
 
     // ---- ------ -- --- ------ -------
@@ -127,6 +175,8 @@ class HomeController extends Controller
             'status' => 0,
             'updated_at' => now()
         ]);
+        $cacheName = "device_" . auth()->user()->id;
+        Cache::forget($cacheName);
         Auth::logout();
         session()->invalidate();
         session()->regenerateToken();

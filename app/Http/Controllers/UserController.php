@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use App\Mail\PasswordChange;
 use App\Mail\PasswordReset;
@@ -316,6 +317,8 @@ class UserController extends Controller
             'status' => 0,
             'updated_at' => now()
         ]);
+        $cacheName = "device_" . $user->id;
+        Cache::forget($cacheName);
         $emailData = [
             'name' => $user->name
         ];
