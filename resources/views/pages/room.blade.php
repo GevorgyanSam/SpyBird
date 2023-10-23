@@ -767,6 +767,19 @@
                                         </x-form>
                                     </div>
                                 </div>
+                                <div class="static activity">
+                                    <label for="activity">
+                                        <div class="visible">
+                                            <div>
+                                                <h3>activity status</h3>
+                                                <h4>toggle activity status</h4>
+                                            </div>
+                                            <div>
+                                                <input type="checkbox" class="checkbox" id="activity">
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
                                 <div class="static theme">
                                     <div class="visible">
                                         <div>

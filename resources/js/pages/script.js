@@ -275,6 +275,24 @@ function switchInvisibleMode() {
 
 switchInvisibleMode();
 
+// ---- ------ -- --- --------- -------- -------
+// This Method Is For Switching Activity Status.
+// ---- ------ -- --- --------- -------- -------
+
+function switchActivityStatus() {
+    const checkbox = $(".settingsParent .activity input[type=checkbox]");
+    checkbox.change((e) => {
+        if (e.target.checked) {
+            notify("Toggle Activity Status", "This Feature Is Under Construction");
+            setTimeout(() => {
+                e.target.checked = false;
+            }, 1000);
+        }
+    });
+}
+
+switchActivityStatus();
+
 // ---- ------ -- --- --- ---- ------------
 // This Method Is For Two Step Verification
 // ---- ------ -- --- --- ---- ------------
