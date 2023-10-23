@@ -52,26 +52,25 @@ class HomeController extends Controller
         }
         $devices = [];
         $loginInfo = LoginInfo::where(['user_id' => auth()->user()->id])->orderByDesc('created_at')->get();
-        foreach ($loginInfo as $key => $item) {
+        foreach ($loginInfo as $item) {
             $agent = new Agent();
             $agent->setUserAgent($item->user_agent);
             $date = Carbon::parse($item->created_at)->format('d M H:i');
-            $IP = $item->ip;
-            $KEY = "8c1e36bab6cb474cb9db0883f5c8f7d0";
-            $URL = "https://api.ipgeolocation.io/ipgeo?apiKey=$KEY&ip=$IP";
-            $CURL = curl_init();
-            curl_setopt($CURL, CURLOPT_URL, $URL);
-            curl_setopt($CURL, CURLOPT_TIMEOUT, 30);
-            curl_setopt($CURL, CURLOPT_RETURNTRANSFER, true);
-            $location = json_decode(curl_exec($CURL));
-            curl_close($CURL);
+            $ip = $item->ip;
+            $key = env("IP_GEOLOCATION_API_KEY");
+            $url = "https://api.ipgeolocation.io/ipgeo?apiKey=$key&ip=$ip";
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            $location = json_decode(curl_exec($curl));
+            curl_close($curl);
             if (isset($location->message)) {
-                $location = "Armenia, Yerevan";
+                $location = "Not Detected";
             } else {
                 $location = $location->country_name . ', ' . $location->city;
             }
             array_push($devices, [
-                'key' => $key,
                 'status' => $item->status,
                 'platform' => $agent->platform(),
                 'location' => $location,
