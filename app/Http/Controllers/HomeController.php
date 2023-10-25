@@ -55,16 +55,12 @@ class HomeController extends Controller
         foreach ($loginInfo as $item) {
             $agent = new Agent();
             $agent->setUserAgent($item->user_agent);
+            $device = $agent->device();
+            if (!$device || strtolower($device) == "webkit") {
+                $device = $agent->platform();
+            }
             $date = Carbon::parse($item->created_at)->format('d M H:i');
-            $ip = $item->ip;
-            $key = env("IP_GEOLOCATION_API_KEY");
-            $url = "https://api.ipgeolocation.io/ipgeo?apiKey=$key&ip=$ip";
-            $curl = curl_init();
-            curl_setopt($curl, CURLOPT_URL, $url);
-            curl_setopt($curl, CURLOPT_TIMEOUT, 30);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-            $location = json_decode(curl_exec($curl));
-            curl_close($curl);
+            $location = LocationController::find($item->ip);
             if (isset($location->message)) {
                 $location = "Not Detected";
             } else {
@@ -72,7 +68,7 @@ class HomeController extends Controller
             }
             array_push($devices, [
                 'status' => $item->status,
-                'platform' => $agent->platform(),
+                'platform' => $device,
                 'location' => $location,
                 'date' => $date,
             ]);
