@@ -444,3 +444,51 @@ function passwordReset() {
 }
 
 passwordReset();
+
+// ---- ------ -- --- -------- ------ ---- --------
+// This Method Is For Deleting Device From Settings
+// ---- ------ -- --- -------- ------ ---- --------
+
+function deleteDevice() {
+    const devices = $(".settingsParent .static.devices").has("i.fa-trash");
+    devices.each(function() {
+        $(this).on("click", function() {
+            let device = $(this);
+            let url = device.find("input[name=device-link]").val()
+            loading(true);
+            $.ajax({
+                url: url,
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+                success: function (response) {
+                    if (response["success"]) {
+                        loading(false);
+                        deleteDeviceAnimation(device);
+                    }
+                },
+                error: function (error) {
+                    loading(false);
+                },
+            });
+        });
+    });
+}
+
+deleteDevice();
+
+// ---- ------ -- -- --------- --- -------- - -------
+// This Method Is An Animation For Deleting A Device
+// ---- ------ -- -- --------- --- -------- - -------
+
+function deleteDeviceAnimation(device) {
+    device.animate({
+        height: 0,
+        opacity: 0,
+        scale: 0
+    }, 200);
+    setTimeout(() => {
+        device.remove();
+    }, 300);
+}

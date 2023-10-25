@@ -51,7 +51,7 @@ class HomeController extends Controller
             return $devices;
         }
         $devices = [];
-        $loginInfo = LoginInfo::where(['user_id' => auth()->user()->id])->orderByDesc('created_at')->get();
+        $loginInfo = LoginInfo::where(['user_id' => auth()->user()->id])->orderByDesc('created_at')->limit(4)->get();
         foreach ($loginInfo as $item) {
             $agent = new Agent();
             $agent->setUserAgent($item->user_agent);
@@ -66,11 +66,14 @@ class HomeController extends Controller
             } else {
                 $location = $location->country_name . ', ' . $location->city;
             }
+            $link = route("delete-device", ["id" => $item->id]);
             array_push($devices, [
+                'link' => $link,
                 'status' => $item->status,
                 'platform' => $device,
                 'location' => $location,
                 'date' => $date,
+                'deleted_at' => $item->deleted_at
             ]);
         }
         Cache::put($cacheName, $devices, now()->addHours(1));
@@ -160,6 +163,26 @@ class HomeController extends Controller
         return response()->json(['success' => true], 200);
     }
 
+    // ---- ------ -- --- -------- ------ ---- --------
+    // This Method Is For Deleting Device From Settings
+    // ---- ------ -- --- -------- ------ ---- --------
+
+    public function deleteDevice(int $id)
+    {
+        $loginInfo = LoginInfo::where(['id' => $id, 'user_id' => auth()->user()->id, 'status' => 0])->get();
+        if (!$loginInfo->count()) {
+            return response()->json([], 404);
+        }
+        LoginInfo::where(['id' => $id])->update([
+            'deleted_at' => now()
+        ]);
+        $cacheName = "device_" . auth()->user()->id;
+        if (Cache::has($cacheName)) {
+            Cache::forget($cacheName);
+        }
+        return response()->json(['success' => true], 200);
+    }
+
     // ---- ------ -- --- ------
     // This Method Is For Logout
     // ---- ------ -- --- ------
@@ -171,7 +194,9 @@ class HomeController extends Controller
             'updated_at' => now()
         ]);
         $cacheName = "device_" . auth()->user()->id;
-        Cache::forget($cacheName);
+        if (Cache::has($cacheName)) {
+            Cache::forget($cacheName);
+        }
         Auth::logout();
         session()->invalidate();
         session()->regenerateToken();

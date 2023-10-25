@@ -22,7 +22,8 @@ class LoginInfo extends Model
         'user_agent',
         'status',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'deleted_at'
     ];
     public $incrementing = true;
     public $timestamps = false;

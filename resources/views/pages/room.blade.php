@@ -844,6 +844,7 @@
                             <h2>devices</h2>
                             <div class="box">
                                 @foreach ($devices as $device)
+                                @if (!$device['deleted_at'])
                                 <div class="static devices">
                                     <div class="visible">
                                         <div>
@@ -855,10 +856,12 @@
                                             <div class="active"></div>
                                             @else
                                             <i class="fa-solid fa-trash"></i>
+                                            <input type="hidden" name="device-link" value="{{ $device['link'] }}">
                                             @endif
                                         </div>
                                     </div>
                                 </div>
+                                @endif
                                 @endforeach
                             </div>
                         </div>
