@@ -169,7 +169,7 @@ class HomeController extends Controller
 
     public function deleteDevice(int $id)
     {
-        $loginInfo = LoginInfo::where(['id' => $id, 'user_id' => auth()->user()->id, 'status' => 0])->get();
+        $loginInfo = LoginInfo::where(['id' => $id, 'user_id' => auth()->user()->id, 'status' => 0, 'deleted_at' => null])->get();
         if (!$loginInfo->count()) {
             return response()->json([], 404);
         }
