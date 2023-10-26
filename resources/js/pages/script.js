@@ -339,7 +339,6 @@ function logout() {
             },
             error: function (error) {
                 loading(false);
-                console.log(error);
             },
         });
     });
@@ -492,3 +491,37 @@ function deleteDeviceAnimation(device) {
         device.remove();
     }, 300);
 }
+
+// ---- ------ -- --- ------- -----------
+// This Method Is For Account Termination
+// ---- ------ -- --- ------- -----------
+
+function deleteAccount() {
+    const deleteAccount = $("form.delete-account-form");
+    deleteAccount.on("click", (e) => {
+        e.preventDefault();
+        loading(true);
+        $.ajax({
+            url: deleteAccount.attr("action"),
+            method: deleteAccount.attr("method"),
+            data: deleteAccount.serialize(),
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            success: function (response) {
+                if (response["success"]) {
+                    loading(false);
+                    notify(
+                        "check your email",
+                        "an account termination link has been sent to your email"
+                    );
+                }
+            },
+            error: function (error) {
+                loading(false);
+            },
+        });
+    });
+}
+
+deleteAccount();

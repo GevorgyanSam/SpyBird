@@ -893,15 +893,17 @@
                                     </div>
                                 </div>
                                 <div class="static danger">
-                                    <div class="visible">
-                                        <div>
-                                            <h3>delete account</h3>
-                                            <h4>request account termination</h4>
+                                    <x-form class="delete-account-form" method="post" action="{{ route('delete-account') }}">
+                                        <div class="visible">
+                                            <div>
+                                                <h3>delete account</h3>
+                                                <h4>request account termination</h4>
+                                            </div>
+                                            <div>
+                                                <i class="fa-solid fa-user-slash"></i>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <i class="fa-solid fa-user-slash"></i>
-                                        </div>
-                                    </div>
+                                    </x-form>
                                 </div>
                             </div>
                         </div>

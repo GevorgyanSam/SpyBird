@@ -183,6 +183,15 @@ class HomeController extends Controller
         return response()->json(['success' => true], 200);
     }
 
+    // ---- ------ -- --- ------- ----------- -----
+    // This Method Is For Account Termination Email
+    // ---- ------ -- --- ------- ----------- -----
+
+    public function deleteAccount()
+    {
+        return response()->json(['success' => true], 200);
+    }
+
     // ---- ------ -- --- ------
     // This Method Is For Logout
     // ---- ------ -- --- ------
