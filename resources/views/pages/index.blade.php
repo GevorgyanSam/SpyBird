@@ -881,6 +881,7 @@
                                         </div>
                                     </x-form>
                                 </div>
+                                @if (auth()->user()->two_factor_authentication)
                                 <div class="static danger">
                                     <div class="visible">
                                         <div>
@@ -892,6 +893,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                @endif
                                 <div class="static danger">
                                     <x-form class="delete-account-form" method="post" action="{{ route('delete-account') }}">
                                         <div class="visible">

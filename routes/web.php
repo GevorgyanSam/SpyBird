@@ -40,7 +40,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/room/{id}', 'room')->name('room');
         Route::post('/update-profile', 'updateProfile')->name('update-profile');
-        Route::post('/password-reset', 'passwordReset')->name('password-reset');
+        Route::post('/reset-password', 'passwordReset')->name('password-reset');
         Route::post('/delete-device/{id}', 'deleteDevice')->name('delete-device');
         Route::post('/delete-account', 'deleteAccount')->name('delete-account');
         Route::post('/logout', 'logout')->name('logout');
@@ -63,5 +63,11 @@ Route::controller(TermsController::class)->name('privacy.')->group(function () {
 
     Route::get('/privacy-policy', 'policy')->name('policy');
     Route::get('/terms-of-service', 'terms')->name('terms');
+
+});
+
+Route::controller(HomeController::class)->group(function () {
+
+    Route::get('/account-termination/{token}', 'accountTermination')->name('account-termination');
 
 });

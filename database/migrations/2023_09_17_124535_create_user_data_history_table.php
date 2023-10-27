@@ -11,7 +11,7 @@ return new class extends Migration {
         Schema::create('user_data_history', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->enum('type', ['name_change', 'avatar_change', 'password_change']);
+            $table->enum('type', ['name_change', 'avatar_change', 'password_change', 'account_termination']);
             $table->string('from', 255)->nullable();
             $table->string('to', 255)->nullable();
             $table->timestamp('created_at');

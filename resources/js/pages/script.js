@@ -265,7 +265,10 @@ function switchInvisibleMode() {
     const checkbox = $(".settingsParent .invisible input[type=checkbox]");
     checkbox.change((e) => {
         if (e.target.checked) {
-            notify("Switch To Invisible Mode", "This Feature Is Under Construction");
+            notify(
+                "Switch To Invisible Mode",
+                "This Feature Is Under Construction"
+            );
             setTimeout(() => {
                 e.target.checked = false;
             }, 1000);
@@ -283,7 +286,10 @@ function switchActivityStatus() {
     const checkbox = $(".settingsParent .activity input[type=checkbox]");
     checkbox.change((e) => {
         if (e.target.checked) {
-            notify("Toggle Activity Status", "This Feature Is Under Construction");
+            notify(
+                "Toggle Activity Status",
+                "This Feature Is Under Construction"
+            );
             setTimeout(() => {
                 e.target.checked = false;
             }, 1000);
@@ -450,16 +456,18 @@ passwordReset();
 
 function deleteDevice() {
     const devices = $(".settingsParent .static.devices").has("i.fa-trash");
-    devices.each(function() {
-        $(this).on("click", function() {
+    devices.each(function () {
+        $(this).on("click", function () {
             let device = $(this);
-            let url = device.find("input[name=device-link]").val()
+            let url = device.find("input[name=device-link]").val();
             loading(true);
             $.ajax({
                 url: url,
                 method: "POST",
                 headers: {
-                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
                 },
                 success: function (response) {
                     if (response["success"]) {
@@ -482,11 +490,14 @@ deleteDevice();
 // ---- ------ -- -- --------- --- -------- - -------
 
 function deleteDeviceAnimation(device) {
-    device.animate({
-        height: 0,
-        opacity: 0,
-        scale: 0
-    }, 200);
+    device.animate(
+        {
+            height: 0,
+            opacity: 0,
+            scale: 0,
+        },
+        200
+    );
     setTimeout(() => {
         device.remove();
     }, 300);
@@ -519,6 +530,9 @@ function deleteAccount() {
             },
             error: function (error) {
                 loading(false);
+                if (error.status === 429) {
+                    notify("too many requests", "try again after a while");
+                }
             },
         });
     });

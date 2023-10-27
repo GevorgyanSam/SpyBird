@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\AccountTerminationConfirmation;
+use App\Mail\AccountTermination;
 use App\Mail\PasswordReset;
 use App\Models\LoginInfo;
 use App\Models\User;
@@ -187,9 +189,88 @@ class HomeController extends Controller
     // This Method Is For Account Termination Email
     // ---- ------ -- --- ------- ----------- -----
 
-    public function deleteAccount()
+    public function deleteAccount(Request $request)
     {
+        $old_tokens = PersonalAccessToken::where(['user_id' => auth()->user()->id, 'type' => 'account_termination'])->where('expires_at', '>', now())->count();
+        if ($old_tokens >= 1) {
+            return response()->json(['error' => true], 429);
+        }
+        $token = PersonalAccessToken::create([
+            'user_id' => auth()->user()->id,
+            'type' => 'account_termination',
+            'token' => Str::random(60),
+            'status' => 1,
+            'created_at' => now(),
+            'expires_at' => now()->addHours(1)
+        ]);
+        PersonalAccessTokenEvent::create([
+            'token_id' => $token->id,
+            'type' => 'request',
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent()
+        ]);
+        $emailData = [
+            'name' => auth()->user()->name,
+            'token' => $token->token
+        ];
+        Mail::to(auth()->user()->email)->send(new AccountTermination($emailData));
         return response()->json(['success' => true], 200);
+    }
+
+    // ---- ------ -- --- ------- -----------
+    // This Method Is For Account Termination
+    // ---- ------ -- --- ------- -----------
+
+    public function accountTermination(Request $request, string $token)
+    {
+        $verifiable = PersonalAccessToken::where(['token' => $token, 'type' => 'account_termination', 'status' => 1])->first();
+        if (empty($verifiable)) {
+            abort(404);
+        }
+        if ($verifiable->expires_at <= now()) {
+            abort(404);
+        }
+        PersonalAccessToken::where(['token' => $token])->update([
+            'status' => 0,
+            'updated_at' => now()
+        ]);
+        $tokenId = PersonalAccessToken::where('token', $token)->value('id');
+        PersonalAccessTokenEvent::create([
+            'token_id' => $tokenId,
+            'type' => 'usage',
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent()
+        ]);
+        $user = User::where(['id' => $verifiable->user_id, 'status' => 1])->first();
+        if (empty($user)) {
+            abort(404);
+        }
+        LoginInfo::where(['user_id' => $user->id, 'status' => 1])->update([
+            'status' => 0,
+            'updated_at' => now()
+        ]);
+        $cacheName = "device_" . $user->id;
+        if (Cache::has($cacheName)) {
+            Cache::forget($cacheName);
+        }
+        User::where(['id' => $user->id])->update([
+            'status' => 0,
+            'updated_at' => now()
+        ]);
+        UserDataHistory::create([
+            'user_id' => $user->id,
+            'type' => 'account_termination',
+            'from' => 1,
+            'to' => 0,
+            'created_at' => now()
+        ]);
+        $emailData = [
+            'name' => auth()->user()->name
+        ];
+        Mail::to($user->email)->send(new AccountTerminationConfirmation($emailData));
+        session()->invalidate();
+        session()->regenerateToken();
+        return redirect()->route('user.login');
     }
 
     // ---- ------ -- --- ------
