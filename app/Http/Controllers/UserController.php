@@ -81,13 +81,16 @@ class UserController extends Controller
             'updated_at' => now()
         ]);
         Auth::login($credentials);
-        LoginInfo::create([
+        $login_id = LoginInfo::create([
             'user_id' => Auth::user()->id,
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent(),
             'status' => 1,
             'created_at' => now()
         ]);
+        session()->put('login-id', $login_id->id);
+        $cacheName = "device_" . Auth::user()->id;
+        Cache::forget($cacheName);
         return response()->json(['success' => true], 200);
     }
 
@@ -185,13 +188,14 @@ class UserController extends Controller
         $user = User::find($verifiable->user_id);
         Mail::to($user->email)->send(new RegistrationSuccess(['name' => $user->name]));
         Auth::login($user);
-        LoginInfo::create([
+        $login_id = LoginInfo::create([
             'user_id' => $user->id,
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent(),
             'status' => 1,
             'created_at' => now()
         ]);
+        session()->put('login-id', $login_id->id);
         return redirect()->route('index');
     }
 

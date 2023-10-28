@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/reset-password', 'passwordReset')->name('password-reset');
         Route::post('/delete-device/{id}', 'deleteDevice')->name('delete-device');
         Route::post('/delete-account', 'deleteAccount')->name('delete-account');
+        Route::post('/check-authentication', 'checkAuthentication')->name('check-authentication');
         Route::post('/logout', 'logout')->name('logout');
 
     });

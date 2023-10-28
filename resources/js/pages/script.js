@@ -539,3 +539,27 @@ function deleteAccount() {
 }
 
 deleteAccount();
+
+// ---- ------ -- --- -------- -------------- ----- ------
+// This Method Is For Checking Authentication Every Minute
+// ---- ------ -- --- -------- -------------- ----- ------
+
+function checkAuthentication() {
+    function request() {
+        $.ajax({
+            url: "/check-authentication",
+            method: "POST",
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            success: function (response) {
+                if (response.reload) {
+                    location.reload();
+                }
+            },
+        });
+    }
+    setInterval(request, 5000);
+}
+
+checkAuthentication();
