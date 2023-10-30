@@ -22,6 +22,7 @@ class LoginInfo extends Model
         'user_agent',
         'status',
         'created_at',
+        'expires_at',
         'updated_at',
         'deleted_at'
     ];

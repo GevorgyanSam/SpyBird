@@ -86,7 +86,8 @@ class UserController extends Controller
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent(),
             'status' => 1,
-            'created_at' => now()
+            'created_at' => now(),
+            'expires_at' => now()->addHours(1)
         ]);
         session()->put('login-id', $login_id->id);
         $cacheName = "device_" . Auth::user()->id;
@@ -193,7 +194,8 @@ class UserController extends Controller
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent(),
             'status' => 1,
-            'created_at' => now()
+            'created_at' => now(),
+            'expires_at' => now()->addHours(1)
         ]);
         session()->put('login-id', $login_id->id);
         return redirect()->route('index');

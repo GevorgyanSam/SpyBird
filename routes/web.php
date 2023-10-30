@@ -20,8 +20,6 @@ Route::middleware('guest')->group(function () {
         Route::get('/register/verify-email/{token}', 'verifyEmail')->name('verify-email');
         Route::get('/password-reset', 'reset')->name('reset');
         Route::post('/password-reset', 'resetAuth')->name('reset-auth');
-        Route::get('/password-reset/{token}', 'token')->name('token');
-        Route::post('/password-reset/{token}', 'tokenAuth')->name('token-auth');
         Route::get('/two-factor-authentication', 'twoFactor')->name('two-factor');
         Route::get('/lost-email-authentication', 'lostEmail')->name('lost-email');
 
@@ -56,9 +54,9 @@ Route::middleware('auth')->group(function () {
 
 });
 
-// ----- ------ --- --- --- -----
-// These Routes Are For All Users
-// ----- ------ --- --- --- -----
+// ----- ------ --- --- ------ --- ------------- -----
+// These Routes Are For Guests And Authenticated Users
+// ----- ------ --- --- ------ --- ------------- -----
 
 Route::controller(TermsController::class)->name('privacy.')->group(function () {
 
@@ -70,5 +68,12 @@ Route::controller(TermsController::class)->name('privacy.')->group(function () {
 Route::controller(HomeController::class)->group(function () {
 
     Route::get('/account-termination/{token}', 'accountTermination')->name('account-termination');
+
+});
+
+Route::controller(UserController::class)->name('user.')->group(function () {
+
+    Route::get('/password-reset/{token}', 'token')->name('token');
+    Route::post('/password-reset/{token}', 'tokenAuth')->name('token-auth');
 
 });

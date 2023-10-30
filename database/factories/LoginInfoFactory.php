@@ -14,6 +14,7 @@ class LoginInfoFactory extends Factory
             'user_agent' => fake()->userAgent(),
             'status' => fake()->numberBetween(0, 1),
             'created_at' => fake()->dateTime(),
+            'expires_at' => fake()->dateTime(),
             'updated_at' => fake()->dateTime(),
             'deleted_at' => fake()->dateTime()
         ];

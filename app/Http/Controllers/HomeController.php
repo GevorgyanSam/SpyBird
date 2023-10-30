@@ -268,8 +268,6 @@ class HomeController extends Controller
             'name' => $user->name
         ];
         Mail::to($user->email)->send(new AccountTerminationConfirmation($emailData));
-        session()->invalidate();
-        session()->regenerateToken();
         return redirect()->route('user.login');
     }
 
@@ -282,6 +280,20 @@ class HomeController extends Controller
         $login_id = session()->get('login-id');
         $loginInfo = LoginInfo::findOrfail($login_id);
         if (Auth::check() && $loginInfo->status) {
+            if ($loginInfo->expires_at < now()) {
+                LoginInfo::where(['id' => $login_id])->update([
+                    'status' => 0,
+                    'updated_at' => now()
+                ]);
+                $cacheName = "device_" . $loginInfo->user_id;
+                if (Cache::has($cacheName)) {
+                    Cache::forget($cacheName);
+                }
+                Auth::logout();
+                session()->invalidate();
+                session()->regenerateToken();
+                return response()->json(["reload" => true], 200);
+            }
             return response()->json(["authenticated" => true], 200);
         }
         if (Auth::check() && !$loginInfo->status) {
