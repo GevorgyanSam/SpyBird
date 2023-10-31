@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TermsController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TwoFactorAuthenticationController;
 
 // ----- ------ --- --- ----- -----
 // These Routes Are For Guest Users
@@ -46,6 +47,13 @@ Route::middleware('auth')->group(function () {
 
     });
 
+    Route::controller(TwoFactorAuthenticationController::class)->group(function () {
+
+        Route::post('/request-enable-two-factor-authentication', 'requestEnableTwoFactor')->name('request-enable-two-factor');
+        Route::post('/request-disable-two-factor-authentication', 'requestDisableTwoFactor')->name('request-disable-two-factor');
+
+    });
+
     Route::controller(UserController::class)->name('user.')->group(function () {
 
         Route::get('/lockscreen', 'lockscreen')->name('lockscreen');
@@ -68,6 +76,13 @@ Route::controller(TermsController::class)->name('privacy.')->group(function () {
 Route::controller(HomeController::class)->group(function () {
 
     Route::get('/account-termination/{token}', 'accountTermination')->name('account-termination');
+
+});
+
+Route::controller(TwoFactorAuthenticationController::class)->group(function () {
+
+    Route::post('/enable-two-factor-authentication/{token}', 'enableTwoFactor')->name('enable-two-factor');
+    Route::post('/disable-two-factor-authentication/{token}', 'disableTwoFactor')->name('disable-two-factor');
 
 });
 

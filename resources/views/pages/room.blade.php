@@ -829,11 +829,11 @@
                                     <label for="verification">
                                         <div class="visible">
                                             <div>
-                                                <h3>two-step verification</h3>
-                                                <h4>toggle two-step verification</h4>
+                                                <h3>two-factor authentication</h3>
+                                                <h4>switch two-factor authentication</h4>
                                             </div>
                                             <div>
-                                                <input type="checkbox" class="checkbox" id="verification">
+                                                <input type="checkbox" class="checkbox" id="verification" {{ auth()->user()->two_factor_authentication ? "checked" : null }}>
                                             </div>
                                         </div>
                                     </label>

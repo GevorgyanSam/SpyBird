@@ -308,7 +308,7 @@ function switchTwoStepVerification() {
     checkbox.change((e) => {
         if (e.target.checked) {
             notify(
-                "Two Step Verification",
+                "two-factor authentication",
                 "This Feature Is Under Construction"
             );
             setTimeout(() => {
