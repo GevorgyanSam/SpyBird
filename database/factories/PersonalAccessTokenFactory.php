@@ -10,7 +10,7 @@ class PersonalAccessTokenFactory extends Factory
     {
         return [
             'user_id' => fake()->numberBetween(1, 100),
-            'type' => fake()->randomElement(['registration', 'password_reset', 'account_termination']),
+            'type' => fake()->randomElement(['registration', 'password_reset', 'account_termination', 'enable_two_factor_authentication', 'disable_two_factor_authentication']),
             'token' => fake()->asciify('************************************************************'),
             'status' => fake()->numberBetween(0, 1),
             'created_at' => fake()->dateTime(),

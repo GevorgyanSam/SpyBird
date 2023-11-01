@@ -306,14 +306,37 @@ switchActivityStatus();
 function switchTwoStepVerification() {
     const checkbox = $(".settingsParent .verification input[type=checkbox]");
     checkbox.change((e) => {
+        loading(true);
         if (e.target.checked) {
-            notify(
-                "two-factor authentication",
-                "This Feature Is Under Construction"
-            );
             setTimeout(() => {
                 e.target.checked = false;
             }, 1000);
+            $.ajax({
+                url: "/request-enable-two-factor-authentication",
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                success: function (response) {
+                    if (response["success"]) {
+                        loading(false);
+                        notify(
+                            "check your email",
+                            "enable two-factor authentication link has been sent to your email"
+                        );
+                    } else if (response["reload"]) {
+                        location.reload();
+                    }
+                },
+                error: function (error) {
+                    loading(false);
+                    if (error.status === 429) {
+                        notify("too many requests", "try again after a while");
+                    }
+                },
+            });
         }
     });
 }
@@ -557,6 +580,11 @@ function checkAuthentication() {
                     location.reload();
                 }
             },
+            error: function (error) {
+                if (error) {
+                    location.reload();
+                }
+            }
         });
     }
     setInterval(request, 5000);

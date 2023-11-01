@@ -81,8 +81,8 @@ Route::controller(HomeController::class)->group(function () {
 
 Route::controller(TwoFactorAuthenticationController::class)->group(function () {
 
-    Route::post('/enable-two-factor-authentication/{token}', 'enableTwoFactor')->name('enable-two-factor');
-    Route::post('/disable-two-factor-authentication/{token}', 'disableTwoFactor')->name('disable-two-factor');
+    Route::get('/enable-two-factor-authentication/{token}', 'enableTwoFactor')->name('enable-two-factor');
+    Route::get('/disable-two-factor-authentication/{token}', 'disableTwoFactor')->name('disable-two-factor');
 
 });
 
