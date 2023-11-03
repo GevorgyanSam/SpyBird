@@ -594,26 +594,24 @@ deleteAccount();
 // ---- ------ -- --- -------- -------------- ----- ------
 
 function checkAuthentication() {
-    function request() {
-        $.ajax({
-            url: "/check-authentication",
-            method: "POST",
-            headers: {
-                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-            },
-            success: function (response) {
-                if (response.reload) {
-                    location.reload();
-                }
-            },
-            error: function (error) {
-                if (error) {
-                    location.reload();
-                }
-            },
-        });
-    }
-    setInterval(request, 5000);
+    $.ajax({
+        url: "/check-authentication",
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        success: function (response) {
+            if (response.reload) {
+                location.reload();
+            }
+        },
+        error: function (error) {
+            if (error) {
+                location.reload();
+            }
+        },
+    });
 }
 
 checkAuthentication();
+setInterval(checkAuthentication, 5000);

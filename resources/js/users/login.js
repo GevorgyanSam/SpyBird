@@ -56,12 +56,13 @@ function login() {
                 loading(false);
                 if (error.status === 422) {
                     handleValidationErrors(error.responseJSON.errors);
-                }
-                if (error.status === 429) {
+                } else if (error.status === 429) {
                     notify(
                         error.responseJSON.errors.title,
                         error.responseJSON.errors.body
                     );
+                } else if (error.status === 419) {
+                    location.reload();
                 }
             },
         });
