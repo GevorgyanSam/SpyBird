@@ -308,9 +308,7 @@ function switchTwoStepVerification() {
     checkbox.change((e) => {
         loading(true);
         if (e.target.checked) {
-            setTimeout(() => {
-                e.target.checked = false;
-            }, 1000);
+            e.target.checked = false;
             $.ajax({
                 url: "/request-enable-two-factor-authentication",
                 method: "POST",
@@ -324,7 +322,35 @@ function switchTwoStepVerification() {
                         loading(false);
                         notify(
                             "check your email",
-                            "enable two-factor authentication link has been sent to your email"
+                            "enable 2FA link has been sent to your email"
+                        );
+                    } else if (response["reload"]) {
+                        location.reload();
+                    }
+                },
+                error: function (error) {
+                    loading(false);
+                    if (error.status === 429) {
+                        notify("too many requests", "try again after a while");
+                    }
+                },
+            });
+        } else {
+            e.target.checked = true;
+            $.ajax({
+                url: "/request-disable-two-factor-authentication",
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                success: function (response) {
+                    if (response["success"]) {
+                        loading(false);
+                        notify(
+                            "check your email",
+                            "disable 2FA link has been sent to your email"
                         );
                     } else if (response["reload"]) {
                         location.reload();
@@ -584,7 +610,7 @@ function checkAuthentication() {
                 if (error) {
                     location.reload();
                 }
-            }
+            },
         });
     }
     setInterval(request, 5000);

@@ -8,7 +8,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class EnableTwoFactorAuthenticationConfirmation extends Mailable
+class DisableTwoFactorAuthentication extends Mailable
 {
     use Queueable, SerializesModels;
     public array $Data;
@@ -21,14 +21,14 @@ class EnableTwoFactorAuthenticationConfirmation extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Confirmation Of Enabling Two-Factor Authentication',
+            subject: 'Disable Two-Factor Authentication',
         );
     }
 
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.enable-two-factor-authentication-confirmation',
+            markdown: 'emails.disable-two-factor-authentication',
         );
     }
 
