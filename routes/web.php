@@ -22,6 +22,7 @@ Route::middleware('guest')->group(function () {
         Route::get('/password-reset', 'reset')->name('reset');
         Route::post('/password-reset', 'resetAuth')->name('reset-auth');
         Route::get('/two-factor-authentication', 'twoFactor')->name('two-factor');
+        Route::post('/two-factor-authentication', 'twoFactorAuth')->name('two-factor-auth');
         Route::get('/lost-email-authentication', 'lostEmail')->name('lost-email');
 
     });

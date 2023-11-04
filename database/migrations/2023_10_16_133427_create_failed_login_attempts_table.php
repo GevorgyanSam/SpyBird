@@ -11,6 +11,7 @@ return new class extends Migration {
         Schema::create('failed_login_attempts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
+            $table->enum('type', ['password', 'two_factor_code', 'backup_code']);
             $table->ipAddress('ip');
             $table->text('user_agent');
             $table->timestamp('created_at');

@@ -3,6 +3,7 @@
         <link rel="stylesheet" href="{{ asset('css/users/style.css') }}">
     </x-slot>
     <x-slot:body>
+        <x-loading />
         <nav>
             <div class="navParent">
                 <div class="logo">
@@ -26,10 +27,10 @@
                         <h3>hi, {{ $credentials->name }}</h3>
                         <h4>enter the verification code sent to <br> <span>{{ $credentials->masked }}</span></h4>
                         <div class="formParent">
-                            <x-form method="post">
+                            <x-form id="form" method="post" action="{{ route('user.two-factor-auth') }}">
                                 <div class="formItem">
                                     <label for="code">Verification Code</label>
-                                    <input type="number" id="code" autocomplete="off">
+                                    <input type="number" id="code" autocomplete="off" name="code">
                                 </div>
                                 <div class="formItem">
                                     <button type="submit">verify</button>

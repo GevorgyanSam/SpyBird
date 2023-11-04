@@ -15,6 +15,7 @@ class FailedLoginAttempt extends Model
     protected $guarded = [];
     protected $fillable = [
         'user_id',
+        'type',
         'ip',
         'user_agent',
         'created_at'
