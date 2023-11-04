@@ -21,6 +21,7 @@ class TwoFactorAuthentication extends Model
         'code',
         'status',
         'created_at',
+        'expires_at',
         'updated_at'
     ];
     public $incrementing = true;

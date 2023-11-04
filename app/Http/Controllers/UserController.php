@@ -12,6 +12,7 @@ use App\Mail\PasswordChange;
 use App\Mail\PasswordReset;
 use App\Mail\RegistrationSuccess;
 use App\Mail\VerifyEmail;
+use App\Mail\AuthenticationCode;
 use App\Models\Guest;
 use App\Models\User;
 use App\Models\LoginInfo;
@@ -19,6 +20,7 @@ use App\Models\PersonalAccessToken;
 use App\Models\PersonalAccessTokenEvent;
 use App\Models\UserDataHistory;
 use App\Models\FailedLoginAttempt;
+use App\Models\TwoFactorAuthentication;
 
 class UserController extends Controller
 {
@@ -75,6 +77,30 @@ class UserController extends Controller
                 'created_at' => now()
             ]);
             return response()->json(['errors' => ['password' => ['Wrong Password']]], 422);
+        }
+        if ($credentials->two_factor_authentication) {
+            $code = rand(10000000, 99999999);
+            TwoFactorAuthentication::create([
+                'user_id' => $credentials->id,
+                'code' => $code,
+                'status' => 1,
+                'created_at' => now(),
+                'expires_at' => now()->addMinutes(20)
+            ]);
+            $emailData = [
+                'name' => $credentials->name,
+                'code' => $code
+            ];
+            Mail::to($credentials->email)->send(new AuthenticationCode($emailData));
+            $data = (object) [
+                'id' => $credentials->id,
+                'name' => $credentials->name,
+                'email' => $credentials->email,
+                'avatar' => $credentials->avatar,
+                'code' => $code
+            ];
+            session()->put('credentials', $data);
+            return response()->json(['two-factor' => true], 200);
         }
         LoginInfo::where(['user_id' => $credentials->id, 'status' => 1])->update([
             'status' => 0,
@@ -347,7 +373,20 @@ class UserController extends Controller
 
     public function twoFactor()
     {
-        return view('users.two-factor');
+        if (!session()->has('credentials')) {
+            return redirect()->route('user.login');
+        }
+        $credentials = session()->get('credentials');
+        if (isset($credentials->visited)) {
+            session()->forget('credentials');
+            return redirect()->route('user.login');
+        }
+        $credentials->visited = true;
+        $position = Str::position($credentials->email, '@');
+        $replacement = substr($credentials->email, 1, $position - 2);
+        $masked_email = str_replace($replacement, '*****', $credentials->email);
+        $credentials->masked = $masked_email;
+        return view('users.two-factor', ['credentials' => $credentials]);
     }
 
     // ---- ------ -- --- ---- ----- -------------- ---- ----

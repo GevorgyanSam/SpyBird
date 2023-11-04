@@ -48,6 +48,19 @@ function login() {
                 if (response["success"]) {
                     loading(false);
                     location.href = "/";
+                } else if (response["two-factor"]) {
+                    loading(false);
+                    const fieldsToClear = [emailLabel, passwordLabel];
+                    fieldsToClear.forEach((label) => {
+                        const input = label.siblings("input");
+                        input.val("");
+                        label.removeClass("error");
+                        label.text(label.attr("for"));
+                        focus(input, label);
+                    });
+                    passwordLabel.nextAll("input + i").css("display", "none");
+                    emailLabel.siblings("input").focus();
+                    location.href = "/two-factor-authentication";
                 } else {
                     location.reload();
                 }

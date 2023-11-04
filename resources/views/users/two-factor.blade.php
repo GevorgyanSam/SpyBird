@@ -17,11 +17,14 @@
                 <div class="item">
                     <div class="box">
                         <div class="avatar">
-                            <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/1.jpg">
-                            W
+                            @if($credentials->avatar)
+                                <img src="{{ asset('storage/' . $credentials->avatar) }}">
+                            @else
+                                {{ $credentials->name[0] }}
+                            @endif
                         </div>
-                        <h3>hi, william pearson</h3>
-                        <h4>enter the verification code sent to <br> s*****5@gmail.com</h4>
+                        <h3>hi, {{ $credentials->name }}</h3>
+                        <h4>enter the verification code sent to <br> <span>{{ $credentials->masked }}</span></h4>
                         <div class="formParent">
                             <x-form method="post">
                                 <div class="formItem">

@@ -96,7 +96,7 @@ class TwoFactorAuthenticationController extends Controller
         ]);
         $backupCodes = [];
         for ($i = 0; $i < 6; $i++) {
-            $code = rand(100000, 999999);
+            $code = rand(10000000, 99999999);
             array_push($backupCodes, $code);
             BackupCode::create([
                 'user_id' => $user->id,

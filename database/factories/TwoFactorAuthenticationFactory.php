@@ -13,6 +13,7 @@ class TwoFactorAuthenticationFactory extends Factory
             'code' => fake()->numberBetween(100000, 999999),
             'status' => fake()->numberBetween(0, 1),
             'created_at' => fake()->dateTime(),
+            'expires_at' => fake()->dateTime(),
             'updated_at' => fake()->dateTime()
         ];
     }
