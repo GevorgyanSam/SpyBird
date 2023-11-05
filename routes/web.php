@@ -21,9 +21,15 @@ Route::middleware('guest')->group(function () {
         Route::get('/register/verify-email/{token}', 'verifyEmail')->name('verify-email');
         Route::get('/password-reset', 'reset')->name('reset');
         Route::post('/password-reset', 'resetAuth')->name('reset-auth');
+
+    });
+
+    Route::controller(TwoFactorAuthenticationController::class)->group(function () {
+
         Route::get('/two-factor-authentication', 'twoFactor')->name('two-factor');
         Route::post('/two-factor-authentication', 'twoFactorAuth')->name('two-factor-auth');
         Route::get('/lost-email-authentication', 'lostEmail')->name('lost-email');
+        Route::post('/lost-email-authentication', 'lostEmailAuth')->name('lost-email-auth');
 
     });
 

@@ -31,6 +31,9 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
+        if (session()->has('credentials')) {
+            session()->forget('credentials');
+        }
         Guest::create([
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent(),
@@ -366,97 +369,6 @@ class UserController extends Controller
     public function lockscreen()
     {
         return view('users.lockscreen');
-    }
-
-    // ---- ------ -- --- --- ------ -------------- ---- ----
-    // This Method Is For Two Factor Authentication Page View
-    // ---- ------ -- --- --- ------ -------------- ---- ----
-
-    public function twoFactor()
-    {
-        if (!session()->has('credentials')) {
-            return redirect()->route('user.login');
-        }
-        $credentials = session()->get('credentials');
-        if (isset($credentials->visited)) {
-            session()->forget('credentials');
-            return redirect()->route('user.login');
-        }
-        $credentials->visited = true;
-        $position = Str::position($credentials->email, '@');
-        $replacement = substr($credentials->email, 1, $position - 2);
-        $masked_email = str_replace($replacement, '*****', $credentials->email);
-        $credentials->masked = $masked_email;
-        return view('users.two-factor', ['credentials' => $credentials]);
-    }
-
-    // ---- ------ -- --- --- ------ -------------- -----
-    // This Method Is For Two Factor Authentication Logic
-    // ---- ------ -- --- --- ------ -------------- -----
-
-    public function twoFactorAuth(Request $request)
-    {
-        $failed_login_attempts = FailedLoginAttempt::where([
-            'ip' => $request->ip(),
-            'user_agent' => $request->userAgent()
-        ])->where('created_at', '>', now()->subHours(1))->count();
-        if ($failed_login_attempts >= 5) {
-            return response()->json([], 429);
-        }
-        if (!session()->has('credentials')) {
-            return response()->json(['reload' => true], 401);
-        }
-        $credentials = session()->get('credentials');
-        $rules = [
-            'code' => ['bail', 'required', 'integer', 'digits:8'],
-        ];
-        $messages = [
-            'required' => 'enter :attribute',
-        ];
-        $request->validate($rules, $messages);
-        $two_factor = TwoFactorAuthentication::where(['code' => $request->input('code'), 'user_id' => $credentials->id, 'updated_at' => null])->where('expires_at', '>', now())->first();
-        if (empty($two_factor)) {
-            FailedLoginAttempt::create([
-                'user_id' => $credentials->id,
-                'type' => 'two_factor_code',
-                'ip' => $request->ip(),
-                'user_agent' => $request->userAgent(),
-                'created_at' => now()
-            ]);
-            return response()->json(['errors' => ['code' => ['Wrong Code']]], 422);
-        }
-        TwoFactorAuthentication::where(['id' => $two_factor->id])->update([
-            'status' => 0,
-            'updated_at' => now()
-        ]);
-        $user = User::findOrfail($credentials->id);
-        LoginInfo::where(['user_id' => $user->id, 'status' => 1])->update([
-            'status' => 0,
-            'updated_at' => now()
-        ]);
-        Auth::login($user);
-        $login_id = LoginInfo::create([
-            'user_id' => Auth::user()->id,
-            'ip' => $request->ip(),
-            'user_agent' => $request->userAgent(),
-            'status' => 1,
-            'created_at' => now(),
-            'expires_at' => now()->addHours(3)
-        ]);
-        session()->forget('credentials');
-        session()->put('login-id', $login_id->id);
-        $cacheName = "device_" . Auth::user()->id;
-        Cache::forget($cacheName);
-        return response()->json(['success' => true], 200);
-    }
-
-    // ---- ------ -- --- ---- ----- -------------- ---- ----
-    // This Method Is For Lost Email Authentication Page View
-    // ---- ------ -- --- ---- ----- -------------- ---- ----
-
-    public function lostEmail()
-    {
-        return view('users.lost-email');
     }
 
 }

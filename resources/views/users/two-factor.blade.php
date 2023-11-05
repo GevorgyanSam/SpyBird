@@ -27,7 +27,7 @@
                         <h3>hi, {{ $credentials->name }}</h3>
                         <h4>enter the verification code sent to <br> <span>{{ $credentials->masked }}</span></h4>
                         <div class="formParent">
-                            <x-form id="form" method="post" action="{{ route('user.two-factor-auth') }}">
+                            <x-form id="form" method="post" action="{{ route('two-factor-auth') }}">
                                 <div class="formItem">
                                     <label for="code">Verification Code</label>
                                     <input type="number" id="code" autocomplete="off" name="code">
@@ -39,7 +39,7 @@
                         </div>
                     </div>
                     <div class="linkParent">
-                        <p>lost your email ? <a href="{{ route('user.lost-email') }}">use backup codes</a></p>
+                        <p>lost your email ? <a href="{{ route('lost-email') }}">use backup codes</a></p>
                     </div>
                 </div>
             </div>
