@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +12,7 @@ use App\Mail\EnableTwoFactorAuthentication;
 use App\Mail\DisableTwoFactorAuthentication;
 use App\Mail\EnableTwoFactorAuthenticationConfirmation;
 use App\Mail\DisableTwoFactorAuthenticationConfirmation;
+use App\Mail\NewLogin;
 use App\Models\User;
 use App\Models\LoginInfo;
 use App\Models\BackupCode;
@@ -18,6 +20,7 @@ use App\Models\PersonalAccessToken;
 use App\Models\PersonalAccessTokenEvent;
 use App\Models\FailedLoginAttempt;
 use App\Models\TwoFactorAuthentication;
+use Jenssegers\Agent\Agent;
 
 class TwoFactorAuthenticationController extends Controller
 {
@@ -191,11 +194,11 @@ class TwoFactorAuthenticationController extends Controller
             'two_factor_authentication' => 0,
             'updated_at' => now()
         ]);
-        BackupCode::where(['user_id' => $user->id])->update([
+        BackupCode::where(['user_id' => $user->id, 'status' => 1, 'updated_at' => null])->update([
             'status' => 0,
             'updated_at' => now()
         ]);
-        TwoFactorAuthentication::where(['user_id' => $user->id])->update([
+        TwoFactorAuthentication::where(['user_id' => $user->id, 'status' => 1, 'updated_at' => null])->update([
             'status' => 0,
             'updated_at' => now()
         ]);
@@ -252,7 +255,7 @@ class TwoFactorAuthenticationController extends Controller
             'required' => 'enter :attribute',
         ];
         $request->validate($rules, $messages);
-        $two_factor = TwoFactorAuthentication::where(['code' => $request->input('code'), 'user_id' => $credentials->id, 'updated_at' => null])->where('expires_at', '>', now())->first();
+        $two_factor = TwoFactorAuthentication::where(['code' => $request->input('code'), 'user_id' => $credentials->id, 'status' => 1, 'updated_at' => null])->where('expires_at', '>', now())->first();
         if (empty($two_factor)) {
             FailedLoginAttempt::create([
                 'user_id' => $credentials->id,
@@ -273,7 +276,7 @@ class TwoFactorAuthenticationController extends Controller
             'updated_at' => now()
         ]);
         Auth::login($user);
-        $login_id = LoginInfo::create([
+        $loginInfo = LoginInfo::create([
             'user_id' => Auth::user()->id,
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent(),
@@ -282,9 +285,29 @@ class TwoFactorAuthenticationController extends Controller
             'expires_at' => now()->addHours(3)
         ]);
         session()->forget('credentials');
-        session()->put('login-id', $login_id->id);
+        session()->put('login-id', $loginInfo->id);
         $cacheName = "device_" . Auth::user()->id;
         Cache::forget($cacheName);
+        $agent = new Agent();
+        $agent->setUserAgent($loginInfo->user_agent);
+        $device = $agent->device();
+        if (!$device || strtolower($device) == "webkit") {
+            $device = $agent->platform();
+        }
+        $date = Carbon::parse($loginInfo->created_at)->format('d M H:i');
+        $location = LocationController::find($loginInfo->ip);
+        if (isset($location->message)) {
+            $location = "Not Detected";
+        } else {
+            $location = $location->country_name . ', ' . $location->city;
+        }
+        $emailData = [
+            'name' => Auth::user()->name,
+            'device' => $device,
+            'location' => $location,
+            'date' => $date
+        ];
+        Mail::to(Auth::user()->email)->send(new NewLogin($emailData));
         return response()->json(['success' => true], 200);
     }
 

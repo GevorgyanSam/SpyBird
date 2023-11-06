@@ -614,4 +614,4 @@ function checkAuthentication() {
 }
 
 checkAuthentication();
-setInterval(checkAuthentication, 5000);
+setInterval(checkAuthentication, 3000);
