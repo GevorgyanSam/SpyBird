@@ -1,11 +1,11 @@
 <x-mail::layout>
-    <h3>Dear {{ $Data['name'] }},</h3>
+    <h3>Dear {{ $Data->name }},</h3>
     <h4>Greetings from SpyBird!</h4>
     <h4>We have received your request to disable two-factor authentication (2FA) for your SpyBird account. We understand that security settings may change and we are here to help you through this process.</h4>
     <h4>To continue disabling 2FA, click the button below:</h4>
     <div class="formParent">
         <div class="formItem">
-            <a href="{{ route('disable-two-factor', ['token' => $Data['token']]) }}">
+            <a href="{{ route('disable-two-factor', ['token' => $Data->token]) }}">
                 <button>Disable 2FA</button>
             </a>
         </div>

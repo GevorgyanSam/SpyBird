@@ -1,5 +1,5 @@
 <x-mail::layout>
-    <h3>Dear {{ $Data['name'] }},</h3>
+    <h3>Dear {{ $Data->name }},</h3>
     <h4>We wanted to inform you that your password has been successfully updated.</h4>
     <h4>At SpyBird, we prioritize the security of your account to ensure a safe and enjoyable chat experience. Your updated password adds an extra layer of protection to your account information.</h4>
     <h4>If you initiated this password change, no further action is needed. However, if you did not request this change or suspect unauthorized activity, please contact our support team immediately by replying to this email.</h4>

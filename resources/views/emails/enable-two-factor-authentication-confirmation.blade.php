@@ -1,9 +1,9 @@
 <x-mail::layout>
-    <h3>Dear {{ $Data['name'] }},</h3>
+    <h3>Dear {{ $Data->name }},</h3>
     <h4>Greetings from SpyBird!</h4>
     <h4>Your request to enable Two-Factor Authentication (2FA) for your SpyBird account has been successfully processed.</h4>
     <h4>As a security measure, we have generated 6 backup codes for you. Please keep these codes in a safe place as they can be used to access your account in case you lose access to your email.</h4>
-    @foreach ($Data['codes'] as $code)
+    @foreach ($Data->codes as $code)
     <h4>
         <h3>{{ $code }}</h3>
     </h4>

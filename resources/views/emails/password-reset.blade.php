@@ -1,11 +1,11 @@
 <x-mail::layout>
-    <h3>Dear {{ $Data['name'] }},</h3>
+    <h3>Dear {{ $Data->name }},</h3>
     <h4>Greetings from SpyBird!</h4>
     <h4>Your seamless chat experience matters to us, and we're here to make sure it stays secure. If you requested a password reset, no worries! We've got you covered with a unique link to regain access to your SpyBird account.</h4>
     <h4>To reset your password, simply click on the button below:</h4>
     <div class="formParent">
         <div class="formItem">
-            <a href="{{ route('user.token', ['token' => $Data['token']]) }}">
+            <a href="{{ route('user.token', ['token' => $Data->token]) }}">
                 <button>Reset Password</button>
             </a>
         </div>

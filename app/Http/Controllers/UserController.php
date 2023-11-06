@@ -91,7 +91,7 @@ class UserController extends Controller
                 'created_at' => now(),
                 'expires_at' => now()->addMinutes(20)
             ]);
-            $emailData = [
+            $emailData = (object) [
                 'name' => $credentials->name,
                 'code' => $code
             ];
@@ -176,7 +176,7 @@ class UserController extends Controller
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent()
         ]);
-        $emailData = [
+        $emailData = (object) [
             'name' => $newUser->name,
             'token' => $newToken->token
         ];
@@ -217,7 +217,8 @@ class UserController extends Controller
             'email_verified_at' => now()
         ]);
         $user = User::find($verifiable->user_id);
-        Mail::to($user->email)->send(new RegistrationSuccess(['name' => $user->name]));
+        $emailData = (object) ['name' => $user->name];
+        Mail::to($user->email)->send(new RegistrationSuccess($emailData));
         Auth::login($user);
         $login_id = LoginInfo::create([
             'user_id' => $user->id,
@@ -278,7 +279,7 @@ class UserController extends Controller
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent()
         ]);
-        $emailData = [
+        $emailData = (object) [
             'name' => $user->name,
             'token' => $token->token
         ];
@@ -355,7 +356,7 @@ class UserController extends Controller
         ]);
         $cacheName = "device_" . $user->id;
         Cache::forget($cacheName);
-        $emailData = [
+        $emailData = (object) [
             'name' => $user->name
         ];
         Mail::to($user->email)->send(new PasswordChange($emailData));

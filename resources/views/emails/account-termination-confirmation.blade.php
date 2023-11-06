@@ -1,5 +1,5 @@
 <x-mail::layout>
-    <h3>Dear {{ $Data['name'] }},</h3>
+    <h3>Dear {{ $Data->name }},</h3>
     <h4>Account Deletion Confirmation from SpyBird!</h4>
     <h4>We're writing to confirm that your SpyBird account has been successfully deleted as per your request.</h4>
     <h4>If this deletion was a mistake or you've changed your mind, you have the option to recover your account. Simply reply to this email, and our support team will assist you in the recovery process.</h4>

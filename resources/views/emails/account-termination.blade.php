@@ -1,11 +1,11 @@
 <x-mail::layout>
-    <h3>Dear {{ $Data['name'] }},</h3>
+    <h3>Dear {{ $Data->name }},</h3>
     <h4>Greetings from SpyBird!</h4>
     <h4>We've received your request to delete your SpyBird account. We want to ensure that you're taking this action intentionally.</h4>
     <h4>To proceed with the account deletion, please click on the button below:</h4>
     <div class="formParent">
         <div class="formItem">
-            <a href="{{ route('account-termination', ['token' => $Data['token']]) }}">
+            <a href="{{ route('account-termination', ['token' => $Data->token]) }}">
                 <button>Delete Account</button>
             </a>
         </div>

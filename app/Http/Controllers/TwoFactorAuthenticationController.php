@@ -52,7 +52,7 @@ class TwoFactorAuthenticationController extends Controller
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent()
         ]);
-        $emailData = [
+        $emailData = (object) [
             'name' => auth()->user()->name,
             'token' => $token->token
         ];
@@ -111,7 +111,7 @@ class TwoFactorAuthenticationController extends Controller
                 'created_at' => now()
             ]);
         }
-        $emailData = [
+        $emailData = (object) [
             'name' => $user->name,
             'codes' => $backupCodes
         ];
@@ -146,7 +146,7 @@ class TwoFactorAuthenticationController extends Controller
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent()
         ]);
-        $emailData = [
+        $emailData = (object) [
             'name' => auth()->user()->name,
             'token' => $token->token
         ];
@@ -202,7 +202,7 @@ class TwoFactorAuthenticationController extends Controller
             'status' => 0,
             'updated_at' => now()
         ]);
-        $emailData = [
+        $emailData = (object) [
             'name' => $user->name
         ];
         Mail::to($user->email)->send(new DisableTwoFactorAuthenticationConfirmation($emailData));
@@ -301,7 +301,7 @@ class TwoFactorAuthenticationController extends Controller
         } else {
             $location = $location->country_name . ', ' . $location->city;
         }
-        $emailData = [
+        $emailData = (object) [
             'name' => Auth::user()->name,
             'device' => $device,
             'location' => $location,

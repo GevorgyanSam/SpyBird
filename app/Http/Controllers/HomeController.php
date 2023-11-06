@@ -157,7 +157,7 @@ class HomeController extends Controller
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent()
         ]);
-        $emailData = [
+        $emailData = (object) [
             'name' => auth()->user()->name,
             'token' => $token->token
         ];
@@ -209,7 +209,7 @@ class HomeController extends Controller
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent()
         ]);
-        $emailData = [
+        $emailData = (object) [
             'name' => auth()->user()->name,
             'token' => $token->token
         ];
@@ -264,7 +264,7 @@ class HomeController extends Controller
             'to' => 0,
             'created_at' => now()
         ]);
-        $emailData = [
+        $emailData = (object) [
             'name' => $user->name
         ];
         Mail::to($user->email)->send(new AccountTerminationConfirmation($emailData));

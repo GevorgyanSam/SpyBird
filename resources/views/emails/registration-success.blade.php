@@ -1,5 +1,5 @@
 <x-mail::layout>
-    <h3>Dear {{ $Data['name'] }},</h3>
+    <h3>Dear {{ $Data->name }},</h3>
     <h4>Welcome to the vibrant SpyBird community, where real-time connections and engaging conversations await you!</h4>
     <h4>We're absolutely thrilled that you've joined us. At SpyBird, we're all about fostering meaningful connections, and we believe you'll find exactly that here. Whether you're looking for exciting conversations, meeting new friends, or even discovering professional connections, SpyBird has something special in store for you.</h4>
     <h4>Feel free to explore our various chat rooms, forums, and events. Dive into discussions on your favorite topics or discover new interests with like-minded individuals. SpyBird is your playground for social interaction, and the possibilities are endless.</h4>

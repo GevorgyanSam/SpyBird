@@ -1,11 +1,11 @@
 <x-mail::layout>
-    <h3>Dear {{ $Data['name'] }},</h3>
+    <h3>Dear {{ $Data->name }},</h3>
     <h4>Welcome to SpyBird!</h4>
     <h4>We're thrilled to have you as part of our chat community. To get started and make the most of your SpyBird experience, we need to verify your email address.</h4>
     <h4>Just one more step! Click the button below to verify your email:</h4>
     <div class="formParent">
         <div class="formItem">
-            <a href="{{ route('user.verify-email', ['token' => $Data['token']]) }}">
+            <a href="{{ route('user.verify-email', ['token' => $Data->token]) }}">
                 <button>Verify Email</button>
             </a>
         </div>

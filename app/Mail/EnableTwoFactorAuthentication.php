@@ -11,9 +11,9 @@ use Illuminate\Queue\SerializesModels;
 class EnableTwoFactorAuthentication extends Mailable
 {
     use Queueable, SerializesModels;
-    public array $Data;
+    public object $Data;
 
-    public function __construct(array $Data)
+    public function __construct(object $Data)
     {
         $this->Data = $Data;
     }
