@@ -255,8 +255,8 @@ class TwoFactorAuthenticationController extends Controller
             'required' => 'enter :attribute',
         ];
         $request->validate($rules, $messages);
-        $two_factor = TwoFactorAuthentication::where(['code' => $request->input('code'), 'user_id' => $credentials->id, 'status' => 1, 'updated_at' => null])->where('expires_at', '>', now())->first();
-        if (empty($two_factor)) {
+        $two_factor = TwoFactorAuthentication::where(['code' => $request->input('code'), 'user_id' => $credentials->id])->first();
+        if (empty($two_factor) || !$two_factor->status || $two_factor->expires_at < now()) {
             FailedLoginAttempt::create([
                 'user_id' => $credentials->id,
                 'type' => 'two_factor_code',
@@ -264,7 +264,15 @@ class TwoFactorAuthenticationController extends Controller
                 'user_agent' => $request->userAgent(),
                 'created_at' => now()
             ]);
-            return response()->json(['errors' => ['code' => ['Wrong Code']]], 422);
+            if (empty($two_factor)) {
+                return response()->json(['errors' => ['code' => ['Wrong Code']]], 422);
+            }
+            if (!$two_factor->status && $two_factor->updated_at != null) {
+                return response()->json(['errors' => ['code' => ['This Code Was Used']]], 422);
+            }
+            if ($two_factor->expires_at < now()) {
+                return response()->json(['errors' => ['code' => ['This Code Has Expired']]], 422);
+            }
         }
         TwoFactorAuthentication::where(['id' => $two_factor->id])->update([
             'status' => 0,
