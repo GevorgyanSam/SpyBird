@@ -3,6 +3,7 @@
         <link rel="stylesheet" href="{{ asset('css/users/style.css') }}">
     </x-slot>
     <x-slot:body>
+        <x-loading />
         <nav>
             <div class="navParent">
                 <div class="logo">
@@ -17,16 +18,19 @@
                 <div class="item">
                     <div class="box">
                         <div class="avatar">
-                            <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/1.jpg">
-                            L
+                            @if($credentials->avatar)
+                                <img src="{{ asset('storage/' . $credentials->avatar) }}">
+                            @else
+                                {{ $credentials->name[0] }}
+                            @endif
                         </div>
                         <h3>switch to backup code</h3>
                         <h4>enter your backup code below</h4>
                         <div class="formParent">
-                            <x-form method="post">
+                            <x-form id="form" method="post" action="{{ route('lost-email-auth') }}">
                                 <div class="formItem">
                                     <label for="code">backup code</label>
-                                    <input type="number" id="code" autocomplete="off">
+                                    <input type="number" id="code" autocomplete="off" name="code">
                                 </div>
                                 <div class="formItem">
                                     <button type="submit">verify</button>

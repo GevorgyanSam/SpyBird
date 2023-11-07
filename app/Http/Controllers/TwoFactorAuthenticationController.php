@@ -325,7 +325,16 @@ class TwoFactorAuthenticationController extends Controller
 
     public function lostEmail()
     {
-        return view('users.lost-email');
+        if (!session()->has('credentials')) {
+            return redirect()->route('user.login');
+        }
+        $credentials = session()->get('credentials');
+        if (isset($credentials->lost_email)) {
+            session()->forget('credentials');
+            return redirect()->route('user.login');
+        }
+        $credentials->lost_email = true;
+        return view('users.lost-email', ['credentials' => $credentials]);
     }
 
     // ---- ------ -- --- ---- ----- -------------- -----
@@ -334,6 +343,82 @@ class TwoFactorAuthenticationController extends Controller
 
     public function lostEmailAuth(Request $request)
     {
+        $failed_login_attempts = FailedLoginAttempt::where([
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent()
+        ])->where('created_at', '>', now()->subHours(1))->count();
+        if ($failed_login_attempts >= 5) {
+            return response()->json([], 429);
+        }
+        if (!session()->has('credentials')) {
+            return response()->json(['reload' => true], 401);
+        }
+        $credentials = session()->get('credentials');
+        $rules = [
+            'code' => ['bail', 'required', 'integer', 'digits:8'],
+        ];
+        $messages = [
+            'required' => 'enter :attribute',
+        ];
+        $request->validate($rules, $messages);
+        $backup_code = BackupCode::where(['code' => $request->input('code'), 'user_id' => $credentials->id])->first();
+        if (empty($backup_code) || !$backup_code->status) {
+            FailedLoginAttempt::create([
+                'user_id' => $credentials->id,
+                'type' => 'backup_code',
+                'ip' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+                'created_at' => now()
+            ]);
+            if (empty($backup_code)) {
+                return response()->json(['errors' => ['code' => ['Wrong Code']]], 422);
+            }
+            if (!$backup_code->status && $backup_code->updated_at != null) {
+                return response()->json(['errors' => ['code' => ['This Code Was Used']]], 422);
+            }
+        }
+        BackupCode::where(['id' => $backup_code->id])->update([
+            'status' => 0,
+            'updated_at' => now()
+        ]);
+        $user = User::findOrfail($credentials->id);
+        LoginInfo::where(['user_id' => $user->id, 'status' => 1])->update([
+            'status' => 0,
+            'updated_at' => now()
+        ]);
+        Auth::login($user);
+        $loginInfo = LoginInfo::create([
+            'user_id' => Auth::user()->id,
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+            'status' => 1,
+            'created_at' => now(),
+            'expires_at' => now()->addHours(3)
+        ]);
+        session()->forget('credentials');
+        session()->put('login-id', $loginInfo->id);
+        $cacheName = "device_" . Auth::user()->id;
+        Cache::forget($cacheName);
+        $agent = new Agent();
+        $agent->setUserAgent($loginInfo->user_agent);
+        $device = $agent->device();
+        if (!$device || strtolower($device) == "webkit") {
+            $device = $agent->platform();
+        }
+        $date = Carbon::parse($loginInfo->created_at)->format('d M H:i');
+        $location = LocationController::find($loginInfo->ip);
+        if (isset($location->message)) {
+            $location = "Not Detected";
+        } else {
+            $location = $location->country_name . ', ' . $location->city;
+        }
+        $emailData = (object) [
+            'name' => Auth::user()->name,
+            'device' => $device,
+            'location' => $location,
+            'date' => $date
+        ];
+        Mail::to(Auth::user()->email)->send(new NewLogin($emailData));
         return response()->json(['success' => true], 200);
     }
 

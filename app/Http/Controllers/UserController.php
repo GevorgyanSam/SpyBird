@@ -100,8 +100,7 @@ class UserController extends Controller
                 'id' => $credentials->id,
                 'name' => $credentials->name,
                 'email' => $credentials->email,
-                'avatar' => $credentials->avatar,
-                'code' => $code
+                'avatar' => $credentials->avatar
             ];
             session()->put('credentials', $data);
             return response()->json(['two-factor' => true], 200);
