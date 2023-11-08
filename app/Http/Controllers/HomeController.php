@@ -275,7 +275,7 @@ class HomeController extends Controller
     // This Method Is For Checking Authentication
     // ---- ------ -- --- -------- --------------
 
-    public function checkAuthentication()
+    public function checkAuthentication(Request $request)
     {
         $login_id = session()->get('login-id');
         $loginInfo = LoginInfo::findOrfail($login_id);
@@ -293,6 +293,12 @@ class HomeController extends Controller
                 session()->invalidate();
                 session()->regenerateToken();
                 return response()->json(["reload" => true], 200);
+            }
+            $lockscreen = session()->get('lockscreen');
+            if ($lockscreen) {
+                if ($request->header('referer') != route('user.lockscreen')) {
+                    return response()->json(["reload" => true], 200);
+                }
             }
             return response()->json(["authenticated" => true], 200);
         }

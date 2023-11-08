@@ -39,9 +39,9 @@ Route::middleware('guest')->group(function () {
 // These Routes Are For Authenticated Users
 // ----- ------ --- --- ------------- -----
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'lockscreen'])->group(function () {
 
-    Route::middleware('lockscreen')->controller(HomeController::class)->group(function () {
+    Route::controller(HomeController::class)->group(function () {
 
         Route::get('/', 'index')->name('index');
         Route::get('/room/{id}', 'room')->name('room');
@@ -49,7 +49,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/reset-password', 'passwordReset')->name('password-reset');
         Route::post('/delete-device/{id}', 'deleteDevice')->name('delete-device');
         Route::post('/delete-account', 'deleteAccount')->name('delete-account');
-        Route::post('/check-authentication', 'checkAuthentication')->name('check-authentication');
+        Route::post('/check-authentication', 'checkAuthentication')->name('check-authentication')->withoutMiddleware('lockscreen');
         Route::post('/request-lockscreen', 'requestLockscreen')->name('request-lockscreen');
         Route::post('/logout', 'logout')->name('logout');
 
@@ -62,7 +62,7 @@ Route::middleware('auth')->group(function () {
 
     });
 
-    Route::controller(UserController::class)->name('user.')->group(function () {
+    Route::withoutMiddleware('lockscreen')->controller(UserController::class)->name('user.')->group(function () {
 
         Route::get('/lockscreen', 'lockscreen')->name('lockscreen');
         Route::post('/lockscreen', 'lockscreenAuth')->name('lockscreen-auth');

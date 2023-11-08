@@ -589,9 +589,9 @@ function deleteAccount() {
 
 deleteAccount();
 
-// ---- ------ -- --- -------- -------------- ----- ------
-// This Method Is For Checking Authentication Every Minute
-// ---- ------ -- --- -------- -------------- ----- ------
+// ---- ------ -- --- -------- -------------- ----- - -------
+// This Method Is For Checking Authentication Every 3 Seconds
+// ---- ------ -- --- -------- -------------- ----- - -------
 
 function checkAuthentication() {
     $.ajax({
