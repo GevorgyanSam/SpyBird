@@ -883,15 +883,17 @@
                                 </div>
                                 @if (auth()->user()->two_factor_authentication)
                                 <div class="static danger">
-                                    <div class="visible">
-                                        <div>
-                                            <h3>lock screen</h3>
-                                            <h4>your screen will be locked</h4>
+                                    <x-form class="lockscreen-form" method="post" action="{{ route('request-lockscreen') }}">
+                                        <div class="visible">
+                                            <div>
+                                                <h3>lock screen</h3>
+                                                <h4>your screen will be locked</h4>
+                                            </div>
+                                            <div>
+                                                <i class="fa-solid fa-lock"></i>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <i class="fa-solid fa-lock"></i>
-                                        </div>
-                                    </div>
+                                    </x-form>
                                 </div>
                                 @endif
                                 <div class="static danger">

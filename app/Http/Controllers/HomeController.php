@@ -316,6 +316,16 @@ class HomeController extends Controller
         return response()->json(["reload" => true], 200);
     }
 
+    // ---- ------ -- --- ---------- - ------ ----
+    // This Method Is For Requesting A Screen Lock
+    // ---- ------ -- --- ---------- - ------ ----
+
+    public function requestLockscreen()
+    {
+        session()->put('lockscreen', true);
+        return response()->json(['lockscreen' => true], 200);
+    }
+
     // ---- ------ -- --- ------
     // This Method Is For Logout
     // ---- ------ -- --- ------

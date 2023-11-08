@@ -368,7 +368,19 @@ class UserController extends Controller
 
     public function lockscreen()
     {
+        if (!session()->has('lockscreen')) {
+            return redirect()->route('index');
+        }
         return view('users.lockscreen');
+    }
+
+    // ---- ------ -- --- ---- ------ -----
+    // This Method Is For Lock Screen Logic
+    // ---- ------ -- --- ---- ------ -----
+
+    public function lockscreenAuth()
+    {
+        //
     }
 
 }

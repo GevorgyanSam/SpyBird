@@ -615,3 +615,35 @@ function checkAuthentication() {
 
 checkAuthentication();
 setInterval(checkAuthentication, 3000);
+
+// ---- ------ -- --- ----------
+// This Method Is For Lockscreen
+// ---- ------ -- --- ----------
+
+function lockscreen() {
+    const lockscreen = $("form.lockscreen-form");
+    lockscreen.on("click", (e) => {
+        e.preventDefault();
+        loading(true);
+        $.ajax({
+            url: lockscreen.attr("action"),
+            method: lockscreen.attr("method"),
+            data: lockscreen.serialize(),
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            success: function (response) {
+                if (response.lockscreen) {
+                    loading(false);
+                    location.reload();
+                }
+            },
+            error: function (error) {
+                loading(false);
+                location.reload();
+            },
+        });
+    });
+}
+
+lockscreen();
