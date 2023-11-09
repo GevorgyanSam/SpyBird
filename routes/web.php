@@ -51,7 +51,7 @@ Route::middleware(['auth', 'lockscreen'])->group(function () {
         Route::post('/delete-account', 'deleteAccount')->name('delete-account');
         Route::post('/check-authentication', 'checkAuthentication')->name('check-authentication')->withoutMiddleware('lockscreen');
         Route::post('/request-lockscreen', 'requestLockscreen')->name('request-lockscreen');
-        Route::post('/logout', 'logout')->name('logout');
+        Route::post('/logout', 'logout')->name('logout')->withoutMiddleware('lockscreen');;
 
     });
 

@@ -64,6 +64,7 @@ function lockscreen() {
             success: function (response) {
                 if (response.success) {
                     loading(false);
+                    sessionStorage.removeItem("current-page");
                     location.href = "/";
                 } else {
                     location.reload();
@@ -74,7 +75,7 @@ function lockscreen() {
                     loading(false);
                     handleValidationErrors(error.responseJSON.errors);
                 } else if (error.status === 429) {
-                    //
+                    logoutRequest();
                 } else {
                     location.reload();
                 }
@@ -98,3 +99,42 @@ function lockscreen() {
 }
 
 lockscreen();
+
+// ---- ------ -- --- ------
+// This Method Is For Logout
+// ---- ------ -- --- ------
+
+function logout() {
+    const logout = $("#logout");
+    logout.on("click", () => {
+        logoutRequest();
+    });
+}
+
+logout();
+
+// ---- ------ -- --- ------ -------
+// This Method Is For Logout Request
+// ---- ------ -- --- ------ -------
+
+function logoutRequest() {
+    loading(true);
+    $.ajax({
+        url: "/logout",
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        success: function (response) {
+            if (response.success) {
+                sessionStorage.removeItem("current-page");
+                loading(false);
+                location.reload();
+            }
+        },
+        error: function (error) {
+            loading(false);
+            location.reload();
+        },
+    });
+}

@@ -40,7 +40,7 @@
                         </div>
                     </div>
                     <div class="linkParent">
-                        <p>forgot your password ? <a href="{{ route('user.login') }}">logout</a></p>
+                        <p>forgot your password ? <a id="logout">logout</a></p>
                     </div>
                 </div>
             </div>
