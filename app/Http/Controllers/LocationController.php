@@ -23,4 +23,5 @@ class LocationController extends Controller
         curl_close($curl);
         return $location;
     }
+
 }
