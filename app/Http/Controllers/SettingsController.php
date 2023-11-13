@@ -62,6 +62,38 @@ class SettingsController extends Controller
         return $devices;
     }
 
+    // ---- ------ -- --- ---------- -- ------ --------- ----
+    // This Method Is For Requesting To Enable Invisible Mode
+    // ---- ------ -- --- ---------- -- ------ --------- ----
+
+    public function requestEnableInvisible()
+    {
+        if (auth()->user()->invisible) {
+            return response()->json(['reload' => true], 200);
+        }
+        User::where(['id' => auth()->user()->id, 'status' => 1])->update([
+            'invisible' => 1,
+            'updated_at' => now()
+        ]);
+        return response()->json(['success' => true], 200);
+    }
+
+    // ---- ------ -- --- ---------- -- ------- --------- ----
+    // This Method Is For Requesting To Disable Invisible Mode
+    // ---- ------ -- --- ---------- -- ------- --------- ----
+
+    public function requestDisableInvisible()
+    {
+        if (!auth()->user()->invisible) {
+            return response()->json(['reload' => true], 200);
+        }
+        User::where(['id' => auth()->user()->id, 'status' => 1])->update([
+            'invisible' => 0,
+            'updated_at' => now()
+        ]);
+        return response()->json(['success' => true], 200);
+    }
+
     // ---- ------ -- --- ---------- -- ---- --------
     // This Method Is For Requesting To Show Activity
     // ---- ------ -- --- ---------- -- ---- --------
