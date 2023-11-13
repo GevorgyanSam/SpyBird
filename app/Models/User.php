@@ -19,7 +19,9 @@ class User extends Authenticatable
     protected $guarded = [];
     protected $casts = [
         'status' => 'boolean',
-        'two_factor_authentication' => 'boolean'
+        'two_factor_authentication' => 'boolean',
+        'activity' => 'boolean',
+        'invisible' => 'boolean'
     ];
     protected $fillable = [
         'name',
@@ -28,6 +30,8 @@ class User extends Authenticatable
         'password',
         'status',
         'two_factor_authentication',
+        'activity',
+        'invisible',
         'email_verified_at',
         'created_at',
         'updated_at'

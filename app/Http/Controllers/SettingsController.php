@@ -62,6 +62,38 @@ class SettingsController extends Controller
         return $devices;
     }
 
+    // ---- ------ -- --- ---------- -- ---- --------
+    // This Method Is For Requesting To Show Activity
+    // ---- ------ -- --- ---------- -- ---- --------
+
+    public function requestShowActivity()
+    {
+        if (auth()->user()->activity) {
+            return response()->json(['reload' => true], 200);
+        }
+        User::where(['id' => auth()->user()->id, 'status' => 1])->update([
+            'activity' => 1,
+            'updated_at' => now()
+        ]);
+        return response()->json(['success' => true], 200);
+    }
+
+    // ---- ------ -- --- ---------- -- ---- --------
+    // This Method Is For Requesting To Hide Activity
+    // ---- ------ -- --- ---------- -- ---- --------
+
+    public function requestHideActivity()
+    {
+        if (!auth()->user()->activity) {
+            return response()->json(['reload' => true], 200);
+        }
+        User::where(['id' => auth()->user()->id, 'status' => 1])->update([
+            'activity' => 0,
+            'updated_at' => now()
+        ]);
+        return response()->json(['success' => true], 200);
+    }
+
     // ---- ------ -- --- ------ -------
     // This Method Is For Update Profile
     // ---- ------ -- --- ------ -------

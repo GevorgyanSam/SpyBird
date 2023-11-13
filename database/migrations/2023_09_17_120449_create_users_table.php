@@ -16,6 +16,8 @@ return new class extends Migration {
             $table->text('password');
             $table->integer('status');
             $table->integer('two_factor_authentication');
+            $table->integer('activity');
+            $table->integer('invisible');
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();

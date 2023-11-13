@@ -285,14 +285,53 @@ switchInvisibleMode();
 function switchActivityStatus() {
     const checkbox = $(".settingsParent .activity input[type=checkbox]");
     checkbox.change((e) => {
+        loading(true);
         if (e.target.checked) {
-            notify(
-                "Toggle Activity Status",
-                "This Feature Is Under Construction"
-            );
-            setTimeout(() => {
-                e.target.checked = false;
-            }, 1000);
+            e.target.checked = false;
+            $.ajax({
+                url: "/request-show-activity",
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                success: function (response) {
+                    if (response.success) {
+                        loading(false);
+                        e.target.checked = true;
+                    } else if (response.reload) {
+                        location.reload();
+                    }
+                },
+                error: function (error) {
+                    loading(false);
+                    location.reload();
+                },
+            });
+        } else {
+            e.target.checked = true;
+            $.ajax({
+                url: "/request-hide-activity",
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                success: function (response) {
+                    if (response.success) {
+                        loading(false);
+                        e.target.checked = false;
+                    } else if (response.reload) {
+                        location.reload();
+                    }
+                },
+                error: function (error) {
+                    loading(false);
+                    location.reload();
+                },
+            });
         }
     });
 }
@@ -318,13 +357,13 @@ function switchTwoStepVerification() {
                     ),
                 },
                 success: function (response) {
-                    if (response["success"]) {
+                    if (response.success) {
                         loading(false);
                         notify(
                             "check your email",
                             "enable 2FA link has been sent to your email"
                         );
-                    } else if (response["reload"]) {
+                    } else if (response.reload) {
                         location.reload();
                     }
                 },
@@ -346,13 +385,13 @@ function switchTwoStepVerification() {
                     ),
                 },
                 success: function (response) {
-                    if (response["success"]) {
+                    if (response.success) {
                         loading(false);
                         notify(
                             "check your email",
                             "disable 2FA link has been sent to your email"
                         );
-                    } else if (response["reload"]) {
+                    } else if (response.reload) {
                         location.reload();
                     }
                 },
@@ -386,7 +425,7 @@ function logout() {
                 "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
             },
             success: function (response) {
-                if (response["success"]) {
+                if (response.success) {
                     sessionStorage.removeItem("current-page");
                     loading(false);
                     location.reload();
@@ -431,10 +470,10 @@ function editProfile() {
             processData: false,
             contentType: false,
             success: function (response) {
-                if (response["default"]) {
+                if (response.default) {
                     loading(false);
                     handleValidationErrors(response);
-                } else if (response["refresh"]) {
+                } else if (response.refresh) {
                     location.reload();
                 }
             },
@@ -482,7 +521,7 @@ function passwordReset() {
                 "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
             },
             success: function (response) {
-                if (response["success"]) {
+                if (response.success) {
                     loading(false);
                     notify(
                         "check your email",
@@ -519,7 +558,7 @@ function deleteDevice() {
                     ),
                 },
                 success: function (response) {
-                    if (response["success"]) {
+                    if (response.success) {
                         loading(false);
                         deleteDeviceAnimation(device);
                     }
@@ -569,7 +608,7 @@ function deleteAccount() {
                 "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
             },
             success: function (response) {
-                if (response["success"]) {
+                if (response.success) {
                     loading(false);
                     notify(
                         "check your email",

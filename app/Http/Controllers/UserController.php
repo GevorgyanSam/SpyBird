@@ -159,6 +159,8 @@ class UserController extends Controller
             'password' => $request->input('password'),
             'status' => 0,
             'two_factor_authentication' => 0,
+            'activity' => 0,
+            'invisible' => 0,
             'created_at' => now()
         ]);
         $newToken = PersonalAccessToken::create([
@@ -213,6 +215,7 @@ class UserController extends Controller
         }
         User::where(['id' => $verifiable->user_id])->update([
             'status' => 1,
+            'activity' => 1,
             'email_verified_at' => now()
         ]);
         $user = User::find($verifiable->user_id);

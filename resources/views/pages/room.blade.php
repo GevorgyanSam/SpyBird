@@ -731,7 +731,7 @@
                                                 <h4>switch to invisible mode</h4>
                                             </div>
                                             <div>
-                                                <input type="checkbox" class="checkbox" id="invisible">
+                                                <input type="checkbox" class="checkbox" id="invisible" {{ auth()->user()->invisible ? "checked" : null }}>
                                             </div>
                                         </div>
                                     </label>
@@ -775,7 +775,7 @@
                                                 <h4>toggle activity status</h4>
                                             </div>
                                             <div>
-                                                <input type="checkbox" class="checkbox" id="activity">
+                                                <input type="checkbox" class="checkbox" id="activity" {{ auth()->user()->activity ? "checked" : null }}>
                                             </div>
                                         </div>
                                     </label>

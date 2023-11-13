@@ -52,6 +52,8 @@ Route::middleware(['auth', 'lockscreen'])->group(function () {
 
     Route::controller(SettingsController::class)->group(function () {
 
+        Route::post('/request-show-activity', 'requestShowActivity')->name('request-show-activity');
+        Route::post('/request-hide-activity', 'requestHideActivity')->name('request-hide-activity');
         Route::post('/update-profile', 'updateProfile')->name('update-profile');
         Route::post('/reset-password', 'passwordReset')->name('password-reset');
         Route::post('/delete-device/{id}', 'deleteDevice')->name('delete-device');
