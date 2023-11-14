@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class LocationController extends Controller
 {
@@ -15,12 +15,7 @@ class LocationController extends Controller
     {
         $key = env("IP_GEOLOCATION_API_KEY");
         $url = "https://api.ipgeolocation.io/ipgeo?apiKey=$key&ip=$ip";
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 30);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        $location = json_decode(curl_exec($curl));
-        curl_close($curl);
+        $location = Http::get($url)->object();
         return $location;
     }
 
