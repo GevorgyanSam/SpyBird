@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\TermsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TwoFactorAuthenticationController;
 
 // ----- ------ --- --- ----- -----
@@ -62,6 +63,12 @@ Route::middleware(['auth', 'lockscreen'])->group(function () {
         Route::post('/delete-account', 'deleteAccount')->name('delete-account');
         Route::post('/request-lockscreen', 'requestLockscreen')->name('request-lockscreen');
         Route::post('/logout', 'logout')->name('logout')->withoutMiddleware('lockscreen');
+
+    });
+
+    Route::controller(SearchController::class)->group(function () {
+
+        Route::post('/get-suggested-contacts', 'getSuggestedContacts')->name('get-suggested-contacts');
 
     });
 

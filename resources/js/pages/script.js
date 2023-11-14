@@ -79,14 +79,88 @@ function changePages() {
         sessionStorage.setItem("current-page", current);
     }
 
+    getContent(current);
     setActivePage(current);
 
     pages.actions.click(function () {
-        setActivePage($(this).data("name"));
+        const page = $(this).data("name");
+        getContent(page);
+        setActivePage(page);
     });
 }
 
 changePages();
+
+// ---- ------ -- --- ------- --- --- ----- ---- -------
+// This Method Is For Getting The App Aside Page Content
+// ---- ------ -- --- ------- --- --- ----- ---- -------
+
+function getContent(page) {
+    if (page === "search") {
+        getSuggestedContacts();
+    }
+}
+
+// ---- ------ -- --- ------- --------- --------
+// This Method Is For Getting Suggested Contacts
+// ---- ------ -- --- ------- --------- --------
+
+function getSuggestedContacts() {
+    $.ajax({
+        url: "/get-suggested-contacts",
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        success: function (response) {
+            setSuggestedContacts(response);
+        },
+        error: function (error) {
+            location.reload();
+        },
+    });
+}
+
+// ---- ------ -- --- ------- --------- --------
+// This Method Is For Setting Suggested Contacts
+// ---- ------ -- --- ------- --------- --------
+
+function setSuggestedContacts(data) {
+    const parent = $(".searchParent .personParent");
+    parent.html("");
+    let content = "";
+    data.forEach((contact) => {
+        let avatar = contact.avatar
+            ? `<img src="${contact.avatar}"></img>`
+            : contact.name[0];
+        content += `
+        <div class="person">
+            <div>
+                <div class="avatar active">
+                    ${avatar}
+                </div>
+            </div>
+            <div class="personInfo">
+                <a href="#">
+                    <h4>${contact.name}</h4>
+                </a>
+                <div class="status">online</div>
+            </div>
+            <div class="personSettings">
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+                <div class="dropdownMenu">
+                    <div class="dropdownItem">send message</div>
+                    <div class="dropdownItem">send friend request</div>
+                    <div class="line"></div>
+                    <div class="dropdownItem danger">block user</div>
+                </div>
+            </div>
+        </div>
+        `;
+    });
+    parent.html(content);
+    toggleDropdown();
+}
 
 // ---- ------ -- --- -------- --- ------ -------
 // This Method Is For Toggling App Search Content
