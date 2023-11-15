@@ -28,6 +28,14 @@ class SearchController extends Controller
             if ($avatar) {
                 $avatar = asset('storage/' . $user->avatar);
             }
+            if (!$user->activity) {
+                return [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'avatar' => $avatar,
+                    'hidden' => true
+                ];
+            }
             $date = optional($user->latestLoginInfo)->updated_at;
             if ($date) {
                 $date = Carbon::parse($date)->format('d M H:i');
@@ -36,7 +44,6 @@ class SearchController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'avatar' => $avatar,
-                'activity' => $user->activity,
                 'status' => optional($user->latestLoginInfo)->status,
                 'updated_at' => $date
             ];

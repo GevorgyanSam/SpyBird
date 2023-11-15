@@ -129,12 +129,17 @@ function setSuggestedContacts(data) {
     const parent = $(".searchParent .personParent");
     parent.empty();
     let content = "";
-    data.forEach((contact) => {
-        let avatar = contact.avatar
-            ? `<img src="${contact.avatar}"></img>`
-            : contact.name[0];
-        let active = contact.status ? "active" : null;
-        let updated_at = contact.updated_at;
+    data.forEach((user) => {
+        let avatar = user.avatar
+            ? `<img src="${user.avatar}"></img>`
+            : user.name[0];
+        let active = user.status ? "active" : null;
+        let updated_at = user.updated_at;
+        let status = user.hidden
+            ? "hidden status"
+            : active
+            ? "online"
+            : updated_at;
         content += `
         <div class="person">
             <div>
@@ -144,9 +149,9 @@ function setSuggestedContacts(data) {
             </div>
             <div class="personInfo">
                 <a href="#">
-                    <h4>${contact.name}</h4>
+                    <h4>${user.name}</h4>
                 </a>
-                <div class="status">${active ? "online" : updated_at}</div>
+                <div class="status">${status}</div>
             </div>
             <div class="personSettings">
                 <i class="fa-solid fa-ellipsis-vertical"></i>
