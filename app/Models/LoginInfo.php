@@ -20,6 +20,7 @@ class LoginInfo extends Model
         'user_id',
         'ip',
         'user_agent',
+        'location',
         'status',
         'created_at',
         'expires_at',

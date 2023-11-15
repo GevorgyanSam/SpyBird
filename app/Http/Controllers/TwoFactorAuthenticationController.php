@@ -284,10 +284,17 @@ class TwoFactorAuthenticationController extends Controller
             'updated_at' => now()
         ]);
         Auth::login($user);
+        $location = LocationController::find($request->ip());
+        if (isset($location->message)) {
+            $location = "Not Detected";
+        } else {
+            $location = $location->country_name . ', ' . $location->city;
+        }
         $loginInfo = LoginInfo::create([
             'user_id' => Auth::user()->id,
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent(),
+            'location' => $location,
             'status' => 1,
             'created_at' => now(),
             'expires_at' => now()->addHours(3)
@@ -303,12 +310,6 @@ class TwoFactorAuthenticationController extends Controller
             $device = $agent->platform();
         }
         $date = Carbon::parse($loginInfo->created_at)->format('d M H:i');
-        $location = LocationController::find($loginInfo->ip);
-        if (isset($location->message)) {
-            $location = "Not Detected";
-        } else {
-            $location = $location->country_name . ', ' . $location->city;
-        }
         $emailData = (object) [
             'name' => Auth::user()->name,
             'device' => $device,
@@ -387,10 +388,17 @@ class TwoFactorAuthenticationController extends Controller
             'updated_at' => now()
         ]);
         Auth::login($user);
+        $location = LocationController::find($request->ip());
+        if (isset($location->message)) {
+            $location = "Not Detected";
+        } else {
+            $location = $location->country_name . ', ' . $location->city;
+        }
         $loginInfo = LoginInfo::create([
             'user_id' => Auth::user()->id,
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent(),
+            'location' => $location,
             'status' => 1,
             'created_at' => now(),
             'expires_at' => now()->addHours(3)
@@ -406,12 +414,6 @@ class TwoFactorAuthenticationController extends Controller
             $device = $agent->platform();
         }
         $date = Carbon::parse($loginInfo->created_at)->format('d M H:i');
-        $location = LocationController::find($loginInfo->ip);
-        if (isset($location->message)) {
-            $location = "Not Detected";
-        } else {
-            $location = $location->country_name . ', ' . $location->city;
-        }
         $emailData = (object) [
             'name' => Auth::user()->name,
             'device' => $device,

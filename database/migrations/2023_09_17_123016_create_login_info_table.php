@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->foreignId('user_id');
             $table->ipAddress('ip');
             $table->text('user_agent');
+            $table->text('location');
             $table->integer('status');
             $table->timestamp('created_at');
             $table->timestamp('expires_at');

@@ -42,18 +42,12 @@ class SettingsController extends Controller
                 $device = $agent->platform();
             }
             $date = Carbon::parse($item->created_at)->format('d M H:i');
-            $location = LocationController::find($item->ip);
-            if (isset($location->message)) {
-                $location = "Not Detected";
-            } else {
-                $location = $location->country_name . ', ' . $location->city;
-            }
             $link = route("delete-device", ["id" => $item->id]);
             array_push($devices, [
                 'link' => $link,
                 'status' => $item->status,
                 'platform' => $device,
-                'location' => $location,
+                'location' => $item->location,
                 'date' => $date,
                 'deleted_at' => $item->deleted_at
             ]);

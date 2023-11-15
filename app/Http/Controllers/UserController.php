@@ -110,10 +110,17 @@ class UserController extends Controller
             'updated_at' => now()
         ]);
         Auth::login($credentials);
+        $location = LocationController::find($request->ip());
+        if (isset($location->message)) {
+            $location = "Not Detected";
+        } else {
+            $location = $location->country_name . ', ' . $location->city;
+        }
         $login_id = LoginInfo::create([
             'user_id' => Auth::user()->id,
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent(),
+            'location' => $location,
             'status' => 1,
             'created_at' => now(),
             'expires_at' => now()->addHours(3)
@@ -222,10 +229,17 @@ class UserController extends Controller
         $emailData = (object) ['name' => $user->name];
         Mail::to($user->email)->send(new RegistrationSuccess($emailData));
         Auth::login($user);
+        $location = LocationController::find($request->ip());
+        if (isset($location->message)) {
+            $location = "Not Detected";
+        } else {
+            $location = $location->country_name . ', ' . $location->city;
+        }
         $login_id = LoginInfo::create([
             'user_id' => $user->id,
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent(),
+            'location' => $location,
             'status' => 1,
             'created_at' => now(),
             'expires_at' => now()->addHours(3)

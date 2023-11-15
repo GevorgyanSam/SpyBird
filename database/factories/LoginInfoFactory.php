@@ -12,6 +12,7 @@ class LoginInfoFactory extends Factory
             'user_id' => fake()->numberBetween(1, 100),
             'ip' => fake()->ipv4(),
             'user_agent' => fake()->userAgent(),
+            'location' => fake()->country() . ", " . fake()->city(),
             'status' => fake()->numberBetween(0, 1),
             'created_at' => fake()->dateTime(),
             'expires_at' => fake()->dateTime(),

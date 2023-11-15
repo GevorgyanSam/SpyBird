@@ -14,10 +14,13 @@ class SearchController extends Controller
 
     public function getSuggestedContacts()
     {
-        $suggested_contacts = User::select(['id', 'name', 'avatar', 'activity'])->where('id', '!=', auth()->user()->id)->where([
-            'status' => 1,
-            'invisible' => 0
-        ])->inRandomOrder()->limit(10)->get();
+        $suggested_contacts = User::select(['id', 'name', 'avatar', 'activity'])
+            ->where('id', '!=', auth()->user()->id)
+            ->where('status', 1)
+            ->where('invisible', 0)
+            ->inRandomOrder()
+            ->limit(10)
+            ->get();
         return response()->json($suggested_contacts, 200);
     }
 
