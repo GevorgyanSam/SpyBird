@@ -54,4 +54,8 @@ class User extends Authenticatable
     {
         return $this->attributes['password'] = Hash::make($value);
     }
+    public function latestLoginInfo()
+    {
+        return $this->hasOne(LoginInfo::class)->latestOfMany();
+    }
 }
