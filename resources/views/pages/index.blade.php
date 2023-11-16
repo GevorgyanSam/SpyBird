@@ -93,8 +93,8 @@
                         </div>
                     </x-form>
                     <div class="switchParent">
-                        <div class="familiar active">suggested contacts</div>
-                        <div class="nearby">people nearby</div>
+                        <div data-name="familiar" class="familiar active">suggested contacts</div>
+                        <div data-name="nearby" class="nearby">people nearby</div>
                     </div>
                     <div class="personParent"></div>
                 </div>
@@ -286,9 +286,7 @@
                                     </div>
                                 </div>
                                 <div class="personInfo">
-                                    <a href="#">
-                                        <h4>william pearson</h4>
-                                    </a>
+                                    <h4>william pearson</h4>
                                     <div class="status">online</div>
                                 </div>
                                 <div class="personSettings">

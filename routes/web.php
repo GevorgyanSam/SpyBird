@@ -69,6 +69,7 @@ Route::middleware(['auth', 'lockscreen'])->group(function () {
     Route::controller(SearchController::class)->group(function () {
 
         Route::post('/get-suggested-contacts', 'getSuggestedContacts')->name('get-suggested-contacts');
+        Route::post('/get-nearby-contacts', 'getNearbyContacts')->name('get-nearby-contacts');
 
     });
 

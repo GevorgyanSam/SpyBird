@@ -97,7 +97,12 @@ changePages();
 
 function getContent(page) {
     if (page === "search") {
-        getSuggestedContacts();
+        let search = $(".searchParent .switchParent > div.active").data("name");
+        if (search === "familiar") {
+            getSuggestedContacts();
+        } else if (search === "nearby") {
+            getNearbyContacts();
+        }
     }
 }
 
@@ -148,9 +153,73 @@ function setSuggestedContacts(data) {
                 </div>
             </div>
             <div class="personInfo">
-                <a href="#">
-                    <h4>${user.name}</h4>
-                </a>
+                <h4>${user.name}</h4>
+                <div class="status">${status}</div>
+            </div>
+            <div class="personSettings">
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+                <div class="dropdownMenu">
+                    <div class="dropdownItem">send message</div>
+                    <div class="dropdownItem">send friend request</div>
+                    <div class="line"></div>
+                    <div class="dropdownItem danger">block user</div>
+                </div>
+            </div>
+        </div>
+        `;
+    });
+    parent.html(content);
+    toggleDropdown();
+}
+
+// ---- ------ -- --- ------- ------ --------
+// This Method Is For Getting Nearby Contacts
+// ---- ------ -- --- ------- ------ --------
+
+function getNearbyContacts() {
+    $.ajax({
+        url: "/get-nearby-contacts",
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        success: function (response) {
+            setNearbyContacts(response);
+        },
+        error: function (error) {
+            location.reload();
+        },
+    });
+}
+
+// ---- ------ -- --- ------- ------ --------
+// This Method Is For Setting Nearby Contacts
+// ---- ------ -- --- ------- ------ --------
+
+function setNearbyContacts(data) {
+    const parent = $(".searchParent .personParent");
+    parent.empty();
+    let content = "";
+    data.forEach((user) => {
+        let avatar = user.avatar
+            ? `<img src="${user.avatar}"></img>`
+            : user.name[0];
+        let active = user.status ? "active" : null;
+        let updated_at = user.updated_at;
+        let status = user.hidden
+            ? "hidden status"
+            : active
+            ? "online"
+            : updated_at;
+        content += `
+        <div class="person">
+            <div>
+                <div class="avatar ${active}">
+                    ${avatar}
+                </div>
+            </div>
+            <div class="personInfo">
+                <h4>${user.name}</h4>
                 <div class="status">${status}</div>
             </div>
             <div class="personSettings">
@@ -179,6 +248,12 @@ function switchSearch() {
     switches.click(function () {
         switches.removeClass("active");
         $(this).addClass("active");
+        let name = $(this).data("name");
+        if (name === "familiar") {
+            getSuggestedContacts();
+        } else if (name === "nearby") {
+            getNearbyContacts();
+        }
     });
 }
 
