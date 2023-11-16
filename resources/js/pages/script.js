@@ -118,58 +118,12 @@ function getSuggestedContacts() {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
         success: function (response) {
-            setSuggestedContacts(response);
+            setSearchContacts(response);
         },
         error: function (error) {
             location.reload();
         },
     });
-}
-
-// ---- ------ -- --- ------- --------- --------
-// This Method Is For Setting Suggested Contacts
-// ---- ------ -- --- ------- --------- --------
-
-function setSuggestedContacts(data) {
-    const parent = $(".searchParent .personParent");
-    parent.empty();
-    let content = "";
-    data.forEach((user) => {
-        let avatar = user.avatar
-            ? `<img src="${user.avatar}"></img>`
-            : user.name[0];
-        let active = user.status ? "active" : null;
-        let updated_at = user.updated_at;
-        let status = user.hidden
-            ? "hidden status"
-            : active
-            ? "online"
-            : updated_at;
-        content += `
-        <div class="person">
-            <div>
-                <div class="avatar ${active}">
-                    ${avatar}
-                </div>
-            </div>
-            <div class="personInfo">
-                <h4>${user.name}</h4>
-                <div class="status">${status}</div>
-            </div>
-            <div class="personSettings">
-                <i class="fa-solid fa-ellipsis-vertical"></i>
-                <div class="dropdownMenu">
-                    <div class="dropdownItem">send message</div>
-                    <div class="dropdownItem">send friend request</div>
-                    <div class="line"></div>
-                    <div class="dropdownItem danger">block user</div>
-                </div>
-            </div>
-        </div>
-        `;
-    });
-    parent.html(content);
-    toggleDropdown();
 }
 
 // ---- ------ -- --- ------- ------ --------
@@ -184,7 +138,7 @@ function getNearbyContacts() {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
         success: function (response) {
-            setNearbyContacts(response);
+            setSearchContacts(response);
         },
         error: function (error) {
             location.reload();
@@ -193,10 +147,10 @@ function getNearbyContacts() {
 }
 
 // ---- ------ -- --- ------- ------ --------
-// This Method Is For Setting Nearby Contacts
+// This Method Is For Setting Search Contacts
 // ---- ------ -- --- ------- ------ --------
 
-function setNearbyContacts(data) {
+function setSearchContacts(data) {
     const parent = $(".searchParent .personParent");
     parent.empty();
     let content = "";
