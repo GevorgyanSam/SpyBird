@@ -120,7 +120,9 @@ function getSuggestedContacts() {
         },
         success: function (response) {
             loading(false);
-            setSearchContacts(response);
+            if (response.data) {
+                setSearchContacts(response.data);
+            }
         },
         error: function (error) {
             loading(false);
@@ -143,7 +145,9 @@ function getNearbyContacts() {
         },
         success: function (response) {
             loading(false);
-            setSearchContacts(response);
+            if (response.data) {
+                setSearchContacts(response.data);
+            }
         },
         error: function (error) {
             loading(false);

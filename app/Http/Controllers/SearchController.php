@@ -49,7 +49,7 @@ class SearchController extends Controller
                 'updated_at' => $date
             ];
         });
-        return response()->json($suggested_contacts, 200);
+        return response()->json(['data' => $suggested_contacts], 200);
     }
 
     // ---- ------ -- --- ------- ------ --------
@@ -64,7 +64,7 @@ class SearchController extends Controller
         } else {
             $location = $location->country_name . ', ' . $location->city;
         }
-        $users = LoginInfo::with([
+        $loginInfo = LoginInfo::with([
             'user' => function ($query) {
                 $query->where('status', 1)->where('invisible', 0);
             }
@@ -75,7 +75,10 @@ class SearchController extends Controller
             ->inRandomOrder()
             ->limit(10)
             ->get();
-        $nearby_contacts = $users->map(function ($info) {
+        if (empty($loginInfo->user)) {
+            return response()->json(['empty' => true], 200);
+        }
+        $nearby_contacts = $loginInfo->map(function ($info) {
             $user = $info->user;
             $avatar = $user->avatar;
             if ($avatar) {
@@ -96,7 +99,7 @@ class SearchController extends Controller
                 'status' => $info->status
             ];
         });
-        return response()->json($nearby_contacts, 200);
+        return response()->json(['data' => $nearby_contacts], 200);
     }
 
 }

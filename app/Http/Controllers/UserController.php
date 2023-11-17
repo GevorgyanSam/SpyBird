@@ -334,6 +334,7 @@ class UserController extends Controller
         if (empty($user->email_verified_at)) {
             User::where('id', $user->id)->update([
                 'status' => 1,
+                'activity' => 1,
                 'email_verified_at' => now()
             ]);
         }
