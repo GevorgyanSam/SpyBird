@@ -111,6 +111,7 @@ function getContent(page) {
 // ---- ------ -- --- ------- --------- --------
 
 function getSuggestedContacts() {
+    loading(true);
     $.ajax({
         url: "/get-suggested-contacts",
         method: "POST",
@@ -118,9 +119,11 @@ function getSuggestedContacts() {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
         success: function (response) {
+            loading(false);
             setSearchContacts(response);
         },
         error: function (error) {
+            loading(false);
             location.reload();
         },
     });
@@ -131,6 +134,7 @@ function getSuggestedContacts() {
 // ---- ------ -- --- ------- ------ --------
 
 function getNearbyContacts() {
+    loading(true);
     $.ajax({
         url: "/get-nearby-contacts",
         method: "POST",
@@ -138,9 +142,11 @@ function getNearbyContacts() {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
         success: function (response) {
+            loading(false);
             setSearchContacts(response);
         },
         error: function (error) {
+            loading(false);
             location.reload();
         },
     });

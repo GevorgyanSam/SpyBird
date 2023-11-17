@@ -29,4 +29,8 @@ class LoginInfo extends Model
     ];
     public $incrementing = true;
     public $timestamps = false;
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
