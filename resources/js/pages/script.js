@@ -106,6 +106,15 @@ function getContent(page) {
     }
 }
 
+// ---- ------ -- --- -------- --- ------ ---- --------
+// This Method Is For Clearing The Search Page Contacts
+// ---- ------ -- --- -------- --- ------ ---- --------
+
+function clearSearchContacts() {
+    const parent = $(".searchParent .personParent");
+    parent.empty();
+}
+
 // ---- ------ -- --- ------- --------- --------
 // This Method Is For Getting Suggested Contacts
 // ---- ------ -- --- ------- --------- --------
@@ -119,14 +128,16 @@ function getSuggestedContacts() {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
         success: function (response) {
-            loading(false);
             if (response.data) {
                 setSearchContacts(response.data);
+            } else if (response.empty) {
+                clearSearchContacts();
             }
+            loading(false);
         },
         error: function (error) {
-            loading(false);
             location.reload();
+            loading(false);
         },
     });
 }
@@ -144,14 +155,16 @@ function getNearbyContacts() {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
         success: function (response) {
-            loading(false);
             if (response.data) {
                 setSearchContacts(response.data);
+            } else if (response.empty) {
+                clearSearchContacts();
             }
+            loading(false);
         },
         error: function (error) {
-            loading(false);
             location.reload();
+            loading(false);
         },
     });
 }
