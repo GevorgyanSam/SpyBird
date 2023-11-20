@@ -24,6 +24,9 @@ class SearchController extends Controller
             ->inRandomOrder()
             ->limit(10)
             ->get();
+        if (!count($users)) {
+            return response()->json(['empty' => true], 200);
+        }
         $suggested_contacts = $users->map(function ($user) {
             $avatar = $user->avatar;
             if ($avatar) {
@@ -37,7 +40,7 @@ class SearchController extends Controller
                     'hidden' => true
                 ];
             }
-            $date = optional($user->latestLoginInfo)->updated_at;
+            $date = $user->latestLoginInfo->updated_at;
             if ($date) {
                 $date = Carbon::parse($date)->format('d M H:i');
             }
@@ -45,7 +48,7 @@ class SearchController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'avatar' => $avatar,
-                'status' => optional($user->latestLoginInfo)->status,
+                'status' => $user->latestLoginInfo->status,
                 'updated_at' => $date
             ];
         });
@@ -64,39 +67,39 @@ class SearchController extends Controller
         } else {
             $location = $location->country_name . ', ' . $location->city;
         }
-        $loginInfo = LoginInfo::with([
-            'user' => function ($query) {
-                $query->where('status', 1)->where('invisible', 0);
-            }
-        ])
-            ->where('user_id', '!=', auth()->user()->id)
-            ->where('location', $location)
-            ->where('status', 1)
+        $loginInfo = LoginInfo::select('login_info.status', 'users.id', 'users.name', 'users.avatar', 'users.activity')
+            ->where('login_info.location', $location)
+            ->where('login_info.status', 1)
+            ->whereHas('user', function ($query) {
+                $query->where('id', '!=', auth()->user()->id)
+                    ->where('status', 1)
+                    ->where('invisible', 0);
+            })
+            ->join('users', 'login_info.user_id', '=', 'users.id')
             ->inRandomOrder()
             ->limit(10)
             ->get();
-        if (empty($loginInfo->user)) {
+        if (!count($loginInfo)) {
             return response()->json(['empty' => true], 200);
         }
-        $nearby_contacts = $loginInfo->map(function ($info) {
-            $user = $info->user;
-            $avatar = $user->avatar;
+        $nearby_contacts = $loginInfo->map(function ($contact) {
+            $avatar = $contact->avatar;
             if ($avatar) {
-                $avatar = asset('storage/' . $user->avatar);
+                $avatar = asset('storage/' . $contact->avatar);
             }
-            if (!$user->activity) {
+            if (!$contact->activity) {
                 return [
-                    'id' => $user->id,
-                    'name' => $user->name,
+                    'id' => $contact->id,
+                    'name' => $contact->name,
                     'avatar' => $avatar,
                     'hidden' => true
                 ];
             }
             return [
-                'id' => $user->id,
-                'name' => $user->name,
+                'id' => $contact->id,
+                'name' => $contact->name,
                 'avatar' => $avatar,
-                'status' => $info->status
+                'status' => $contact->status
             ];
         });
         return response()->json(['data' => $nearby_contacts], 200);
