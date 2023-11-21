@@ -83,9 +83,11 @@ function changePages() {
     setActivePage(current);
 
     pages.actions.click(function () {
-        const page = $(this).data("name");
-        getContent(page);
-        setActivePage(page);
+        if (!$(this).hasClass("active")) {
+            const page = $(this).data("name");
+            getContent(page);
+            setActivePage(page);
+        }
     });
 }
 
