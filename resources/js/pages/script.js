@@ -223,13 +223,15 @@ function switchSearch() {
     const switches = $(".switchParent > div");
 
     switches.click(function () {
-        switches.removeClass("active");
-        $(this).addClass("active");
-        let name = $(this).data("name");
-        if (name === "familiar") {
-            getSuggestedContacts();
-        } else if (name === "nearby") {
-            getNearbyContacts();
+        if (!$(this).hasClass("active")) {
+            switches.removeClass("active");
+            $(this).addClass("active");
+            let name = $(this).data("name");
+            if (name === "familiar") {
+                getSuggestedContacts();
+            } else if (name === "nearby") {
+                getNearbyContacts();
+            }
         }
     });
 }
