@@ -86,9 +86,9 @@
 
                 <div class="searchParent">
                     <h3>Search</h3>
-                    <x-form method="post">
+                    <x-form id="searchContacts" method="post" action="{{ route('search-contacts') }}">
                         <div class="formItem">
-                            <input type="text" placeholder="Search People">
+                            <input type="text" placeholder="Search People" name="search" autocomplete="off">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </div>
                     </x-form>

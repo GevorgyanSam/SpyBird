@@ -171,6 +171,58 @@ function getNearbyContacts() {
     });
 }
 
+// ---- ------ -- --- --------- --------
+// This Method Is For Searching Contacts
+// ---- ------ -- --- --------- --------
+
+function searchContacts() {
+    const search = $("form#searchContacts");
+    const inp = search.find("input[name=search]");
+    const switchParent = $(".searchParent .switchParent");
+
+    search.on("submit", (e) => {
+        e.preventDefault();
+    });
+
+    inp.on("blur", () => {
+        if (!inp.val() && switchParent.css("display") == "none") {
+            switchParent.css("display", "flex");
+            getContent("search");
+        }
+    });
+
+    inp.on("input", (e) => {
+        e.preventDefault();
+        switchParent.css("display", "none");
+
+        if (!e.target.value.length) {
+            clearSearchContacts();
+            return false;
+        }
+
+        $.ajax({
+            url: search.attr("action"),
+            method: search.attr("method"),
+            data: search.serialize(),
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            success: function (response) {
+                if (response.data) {
+                    setSearchContacts(response.data);
+                } else if (response.empty) {
+                    clearSearchContacts();
+                }
+            },
+            error: function (error) {
+                location.reload();
+            },
+        });
+    });
+}
+
+searchContacts();
+
 // ---- ------ -- --- ------- ------ --------
 // This Method Is For Setting Search Contacts
 // ---- ------ -- --- ------- ------ --------

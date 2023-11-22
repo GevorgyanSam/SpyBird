@@ -88,7 +88,7 @@
                     <h3>Search</h3>
                     <x-form method="post">
                         <div class="formItem">
-                            <input type="text" placeholder="Search People">
+                            <input type="text" placeholder="Search People" name="search" autocomplete="off">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </div>
                     </x-form>
