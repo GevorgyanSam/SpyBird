@@ -317,12 +317,14 @@
         <!-- ----- ----- Notifications ----- ----- -->
         <!-- ----- ----- ------------- ----- ----- -->
 
-        <div class="notificationsParent">
+                <div class="notificationsParent">
                     <h3>Notifications</h3>
                     <div>
                         <div class="recentParent">
                             <div class="recent">recent</div>
-                            <button>clear all</button>
+                            <x-form id="clearNotifications" method="post" action="{{ route('clear-notifications') }}">
+                                <button type="submit">clear all</button>
+                            </x-form>
                         </div>
                         <div>
                             <!-- <div class="report">
@@ -343,57 +345,6 @@
                                     <button class="confirm">confirm</button>
                                 </div>
                             </div> -->
-                            <div class="report">
-                                <div class="notice">
-                                    <div>
-                                        <div class="avatar">
-                                            <i class="fa-solid fa-unlock-keyhole"></i>
-                                        </div>
-                                    </div>
-                                    <div class="content">
-                                        <div class="name">password changed</div>
-                                        <div class="time">12:45</div>
-                                        <div class="message">password updated successfully.</div>
-                                        <div class="remove">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="report">
-                                <div class="notice">
-                                    <div>
-                                        <div class="avatar">
-                                            <i class="fa-solid fa-pen-to-square"></i>
-                                        </div>
-                                    </div>
-                                    <div class="content">
-                                        <div class="name">name changed</div>
-                                        <div class="time">12:45</div>
-                                        <div class="message">name updated successfully.</div>
-                                        <div class="remove">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="report">
-                                <div class="notice">
-                                    <div>
-                                        <div class="avatar">
-                                            <i class="fa-solid fa-image"></i>
-                                        </div>
-                                    </div>
-                                    <div class="content">
-                                        <div class="name">avatar changed</div>
-                                        <div class="time">12:45</div>
-                                        <div class="message">avatar updated successfully.</div>
-                                        <div class="remove">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <div class="emptyParent">

@@ -100,10 +100,13 @@ changePages();
 function getContent(page) {
     if (page === "search") {
         let search = $(".searchParent .switchParent > div.active").data("name");
-        if (search === "familiar") {
-            getSuggestedContacts();
-        } else if (search === "nearby") {
-            getNearbyContacts();
+        let value = $("form#searchContacts input[name=search]").val();
+        if (!value) {
+            if (search === "familiar") {
+                getSuggestedContacts();
+            } else if (search === "nearby") {
+                getNearbyContacts();
+            }
         }
     } else if (page === "notifications") {
         getNotifications();
@@ -358,10 +361,80 @@ function setNotifications(data) {
     const parent = $(".notificationsParent div:first div:nth-child(2)");
     let content = "";
     data.forEach((notification) => {
-        content += ``;
+        if (notification.user_id === notification.sender_id) {
+            let data = {
+                icon: "",
+                name: "",
+            };
+            switch (notification.type) {
+                case "avatar_change":
+                    data.name = "avatar changed";
+                    data.icon = '<i class="fa-solid fa-image"></i>';
+                    break;
+                case "name_change":
+                    data.name = "name changed";
+                    data.icon = '<i class="fa-solid fa-pen-to-square"></i>';
+                    break;
+                case "password_change":
+                    data.name = "password changed";
+                    data.icon = '<i class="fa-solid fa-unlock-keyhole"></i>';
+                    break;
+            }
+            let date = notification.created_at.substr(-8, 5);
+            content += `
+            <div class="report">
+                <div class="notice">
+                    <div>
+                        <div class="avatar">
+                            ${data.icon}
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="name">${data.name}</div>
+                        <div class="time">${date}</div>
+                        <div class="message">${notification.content}.</div>
+                        <div class="remove">
+                            <i class="fa-solid fa-trash"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+        }
     });
     parent.html(content);
 }
+
+// ---- ------ -- --- -------- --- -------------
+// This Method Is For Clearing All Notifications
+// ---- ------ -- --- -------- --- -------------
+
+function clearNotifications() {
+    const clear = $("form#clearNotifications");
+    clear.on("click", (e) => {
+        e.preventDefault();
+        loading(true);
+        $.ajax({
+            url: clear.attr("action"),
+            method: clear.attr("method"),
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            success: function (response) {
+                if (response.success) {
+                    getContent("notifications");
+                }
+                loading(false);
+            },
+            error: function (error) {
+                location.reload();
+                loading(false);
+            },
+        });
+    });
+}
+
+clearNotifications();
 
 // ---- ------ -- --- -------- --- ------ --------
 // This Method Is For Toggling App Search Dropdown

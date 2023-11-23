@@ -17,11 +17,30 @@ class NotificationsController extends Controller
         $notifications = Notification::where([
             'user_id' => auth()->user()->id,
             'status' => 1
-        ])->get();
+        ])->orderByDesc('created_at')->orderByDesc('id')->get();
         if (count($notifications)) {
             return response()->json(['data' => $notifications], 200);
         }
         return response()->json(['empty' => true], 200);
+    }
+
+    // ---- ------ -- --- -------- --- -------------
+    // This Method Is For Clearing All Notifications
+    // ---- ------ -- --- -------- --- -------------
+
+    public function clearNotifications()
+    {
+        $count = Notification::where([
+            'user_id' => auth()->user()->id,
+            'sender_id' => auth()->user()->id,
+            'status' => 1
+        ])->update([
+            'status' => 0,
+            'updated_at' => now()
+        ]);
+        if ($count) {
+            return response()->json(['success' => true], 200);
+        }
     }
 
 }
