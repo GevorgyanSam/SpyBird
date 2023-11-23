@@ -105,6 +105,8 @@ function getContent(page) {
         } else if (search === "nearby") {
             getNearbyContacts();
         }
+    } else if (page === "notifications") {
+        getNotifications();
     }
 }
 
@@ -291,6 +293,75 @@ function switchSearch() {
 }
 
 switchSearch();
+
+// ---- ------ -- --- ----- ------------- ----
+// This Method Is For Empty Notifications View
+// ---- ------ -- --- ----- ------------- ----
+
+function emptyNotifications() {
+    const parent = $(".notificationsParent");
+    const notifications = parent.find("div:first");
+    const content = notifications.find("div:nth-child(2)");
+    const empty = parent.find(".emptyParent");
+    notifications.hide();
+    content.empty();
+    empty.addClass("active");
+}
+
+// ---- ------ -- --- ------- -------------
+// This Method Is For Showing Notifications
+// ---- ------ -- --- ------- -------------
+
+function showNotifications() {
+    const parent = $(".notificationsParent");
+    const notifications = parent.find("div:first");
+    const content = notifications.find("div:nth-child(2)");
+    const empty = parent.find(".emptyParent");
+    empty.removeClass("active");
+    notifications.show();
+    content.empty();
+}
+
+// ---- ------ -- --- ------- -------------
+// This Method Is For Getting Notifications
+// ---- ------ -- --- ------- -------------
+
+function getNotifications() {
+    loading(true);
+    $.ajax({
+        url: "/get-notifications",
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        success: function (response) {
+            if (response.data) {
+                showNotifications();
+                setNotifications(response.data);
+            } else if (response.empty) {
+                emptyNotifications();
+            }
+            loading(false);
+        },
+        error: function (error) {
+            location.reload();
+            loading(false);
+        },
+    });
+}
+
+// ---- ------ -- --- ------- -------------
+// This Method Is For Setting Notifications
+// ---- ------ -- --- ------- -------------
+
+function setNotifications(data) {
+    const parent = $(".notificationsParent div:first div:nth-child(2)");
+    let content = "";
+    data.forEach((notification) => {
+        content += ``;
+    });
+    parent.html(content);
+}
 
 // ---- ------ -- --- -------- --- ------ --------
 // This Method Is For Toggling App Search Dropdown

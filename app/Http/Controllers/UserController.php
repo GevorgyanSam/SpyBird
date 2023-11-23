@@ -19,6 +19,7 @@ use App\Models\LoginInfo;
 use App\Models\PersonalAccessToken;
 use App\Models\PersonalAccessTokenEvent;
 use App\Models\UserDataHistory;
+use App\Models\Notification;
 use App\Models\FailedLoginAttempt;
 use App\Models\TwoFactorAuthentication;
 
@@ -366,6 +367,14 @@ class UserController extends Controller
             'user_id' => $user->id,
             'type' => 'password_change',
             'created_at' => now()
+        ]);
+        Notification::create([
+            "user_id" => auth()->user()->id,
+            "sender_id" => auth()->user()->id,
+            "type" => "password_change",
+            "content" => "password updated successfully",
+            "status" => 1,
+            "created_at" => now()
         ]);
         LoginInfo::where(['user_id' => $user->id, 'status' => 1])->update([
             'status' => 0,

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\LoginInfo;
 use App\Models\UserDataHistory;
 use App\Models\User;
+use App\Models\Notification;
 use App\Models\PersonalAccessToken;
 use App\Models\PersonalAccessTokenEvent;
 use App\Mail\PasswordReset;
@@ -147,6 +148,14 @@ class SettingsController extends Controller
                 "to" => $path,
                 "created_at" => now()
             ]);
+            Notification::create([
+                "user_id" => auth()->user()->id,
+                "sender_id" => auth()->user()->id,
+                "type" => "avatar_change",
+                "content" => "avatar updated successfully",
+                "status" => 1,
+                "created_at" => now()
+            ]);
             User::where(["id" => auth()->user()->id, "status" => 1])->update([
                 "avatar" => $path,
                 "updated_at" => now()
@@ -158,6 +167,14 @@ class SettingsController extends Controller
                 "type" => "name_change",
                 "from" => strtolower(auth()->user()->name),
                 "to" => strtolower($request->name),
+                "created_at" => now()
+            ]);
+            Notification::create([
+                "user_id" => auth()->user()->id,
+                "sender_id" => auth()->user()->id,
+                "type" => "name_change",
+                "content" => "name updated successfully",
+                "status" => 1,
                 "created_at" => now()
             ]);
             User::where(["id" => auth()->user()->id, "status" => 1])->update([

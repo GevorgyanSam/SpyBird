@@ -317,87 +317,82 @@
         <!-- ----- ----- Notifications ----- ----- -->
         <!-- ----- ----- ------------- ----- ----- -->
 
-                <div class="notificationsParent">
+        <div class="notificationsParent">
                     <h3>Notifications</h3>
                     <div>
                         <div class="recentParent">
                             <div class="recent">recent</div>
                             <button>clear all</button>
                         </div>
-                        <div class="report">
-                            <div class="notice">
-                                <div>
-                                    <div class="avatar">
-                                        <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/1.jpg">
+                        <div>
+                            <!-- <div class="report">
+                                <div class="notice">
+                                    <div>
+                                        <div class="avatar">
+                                            <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/1.jpg">
+                                        </div>
+                                    </div>
+                                    <div class="content">
+                                        <div class="name">ollie chandler</div>
+                                        <div class="time">12:45</div>
+                                        <div class="message">sent you a friend request.</div>
                                     </div>
                                 </div>
-                                <div class="content">
-                                    <div class="name">ollie chandler</div>
-                                    <div class="time">12:45</div>
-                                    <div class="message">sent you a friend request.</div>
-                                    <div class="remove">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </div>
+                                <div class="request">
+                                    <button class="reject">reject</button>
+                                    <button class="confirm">confirm</button>
                                 </div>
-                            </div>
-                            <div class="request">
-                                <button class="reject">reject</button>
-                                <button class="confirm">confirm</button>
-                            </div>
-                        </div>
-                        <div class="report">
-                            <div class="notice">
-                                <div>
-                                    <div class="avatar">
-                                        <i class="fa-solid fa-unlock-keyhole"></i>
+                            </div> -->
+                            <div class="report">
+                                <div class="notice">
+                                    <div>
+                                        <div class="avatar">
+                                            <i class="fa-solid fa-unlock-keyhole"></i>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="content">
-                                    <div class="name">password changed</div>
-                                    <div class="time">12:45</div>
-                                    <div class="message">password updated successfully.</div>
-                                    <div class="remove">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="report">
-                            <div class="notice">
-                                <div>
-                                    <div class="avatar">
-                                        <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/2.jpg">
-                                    </div>
-                                </div>
-                                <div class="content">
-                                    <div class="name">jack</div>
-                                    <div class="time">12:45</div>
-                                    <div class="message">updated profile picture.</div>
-                                    <div class="remove">
-                                        <i class="fa-solid fa-trash"></i>
+                                    <div class="content">
+                                        <div class="name">password changed</div>
+                                        <div class="time">12:45</div>
+                                        <div class="message">password updated successfully.</div>
+                                        <div class="remove">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="report">
-                            <div class="notice">
-                                <div>
-                                    <div class="avatar">
-                                        <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/3.jpg">
+                            <div class="report">
+                                <div class="notice">
+                                    <div>
+                                        <div class="avatar">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="content">
-                                    <div class="name">adam black</div>
-                                    <div class="time">12:45</div>
-                                    <div class="message">sent you a friend request.</div>
-                                    <div class="remove">
-                                        <i class="fa-solid fa-trash"></i>
+                                    <div class="content">
+                                        <div class="name">name changed</div>
+                                        <div class="time">12:45</div>
+                                        <div class="message">name updated successfully.</div>
+                                        <div class="remove">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="request">
-                                <button class="reject">reject</button>
-                                <button class="confirm">confirm</button>
+                            <div class="report">
+                                <div class="notice">
+                                    <div>
+                                        <div class="avatar">
+                                            <i class="fa-solid fa-image"></i>
+                                        </div>
+                                    </div>
+                                    <div class="content">
+                                        <div class="name">avatar changed</div>
+                                        <div class="time">12:45</div>
+                                        <div class="message">avatar updated successfully.</div>
+                                        <div class="remove">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -6,6 +6,7 @@ use App\Http\Controllers\TermsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\TwoFactorAuthenticationController;
 
 // ----- ------ --- --- ----- -----
@@ -71,6 +72,12 @@ Route::middleware(['auth', 'lockscreen'])->group(function () {
         Route::post('/get-suggested-contacts', 'getSuggestedContacts')->name('get-suggested-contacts');
         Route::post('/get-nearby-contacts', 'getNearbyContacts')->name('get-nearby-contacts');
         Route::post('/search-contacts', 'searchContacts')->name('search-contacts');
+
+    });
+
+    Route::controller(NotificationsController::class)->group(function () {
+
+        Route::post('/get-notifications', 'getNotifications')->name('get-notifications');
 
     });
 
