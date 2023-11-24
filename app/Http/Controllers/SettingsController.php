@@ -183,7 +183,13 @@ class SettingsController extends Controller
             ]);
         }
         if ($request->name || $request->file("avatar")) {
-            return response()->json(["refresh" => true], 200);
+            $user = User::find(auth()->user()->id);
+            $avatar = $user->avatar ? "<img src='" . asset('storage/' . $user->avatar) . "'>" : $user->name[0];
+            $data = (object) [
+                'avatar' => $avatar,
+                'name' => $user->name
+            ];
+            return response()->json(["success" => true, "data" => $data], 200);
         }
         return response()->json(["default" => true], 200);
     }

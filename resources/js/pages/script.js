@@ -904,6 +904,10 @@ logout();
 // ---- ------ -- --- ------- ---- ------- ----
 
 function editProfile() {
+    const settings = {
+        avatar: $(".settingsParent .profile .avatar"),
+        name: $(".settingsParent .profile .profileInfo h4"),
+    };
     const form = $("form#updateProfile");
     const file = form.find("input[type=file]");
     const avatarLabel = form.find("label[for=avatar]");
@@ -932,8 +936,16 @@ function editProfile() {
                 if (response.default) {
                     loading(false);
                     handleValidationErrors(response);
-                } else if (response.refresh) {
-                    location.reload();
+                } else if (response.success) {
+                    form.trigger("reset");
+                    handleValidationErrors(response);
+                    if (settings.name.text() != response.data.name) {
+                        settings.name.text(response.data.name);
+                    }
+                    if (settings.avatar.html() != response.data.avatar) {
+                        settings.avatar.html(response.data.avatar);
+                    }
+                    loading(false);
                 }
             },
             error: function (error) {
