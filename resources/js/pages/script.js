@@ -358,6 +358,11 @@ function getNotifications() {
 // ---- ------ -- --- ------- -------------
 
 function setNotifications(data) {
+    let statement = data.some(notification => notification.user_id === notification.sender_id);
+    let form = $("form#clearNotifications");
+    if (!statement) {
+        form.hide();
+    }
     const parent = $(".notificationsParent div:first div:nth-child(2)");
     let content = "";
     data.forEach((notification) => {
