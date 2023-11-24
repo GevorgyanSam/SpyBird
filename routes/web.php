@@ -79,6 +79,7 @@ Route::middleware(['auth', 'lockscreen'])->group(function () {
 
         Route::post('/get-notifications', 'getNotifications')->name('get-notifications');
         Route::post('/clear-notifications', 'clearNotifications')->name('clear-notifications');
+        Route::post('/delete-notification/{id}', 'deleteNotification')->name('delete-notification');
 
     });
 

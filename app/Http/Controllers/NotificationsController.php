@@ -30,14 +30,32 @@ class NotificationsController extends Controller
 
     public function clearNotifications()
     {
-        $count = Notification::where([
-            'user_id' => auth()->user()->id,
-            'sender_id' => auth()->user()->id,
-            'status' => 1
-        ])->update([
-            'status' => 0,
-            'updated_at' => now()
-        ]);
+        $count = Notification::where('user_id', auth()->user()->id)
+            ->where('sender_id', auth()->user()->id)
+            ->where('status', 1)
+            ->update([
+                'status' => 0,
+                'updated_at' => now()
+            ]);
+        if ($count) {
+            return response()->json(['success' => true], 200);
+        }
+    }
+
+    // ---- ------ -- --- -------- ------------
+    // This Method Is For Deleting Notification
+    // ---- ------ -- --- -------- ------------
+
+    public function deleteNotification(int $id)
+    {
+        $count = Notification::where('id', $id)
+            ->where('user_id', auth()->user()->id)
+            ->where('sender_id', auth()->user()->id)
+            ->where('status', 1)
+            ->update([
+                'status' => 0,
+                'updated_at' => now()
+            ]);
         if ($count) {
             return response()->json(['success' => true], 200);
         }

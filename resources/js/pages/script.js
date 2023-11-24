@@ -341,6 +341,7 @@ function getNotifications() {
             if (response.data) {
                 showNotifications();
                 setNotifications(response.data);
+                deleteNotification();
             } else if (response.empty) {
                 emptyNotifications();
             }
@@ -358,7 +359,9 @@ function getNotifications() {
 // ---- ------ -- --- ------- -------------
 
 function setNotifications(data) {
-    let statement = data.some(notification => notification.user_id === notification.sender_id);
+    let statement = data.some(
+        (notification) => notification.user_id === notification.sender_id
+    );
     let form = $("form#clearNotifications");
     if (!statement) {
         form.hide();
@@ -398,7 +401,7 @@ function setNotifications(data) {
                         <div class="name">${data.name}</div>
                         <div class="time">${date}</div>
                         <div class="message">${notification.content}.</div>
-                        <div class="remove">
+                        <div class="remove" data-notification-id="${notification.id}">
                             <i class="fa-solid fa-trash"></i>
                         </div>
                     </div>
@@ -440,6 +443,60 @@ function clearNotifications() {
 }
 
 clearNotifications();
+
+// ---- ------ -- --- -------- ------------
+// This Method Is For Deleting Notification
+// ---- ------ -- --- -------- ------------
+
+function deleteNotification() {
+    const btn = $(".notificationsParent .report .notice .content .remove");
+    btn.on("click", function () {
+        let notification = $(this);
+        let id = notification.data("notification-id");
+        loading(true);
+        $.ajax({
+            url: `/delete-notification/${id}`,
+            method: "POST",
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            success: function (response) {
+                loading(false);
+                if (response.success) {
+                    deleteNotificationAnimation(
+                        notification.parents(".report")
+                    );
+                }
+            },
+            error: function (error) {
+                location.reload();
+                loading(false);
+            },
+        });
+    });
+}
+
+// ---- ------ -- -- --------- --- -------- - ------------
+// This Method Is An Animation For Deleting A Notification
+// ---- ------ -- -- --------- --- -------- - ------------
+
+function deleteNotificationAnimation(notification) {
+    notification.animate(
+        {
+            height: 0,
+            opacity: 0,
+            scale: 0,
+        },
+        200
+    );
+    setTimeout(() => {
+        notification.remove();
+        let report = $(".notificationsParent .report")["length"];
+        if (!report) {
+            emptyNotifications();
+        }
+    }, 300);
+}
 
 // ---- ------ -- --- -------- --- ------ --------
 // This Method Is For Toggling App Search Dropdown
