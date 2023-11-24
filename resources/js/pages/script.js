@@ -369,6 +369,7 @@ function setNotifications(data) {
     const parent = $(".notificationsParent div:first div:nth-child(2)");
     let content = "";
     data.forEach((notification) => {
+        let date = notification.created_at.substr(-8, 5);
         if (notification.user_id === notification.sender_id) {
             let data = {
                 icon: "",
@@ -388,7 +389,6 @@ function setNotifications(data) {
                     data.icon = '<i class="fa-solid fa-unlock-keyhole"></i>';
                     break;
             }
-            let date = notification.created_at.substr(-8, 5);
             content += `
             <div class="report">
                 <div class="notice">
@@ -405,6 +405,31 @@ function setNotifications(data) {
                             <i class="fa-solid fa-trash"></i>
                         </div>
                     </div>
+                </div>
+            </div>
+            `;
+        } else {
+            let url = $('meta[name="asset-url"]').attr("content");
+            let avatar = notification.sender.avatar
+                ? `<img src="${url}/${notification.sender.avatar}"></img>`
+                : notification.sender.name[0];
+            content += `
+            <div class="report">
+                <div class="notice">
+                    <div>
+                        <div class="avatar">
+                            ${avatar}
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="name">${notification.sender.name}</div>
+                        <div class="time">${date}</div>
+                        <div class="message">${notification.content}.</div>
+                    </div>
+                </div>
+                <div class="request">
+                    <button class="reject">reject</button>
+                    <button class="confirm">confirm</button>
                 </div>
             </div>
             `;

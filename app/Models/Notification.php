@@ -27,4 +27,8 @@ class Notification extends Model
     ];
     public $incrementing = true;
     public $timestamps = false;
+    public function sender()
+    {
+        return $this->belongsTo(User::class, 'sender_id');
+    }
 }

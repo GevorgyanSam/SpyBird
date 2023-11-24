@@ -326,26 +326,7 @@
                                 <button type="submit">clear all</button>
                             </x-form>
                         </div>
-                        <div>
-                            <!-- <div class="report">
-                                <div class="notice">
-                                    <div>
-                                        <div class="avatar">
-                                            <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/1.jpg">
-                                        </div>
-                                    </div>
-                                    <div class="content">
-                                        <div class="name">ollie chandler</div>
-                                        <div class="time">12:45</div>
-                                        <div class="message">sent you a friend request.</div>
-                                    </div>
-                                </div>
-                                <div class="request">
-                                    <button class="reject">reject</button>
-                                    <button class="confirm">confirm</button>
-                                </div>
-                            </div> -->
-                        </div>
+                        <div></div>
                     </div>
                     <div class="emptyParent">
                         <div class="content">
