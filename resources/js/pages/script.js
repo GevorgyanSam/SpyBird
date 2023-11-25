@@ -318,11 +318,9 @@ function emptyNotifications() {
 function showNotifications() {
     const parent = $(".notificationsParent");
     const notifications = parent.find("div:first");
-    const content = notifications.find("div:nth-child(2)");
     const empty = parent.find(".emptyParent");
     empty.removeClass("active");
     notifications.show();
-    content.empty();
 }
 
 // ---- ------ -- --- ------- -------------
@@ -361,14 +359,17 @@ function getNotifications() {
 // ---- ------ -- --- ------- -------------
 
 function setNotifications(data) {
-    let statement = data.some(
-        (notification) => notification.user_id === notification.sender_id
-    );
-    let form = $("form#clearNotifications");
-    if (!statement) {
-        form.hide();
-    }
-    const parent = $(".notificationsParent div:first div:nth-child(2)");
+    let parent = $(".notificationsParent .reportParent");
+    parent.empty();
+    let html = transformNotificationDataToHtml(data);
+    parent.html(html);
+}
+
+// ---- ------ -- --- ------------ ------------ ---- -- ----
+// This Method Is For Transforming Notification Data To Html
+// ---- ------ -- --- ------------ ------------ ---- -- ----
+
+function transformNotificationDataToHtml(data) {
     let content = "";
     data.forEach((notification) => {
         let date = notification.created_at.substr(-8, 5);
@@ -437,7 +438,7 @@ function setNotifications(data) {
             `;
         }
     });
-    parent.html(content);
+    return content;
 }
 
 // ---- ------ -- --- -------- --- -------------
@@ -528,12 +529,39 @@ function checkNewNotifications() {
             },
         });
     } else {
-        console.log("Get New Notifications On Notifications Page");
+        $.ajax({
+            url: "/get-new-notifications",
+            method: "POST",
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            success: function (response) {
+                if (response.data) {
+                    showNotifications();
+                    setNewNotifications(response.data);
+                    setSeenNotifications();
+                    deleteNotification();
+                }
+            },
+            error: function (error) {
+                location.reload();
+            },
+        });
     }
 }
 
 checkNewNotifications();
 setInterval(checkNewNotifications, 3000);
+
+// ---- ------ -- --- ------- --- -------------
+// This Method Is For Setting New Notifications
+// ---- ------ -- --- ------- --- -------------
+
+function setNewNotifications(data) {
+    let parent = $(".notificationsParent .reportParent");
+    let html = transformNotificationDataToHtml(data);
+    parent.prepend(html);
+}
 
 // ---- ------ -- --- ------- ------ -- --- -------------
 // This Method Is For Setting "Seen" To New Notifications

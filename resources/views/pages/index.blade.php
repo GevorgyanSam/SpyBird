@@ -326,7 +326,7 @@
                                 <button type="submit">clear all</button>
                             </x-form>
                         </div>
-                        <div></div>
+                        <div class="reportParent"></div>
                     </div>
                     <div class="emptyParent">
                         <div class="content">

@@ -82,6 +82,7 @@ Route::middleware(['auth', 'lockscreen'])->group(function () {
         Route::post('/delete-notification/{id}', 'deleteNotification')->name('delete-notification');
         Route::post('/check-new-notifications', 'checkNewNotifications')->name('check-new-notifications');
         Route::post('/set-seen-notifications', 'setSeenNotifications')->name('set-seen-notifications');
+        Route::post('/get-new-notifications', 'getNewNotifications')->name('get-new-notifications');
 
     });
 
