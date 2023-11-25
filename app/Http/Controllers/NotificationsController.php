@@ -76,4 +76,22 @@ class NotificationsController extends Controller
         return response()->json(['count' => $count], 200);
     }
 
+    // ---- ------ -- --- ------- ------ -- --- -------------
+    // This Method Is For Setting "Seen" To New Notifications
+    // ---- ------ -- --- ------- ------ -- --- -------------
+
+    public function setSeenNotifications()
+    {
+        $count = Notification::where('user_id', auth()->user()->id)
+            ->where('status', 1)
+            ->where('seen', 0)
+            ->update([
+                'seen' => 1,
+                'updated_at' => now()
+            ]);
+        if ($count) {
+            return response()->json(['success' => true], 200);
+        }
+    }
+
 }

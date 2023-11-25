@@ -340,7 +340,9 @@ function getNotifications() {
         success: function (response) {
             if (response.data) {
                 showNotifications();
+                hideNotificationCount();
                 setNotifications(response.data);
+                setSeenNotifications();
                 deleteNotification();
             } else if (response.empty) {
                 emptyNotifications();
@@ -506,27 +508,50 @@ function deleteNotification() {
 // ---- ------ -- --- -------- --- --- ------------- ----- - -------
 
 function checkNewNotifications() {
+    let page = sessionStorage.getItem("current-page");
+    if (page !== "notifications") {
+        $.ajax({
+            url: "/check-new-notifications",
+            method: "POST",
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            success: function (response) {
+                if (response.count) {
+                    showNotificationCount(response.count);
+                } else {
+                    hideNotificationCount();
+                }
+            },
+            error: function (error) {
+                location.reload();
+            },
+        });
+    } else {
+        console.log("Get New Notifications On Notifications Page");
+    }
+}
+
+checkNewNotifications();
+setInterval(checkNewNotifications, 3000);
+
+// ---- ------ -- --- ------- ------ -- --- -------------
+// This Method Is For Setting "Seen" To New Notifications
+// ---- ------ -- --- ------- ------ -- --- -------------
+
+function setSeenNotifications() {
     $.ajax({
-        url: "/check-new-notifications",
+        url: "/set-seen-notifications",
         method: "POST",
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
-        success: function (response) {
-            if (response.count) {
-                showNotificationCount(response.count);
-            } else {
-                hideNotificationCount();
-            }
-        },
+        success: function (response) {},
         error: function (error) {
             location.reload();
         },
     });
 }
-
-checkNewNotifications();
-setInterval(checkNewNotifications, 3000);
 
 // ---- ------ -- --- ------- --- ------------- -----
 // This Method Is For Showing New Notifications Count
