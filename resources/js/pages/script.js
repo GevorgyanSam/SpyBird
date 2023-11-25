@@ -938,6 +938,7 @@ function editProfile() {
                     handleValidationErrors(response);
                 } else if (response.success) {
                     form.trigger("reset");
+                    form.find("input[type=text]").blur();
                     handleValidationErrors(response);
                     if (settings.name.text() != response.data.name) {
                         settings.name.text(response.data.name);
