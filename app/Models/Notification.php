@@ -14,6 +14,7 @@ class Notification extends Model
     protected $keyType = 'int';
     protected $guarded = [];
     protected $casts = [
+        'seen' => 'boolean',
         'status' => 'boolean'
     ];
     protected $fillable = [
@@ -21,6 +22,7 @@ class Notification extends Model
         'sender_id',
         'type',
         'content',
+        'seen',
         'status',
         'created_at',
         'updated_at'

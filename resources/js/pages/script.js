@@ -501,6 +501,55 @@ function deleteNotification() {
     });
 }
 
+// ---- ------ -- --- -------- --- --- ------------- ----- - -------
+// This Method Is For Checking For New Notifications Every 3 Seconds
+// ---- ------ -- --- -------- --- --- ------------- ----- - -------
+
+function checkNewNotifications() {
+    $.ajax({
+        url: "/check-new-notifications",
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        success: function (response) {
+            if (response.count) {
+                showNotificationCount(response.count);
+            } else {
+                hideNotificationCount();
+            }
+        },
+        error: function (error) {
+            location.reload();
+        },
+    });
+}
+
+checkNewNotifications();
+setInterval(checkNewNotifications, 3000);
+
+// ---- ------ -- --- ------- --- ------------- -----
+// This Method Is For Showing New Notifications Count
+// ---- ------ -- --- ------- --- ------------- -----
+
+function showNotificationCount(int) {
+    let count = int > 9 ? "9+" : int;
+    let element = $("nav li[data-name=notifications] i");
+    let content = `<div class="count">${count}</div>`;
+    if (element.html() != content) {
+        element.html(content);
+    }
+}
+
+// ---- ------ -- --- ------ ------------- -----
+// This Method Is For Hiding Notifications Count
+// ---- ------ -- --- ------ ------------- -----
+
+function hideNotificationCount() {
+    let element = $("nav li[data-name=notifications] i");
+    element.empty();
+}
+
 // ---- ------ -- -- --------- --- -------- - ------------
 // This Method Is An Animation For Deleting A Notification
 // ---- ------ -- -- --------- --- -------- - ------------

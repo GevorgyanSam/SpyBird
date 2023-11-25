@@ -153,6 +153,7 @@ class SettingsController extends Controller
                 "sender_id" => auth()->user()->id,
                 "type" => "avatar_change",
                 "content" => "avatar updated successfully",
+                "seen" => 0,
                 "status" => 1,
                 "created_at" => now()
             ]);
@@ -174,6 +175,7 @@ class SettingsController extends Controller
                 "sender_id" => auth()->user()->id,
                 "type" => "name_change",
                 "content" => "name updated successfully",
+                "seen" => 0,
                 "status" => 1,
                 "created_at" => now()
             ]);

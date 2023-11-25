@@ -373,6 +373,7 @@ class UserController extends Controller
             "sender_id" => auth()->user()->id,
             "type" => "password_change",
             "content" => "password updated successfully",
+            "seen" => 0,
             "status" => 1,
             "created_at" => now()
         ]);

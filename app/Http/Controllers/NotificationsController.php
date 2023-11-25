@@ -63,4 +63,17 @@ class NotificationsController extends Controller
         }
     }
 
+    // ---- ------ -- --- -------- --- --- -------------
+    // This Method Is For Checking For New Notifications
+    // ---- ------ -- --- -------- --- --- -------------
+
+    public function checkNewNotifications()
+    {
+        $count = Notification::where('user_id', auth()->user()->id)
+            ->where('status', 1)
+            ->where('seen', 0)
+            ->count();
+        return response()->json(['count' => $count], 200);
+    }
+
 }
