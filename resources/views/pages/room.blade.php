@@ -25,9 +25,7 @@
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </li>
                         <li data-name="chat" class="chat" title="Chat" data-content="chatParent">
-                            <i class="fa-solid fa-comments">
-                                <div class="count">2</div>
-                            </i>
+                            <i class="fa-solid fa-comments"></i>
                         </li>
                         <li data-name="friends" class="friends" title="Friends" data-content="friendsParent">
                             <i class="fa-solid fa-user-group"></i>
@@ -58,9 +56,7 @@
                             <i class="fa-solid fa-user-group"></i>
                         </li>
                         <li data-name="chat" class="chat" title="Chat" data-content="chatParent">
-                            <i class="fa-solid fa-comments">
-                                <div class="count">2</div>
-                            </i>
+                            <i class="fa-solid fa-comments"></i>
                         </li>
                         <li data-name="notifications" class="notifications" title="Notifications" data-content="notificationsParent">
                             <i class="fa-solid fa-bell"></i>

@@ -341,6 +341,7 @@ function getNotifications() {
                 hideNotificationCount();
                 setNotifications(response.data);
                 setSeenNotifications();
+                toggleClearNotificationsButton();
                 deleteNotification();
             } else if (response.empty) {
                 emptyNotifications();
@@ -439,6 +440,22 @@ function transformNotificationDataToHtml(data) {
         }
     });
     return content;
+}
+
+// ---- ------ -- --- -------- -------------- ------ ---- ------
+// This Method Is For Toggling Notification's "Clear All" Button
+// ---- ------ -- --- -------- -------------- ------ ---- ------
+
+function toggleClearNotificationsButton() {
+    let statement = $(".notificationsParent .report .notice .content .remove")[
+        "length"
+    ];
+    let btn = $("form#clearNotifications");
+    if (statement) {
+        btn.show();
+    } else {
+        btn.hide();
+    }
 }
 
 // ---- ------ -- --- -------- --- -------------
@@ -540,6 +557,7 @@ function checkNewNotifications() {
                     showNotifications();
                     setNewNotifications(response.data);
                     setSeenNotifications();
+                    toggleClearNotificationsButton();
                     deleteNotification();
                 }
             },
@@ -622,6 +640,7 @@ function deleteNotificationAnimation(notification) {
         if (!report) {
             emptyNotifications();
         }
+        toggleClearNotificationsButton();
     }, 300);
 }
 
