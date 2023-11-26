@@ -2,9 +2,9 @@
 // Import Loading Method From Components.
 // ------ ------- ------ ---- -----------
 import loading from "../../components/loading";
-// ------ ------ -------- ------ ---- -------
-// Import Toggle Dropdown Method From Script.
-// ------ ------ -------- ------ ---- -------
+// ------ ------ -------- --- --- ---- ------- ------ ---- -------
+// Import Toggle Dropdown And Get Page Content Method From Script.
+// ------ ------ -------- --- --- ---- ------- ------ ---- -------
 import { toggleDropdown, getContent } from "../script";
 
 // ---- ------ -- --- -------- --- ------ ---- --------
