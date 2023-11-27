@@ -49,6 +49,7 @@ Route::middleware(['auth', 'lockscreen'])->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/room/{id}', 'room')->name('room');
         Route::post('/check-authentication', 'checkAuthentication')->name('check-authentication')->withoutMiddleware('lockscreen');
+        Route::post('/get-relationship/{id}', 'getRelationship')->name('get-relationship');
 
     });
 

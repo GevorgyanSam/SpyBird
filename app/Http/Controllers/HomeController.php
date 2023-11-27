@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\LoginInfo;
+use App\Models\Friend;
 use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
@@ -79,6 +80,42 @@ class HomeController extends Controller
             return response()->json(["reload" => true], 200);
         }
         return response()->json(["reload" => true], 200);
+    }
+
+    // ---- ------ -- --- ------- ------------ ------- -----
+    // This Method Is For Getting Relationship Between Users
+    // ---- ------ -- --- ------- ------------ ------- -----
+
+    public function getRelationship(int $id)
+    {
+        $response = (object) [];
+        $response->friend = $this->getFriendshipStatus($id);
+        return response()->json($response, 200);
+    }
+
+    // ---- ------ -- --- ------- ---------- ------ ------- -----
+    // This Method Is For Getting Friendship Status Between Users
+    // ---- ------ -- --- ------- ---------- ------ ------- -----
+
+    public function getFriendshipStatus(int $id)
+    {
+        $friend = Friend::where('status', 1)
+            ->where(function ($query) use ($id) {
+                $query->where('user_id', auth()->user()->id)
+                    ->where('friend_user_id', $id);
+            })
+            ->orWhere(function ($query) use ($id) {
+                $query->where('friend_user_id', auth()->user()->id)
+                    ->where('user_id', $id);
+            })
+            ->first();
+        if (empty($friend)) {
+            return 'request';
+        }
+        if ($friend->verified == 'accepted') {
+            return 'remove';
+        }
+        return 'pending';
     }
 
 }

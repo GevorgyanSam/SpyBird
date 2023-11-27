@@ -116,8 +116,14 @@ export function toggleDropdown() {
     }
 
     dropdown.btn.click(function () {
+        let dropdownMenu = $(this).children(".dropdownMenu");
+        if (dropdownMenu.hasClass("active")) {
+            return false;
+        }
         closeDropdownMenu();
-        $(this).children(".dropdownMenu").addClass("active");
+        let id = dropdownMenu.data("user-id");
+        getRelationship(id);
+        dropdownMenu.addClass("active");
     });
 
     dropdown.item.click(function () {
@@ -140,6 +146,50 @@ export function toggleDropdown() {
 }
 
 toggleDropdown();
+
+// ---- ------ -- --- ------- ------------ ------- -----
+// This Method Is For Getting Relationship Between Users
+// ---- ------ -- --- ------- ------------ ------- -----
+
+function getRelationship(id) {
+    $.ajax({
+        url: `/get-relationship/${id}`,
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        success: function (response) {
+            setDropdownMenu(response, id);
+        },
+        error: function (error) {
+            location.reload();
+        },
+    });
+}
+
+// ---- ------ -- --- ------- ---- -- --- -------- ----
+// This Method Is For Setting Data In The Dropdown Menu
+// ---- ------ -- --- ------- ---- -- --- -------- ----
+
+function setDropdownMenu(data, id) {
+    let dropdownMenu = $(`.dropdownMenu[data-user-id=${id}]`);
+    let friend = "";
+    switch (data.friend) {
+        case "request":
+            friend = '<div class="dropdownItem">send friend request</div>';
+            break;
+        case "remove":
+            friend = '<div class="dropdownItem">remove from friends</div>';
+            break;
+    }
+    let content = `
+        <div class="dropdownItem">send message</div>
+        ${friend}
+        <div class="line"></div>
+        <div class="dropdownItem danger">block user</div>
+    `;
+    dropdownMenu.html(content);
+}
 
 // ---- ------ -- --- -------- -------------- ----- - -------
 // This Method Is For Checking Authentication Every 3 Seconds
