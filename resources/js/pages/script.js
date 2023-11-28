@@ -238,7 +238,17 @@ function sendFriendRequest(id) {
 // ---- ------ -- --- -------- ---- ------ ----
 
 function removeFromFriends(id) {
-    console.log(`Remove From Friend List By Id ${id}`);
+    $.ajax({
+        url: `/remove-from-friends/${id}`,
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        success: function (response) {},
+        error: function (error) {
+            location.reload();
+        },
+    });
 }
 
 // ---- ------ -- --- -------- -------------- ----- - -------

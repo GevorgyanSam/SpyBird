@@ -68,4 +68,39 @@ class FriendsController extends Controller
         return response()->json(['success' => true], 200);
     }
 
+    // ---- ------ -- --- -------- ---- ------ ----
+    // This Method Is For Removing From Friend List
+    // ---- ------ -- --- -------- ---- ------ ----
+
+    public function removeFromFriends(int $id)
+    {
+        if (auth()->user()->id == $id) {
+            return response()->json(['error' => true], 403);
+        }
+        $status = $this->getFriendshipStatus($id);
+        if ($status != 'remove') {
+            return response()->json(['error' => true], 403);
+        }
+        $check = Friend::
+            where(function ($query) use ($id) {
+                $query->where('status', 1)
+                    ->where('verified', 'accepted')
+                    ->where('user_id', auth()->user()->id)
+                    ->where('friend_user_id', $id);
+            })
+            ->orWhere(function ($query) use ($id) {
+                $query->where('status', 1)
+                    ->where('verified', 'accepted')
+                    ->where('friend_user_id', auth()->user()->id)
+                    ->where('user_id', $id);
+            })
+            ->update([
+                'status' => 0,
+                'updated_at' => now()
+            ]);
+        if ($check) {
+            return response()->json(['success' => true], 200);
+        }
+    }
+
 }

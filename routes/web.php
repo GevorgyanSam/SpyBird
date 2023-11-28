@@ -91,6 +91,7 @@ Route::middleware(['auth', 'lockscreen'])->group(function () {
     Route::controller(FriendsController::class)->group(function () {
 
         Route::post('/send-friend-request/{id}', 'sendFriendRequest')->name('send-friend-request');
+        Route::post('/remove-from-friends/{id}', 'removeFromFriends')->name('remove-from-friends');
 
     });
 
