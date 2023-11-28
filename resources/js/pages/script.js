@@ -108,12 +108,7 @@ export function toggleDropdown() {
     const dropdown = {
         menu: $(".dropdownMenu"),
         btn: $(".personSettings, .dropdownParent"),
-        item: $(".dropdownItem"),
     };
-
-    function closeDropdownMenu() {
-        dropdown.menu.removeClass("active");
-    }
 
     dropdown.btn.click(function () {
         let dropdownMenu = $(this).children(".dropdownMenu");
@@ -124,10 +119,6 @@ export function toggleDropdown() {
         let id = dropdownMenu.data("user-id");
         getRelationship(id);
         dropdownMenu.addClass("active");
-    });
-
-    dropdown.item.click(function () {
-        closeDropdownMenu();
     });
 
     $(document).click(function (e) {
@@ -146,6 +137,36 @@ export function toggleDropdown() {
 }
 
 toggleDropdown();
+
+// ---- ------ -- --- ------- -------- ----
+// This Method Is For Closing Dropdown Menu
+// ---- ------ -- --- ------- -------- ----
+
+function closeDropdownMenu() {
+    let dropdownMenu = $(".dropdownMenu");
+    dropdownMenu.removeClass("active");
+}
+
+// ---- ------ -- --- -------- -- -------- ----
+// This Method Is For Clicking On Dropdown Item
+// ---- ------ -- --- -------- -- -------- ----
+
+function dropdownItem() {
+    let item = $(".dropdownMenu .dropdownItem");
+    item.click(function () {
+        closeDropdownMenu();
+        let id = $(this).parent(".dropdownMenu").data("user-id");
+        let job = $(this).data("job");
+        switch (job) {
+            case "sendFriendRequest":
+                sendFriendRequest(id);
+                break;
+            case "removeFromFriends":
+                removeFromFriends(id);
+                break;
+        }
+    });
+}
 
 // ---- ------ -- --- ------- ------------ ------- -----
 // This Method Is For Getting Relationship Between Users
@@ -176,10 +197,12 @@ function setDropdownMenu(data, id) {
     let friend = "";
     switch (data.friend) {
         case "request":
-            friend = '<div class="dropdownItem">send friend request</div>';
+            friend =
+                '<div class="dropdownItem" data-job="sendFriendRequest">send friend request</div>';
             break;
         case "remove":
-            friend = '<div class="dropdownItem">remove from friends</div>';
+            friend =
+                '<div class="dropdownItem" data-job="removeFromFriends">remove from friends</div>';
             break;
     }
     let content = `
@@ -189,6 +212,23 @@ function setDropdownMenu(data, id) {
         <div class="dropdownItem danger">block user</div>
     `;
     dropdownMenu.html(content);
+    dropdownItem();
+}
+
+// ---- ------ -- --- ------- ------ ------- -- ----- ----
+// This Method Is For Sending Friend Request To Other User
+// ---- ------ -- --- ------- ------ ------- -- ----- ----
+
+function sendFriendRequest(id) {
+    console.log(`Send Friend Request To User Id ${id}`);
+}
+
+// ---- ------ -- --- -------- ---- ------ ----
+// This Method Is For Removing From Friend List
+// ---- ------ -- --- -------- ---- ------ ----
+
+function removeFromFriends(id) {
+    console.log(`Remove From Friend List By Id ${id}`);
 }
 
 // ---- ------ -- --- -------- -------------- ----- - -------

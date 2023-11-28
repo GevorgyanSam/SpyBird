@@ -102,12 +102,7 @@ function setSearchContacts(data) {
             </div>
             <div class="personSettings">
                 <i class="fa-solid fa-ellipsis-vertical"></i>
-                <div class="dropdownMenu" data-user-id="${user.id}">
-                    <div class="dropdownItem">send message</div>
-                    <div class="dropdownItem">send friend request</div>
-                    <div class="line"></div>
-                    <div class="dropdownItem danger">block user</div>
-                </div>
+                <div class="dropdownMenu" data-user-id="${user.id}"></div>
             </div>
         </div>
         `;
