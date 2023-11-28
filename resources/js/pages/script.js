@@ -220,7 +220,17 @@ function setDropdownMenu(data, id) {
 // ---- ------ -- --- ------- ------ ------- -- ----- ----
 
 function sendFriendRequest(id) {
-    console.log(`Send Friend Request To User Id ${id}`);
+    $.ajax({
+        url: `/send-friend-request/${id}`,
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        success: function (response) {},
+        error: function (error) {
+            location.reload();
+        },
+    });
 }
 
 // ---- ------ -- --- -------- ---- ------ ----

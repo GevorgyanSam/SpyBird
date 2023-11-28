@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\NotificationsController;
+use App\Http\Controllers\FriendsController;
 use App\Http\Controllers\TwoFactorAuthenticationController;
 
 // ----- ------ --- --- ----- -----
@@ -84,6 +85,12 @@ Route::middleware(['auth', 'lockscreen'])->group(function () {
         Route::post('/check-new-notifications', 'checkNewNotifications')->name('check-new-notifications');
         Route::post('/set-seen-notifications', 'setSeenNotifications')->name('set-seen-notifications');
         Route::post('/get-new-notifications', 'getNewNotifications')->name('get-new-notifications');
+
+    });
+
+    Route::controller(FriendsController::class)->group(function () {
+
+        Route::post('/send-friend-request/{id}', 'sendFriendRequest')->name('send-friend-request');
 
     });
 
