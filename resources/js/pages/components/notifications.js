@@ -74,6 +74,7 @@ function setNotifications(data) {
     parent.empty();
     let html = transformNotificationDataToHtml(data);
     parent.html(html);
+    requestButtons();
 }
 
 // ---- ------ -- --- ------------ ------------ ---- -- ----
@@ -141,15 +142,89 @@ function transformNotificationDataToHtml(data) {
                         <div class="message">${notification.content}.</div>
                     </div>
                 </div>
-                <div class="request">
-                    <button class="reject">reject</button>
-                    <button class="confirm">confirm</button>
+                <div class="request" data-notification-id="${notification.id}">
+                    <button class="reject" data-job="rejectFriendRequest" data-sender-id="${notification.sender.id}">reject</button>
+                    <button class="confirm" data-job="confirmFriendRequest" data-sender-id="${notification.sender.id}">confirm</button>
                 </div>
             </div>
             `;
         }
     });
     return content;
+}
+
+// ---- ------ -- --- -------- ------- ------ ------
+// This Method Is For Handling Request Button Clicks
+// ---- ------ -- --- -------- ------- ------ ------
+
+function requestButtons() {
+    const btn = $(".notificationsParent .report .request button");
+    btn.click(function () {
+        let job = $(this).data("job");
+        let id = $(this).data("sender-id");
+        let notification = $(this).parent(".request").data("notification-id");
+        if (job == "confirmFriendRequest") {
+            confirmFriendRequest(id, notification);
+        } else if (job == "rejectFriendRequest") {
+            rejectFriendRequest(id, notification);
+        }
+    });
+}
+
+// ---- ------ -- -------- -- ------- --- ------ -------
+// This Method Is Intended To Confirm The Friend Request
+// ---- ------ -- -------- -- ------- --- ------ -------
+
+function confirmFriendRequest(id, notification) {
+    $.ajax({
+        url: `/confirm-friend-request/${id}`,
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        data: {
+            notification: notification,
+        },
+        success: function (response) {
+            if (response.success) {
+                let report = $(
+                    `.notificationsParent .request[data-notification-id="${notification}"]`
+                ).parents(".report");
+                deleteNotificationAnimation(report);
+            }
+        },
+        error: function (error) {
+            location.reload();
+        },
+    });
+}
+
+// ---- ------ -- -------- -- ------ --- ------ -------
+// This Method Is Intended To Reject The Friend Request
+// ---- ------ -- -------- -- ------ --- ------ -------
+
+function rejectFriendRequest(id, notification) {
+    $.ajax({
+        url: `/reject-friend-request/${id}`,
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        data: {
+            notification: notification,
+        },
+        success: function (response) {
+            if (response.success) {
+                let report = $(
+                    `.notificationsParent .request[data-notification-id="${notification}"]`
+                ).parents(".report");
+                deleteNotificationAnimation(report);
+            }
+        },
+        error: function (error) {
+            location.reload();
+        },
+    });
 }
 
 // ---- ------ -- --- -------- -------------- ------ ---- ------
@@ -343,4 +418,5 @@ function setNewNotifications(data) {
     let parent = $(".notificationsParent .reportParent");
     let html = transformNotificationDataToHtml(data);
     parent.prepend(html);
+    requestButtons();
 }

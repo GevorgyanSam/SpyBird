@@ -9,11 +9,11 @@ use App\Models\Notification;
 class FriendsController extends Controller
 {
 
-    // ---- ------ -- --- ------- ---------- ------ ------- -----
-    // This Method Is For Getting Friendship Status Between Users
-    // ---- ------ -- --- ------- ---------- ------ ------- -----
+    // ---- ------ -- --- ------- ---------- ------- -----
+    // This Method Is For Getting Friendship Between Users
+    // ---- ------ -- --- ------- ---------- ------- -----
 
-    public static function getFriendshipStatus(int $id)
+    public static function getFriendship(int $id)
     {
         $friend = Friend::
             where(function ($query) use ($id) {
@@ -27,6 +27,16 @@ class FriendsController extends Controller
                     ->where('user_id', $id);
             })
             ->first();
+        return $friend;
+    }
+
+    // ---- ------ -- --- ------- ---------- ------ ------- -----
+    // This Method Is For Getting Friendship Status Between Users
+    // ---- ------ -- --- ------- ---------- ------ ------- -----
+
+    public static function getFriendshipStatus(int $id)
+    {
+        $friend = self::getFriendship($id);
         if (empty($friend)) {
             return 'request';
         }
@@ -94,6 +104,67 @@ class FriendsController extends Controller
                     ->where('friend_user_id', auth()->user()->id)
                     ->where('user_id', $id);
             })
+            ->update([
+                'status' => 0,
+                'updated_at' => now()
+            ]);
+        if ($check) {
+            return response()->json(['success' => true], 200);
+        }
+    }
+
+    // ---- ------ -- -------- -- ------- --- ------ -------
+    // This Method Is Intended To Confirm The Friend Request
+    // ---- ------ -- -------- -- ------- --- ------ -------
+
+    public function confirmFriendRequest(Request $request, int $id)
+    {
+        if (auth()->user()->id == $id) {
+            return response()->json(['error' => true], 403);
+        }
+        $friendship = $this->getFriendship($id);
+        if (empty($friendship) || $friendship->verified != 'pending') {
+            return response()->json(['error' => true], 403);
+        }
+        $check = Friend::where('id', $friendship->id)
+            ->update([
+                'verified' => 'accepted',
+                'updated_at' => now()
+            ]);
+        Notification::where('id', $request->input('notification'))
+            ->where('user_id', auth()->user()->id)
+            ->where('status', 1)
+            ->update([
+                'status' => 0,
+                'updated_at' => now()
+            ]);
+        if ($check) {
+            return response()->json(['success' => true], 200);
+        }
+    }
+
+    // ---- ------ -- -------- -- ------ --- ------ -------
+    // This Method Is Intended To Reject The Friend Request
+    // ---- ------ -- -------- -- ------ --- ------ -------
+
+    public function rejectFriendRequest(Request $request, int $id)
+    {
+        if (auth()->user()->id == $id) {
+            return response()->json(['error' => true], 403);
+        }
+        $friendship = $this->getFriendship($id);
+        if (empty($friendship) || $friendship->verified != 'pending') {
+            return response()->json(['error' => true], 403);
+        }
+        $check = Friend::where('id', $friendship->id)
+            ->update([
+                'verified' => 'rejected',
+                'status' => 0,
+                'updated_at' => now()
+            ]);
+        Notification::where('id', $request->input('notification'))
+            ->where('user_id', auth()->user()->id)
+            ->where('status', 1)
             ->update([
                 'status' => 0,
                 'updated_at' => now()
