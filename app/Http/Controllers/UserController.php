@@ -3,17 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Actions\LocationAction;
+use App\Jobs\AuthenticationCodeJob;
+use App\Jobs\PasswordChangeJob;
+use App\Jobs\PasswordResetJob;
+use App\Jobs\RegistrationSuccessJob;
+use App\Jobs\VerifyEmailJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
-use App\Mail\PasswordChange;
-use App\Mail\PasswordReset;
-use App\Mail\RegistrationSuccess;
-use App\Mail\VerifyEmail;
-use App\Mail\AuthenticationCode;
 use App\Models\Guest;
 use App\Models\User;
 use App\Models\LoginInfo;
@@ -93,11 +92,12 @@ class UserController extends Controller
                 'created_at' => now(),
                 'expires_at' => now()->addMinutes(20)
             ]);
-            $emailData = (object) [
+            $jobData = (object) [
+                'email' => $credentials->email,
                 'name' => $credentials->name,
                 'code' => $code
             ];
-            Mail::to($credentials->email)->send(new AuthenticationCode($emailData));
+            AuthenticationCodeJob::dispatch($jobData);
             $data = (object) [
                 'id' => $credentials->id,
                 'name' => $credentials->name,
@@ -186,11 +186,12 @@ class UserController extends Controller
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent()
         ]);
-        $emailData = (object) [
+        $jobData = (object) [
+            'email' => $newUser->email,
             'name' => $newUser->name,
             'token' => $newToken->token
         ];
-        Mail::to($newUser->email)->send(new VerifyEmail($emailData));
+        VerifyEmailJob::dispatch($jobData);
         return response()->json(['success' => true], 200);
     }
 
@@ -228,8 +229,11 @@ class UserController extends Controller
             'email_verified_at' => now()
         ]);
         $user = User::find($verifiable->user_id);
-        $emailData = (object) ['name' => $user->name];
-        Mail::to($user->email)->send(new RegistrationSuccess($emailData));
+        $jobData = (object) [
+            'email' => $user->email,
+            'name' => $user->name
+        ];
+        RegistrationSuccessJob::dispatch($jobData);
         Auth::login($user);
         $location = $locationAction($request->ip());
         if (isset($location->message)) {
@@ -297,11 +301,12 @@ class UserController extends Controller
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent()
         ]);
-        $emailData = (object) [
+        $jobData = (object) [
+            'email' => $user->email,
             'name' => $user->name,
             'token' => $token->token
         ];
-        Mail::to($user->email)->send(new PasswordReset($emailData));
+        PasswordResetJob::dispatch($jobData);
         return response()->json(['success' => true], 200);
     }
 
@@ -384,10 +389,11 @@ class UserController extends Controller
         ]);
         $cacheName = "device_" . $user->id;
         Cache::forget($cacheName);
-        $emailData = (object) [
+        $jobData = (object) [
+            'email' => $user->email,
             'name' => $user->name
         ];
-        Mail::to($user->email)->send(new PasswordChange($emailData));
+        PasswordChangeJob::dispatch($jobData);
         return response()->json(['success' => true], 200);
     }
 
