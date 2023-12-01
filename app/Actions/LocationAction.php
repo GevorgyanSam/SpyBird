@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Actions;
 
 use Illuminate\Support\Facades\Http;
 
-class LocationController extends Controller
+class LocationAction
 {
 
     // ---- ------ -- --- ------- ---- -------- --- -- --------
     // This Method Is For Getting User Location (By IP Address)
     // ---- ------ -- --- ------- ---- -------- --- -- --------
 
-    public static function find($ip)
+    public function __invoke(string $ip): object
     {
         $key = env("IP_GEOLOCATION_API_KEY");
         $url = "https://api.ipgeolocation.io/ipgeo?apiKey=$key&ip=$ip";

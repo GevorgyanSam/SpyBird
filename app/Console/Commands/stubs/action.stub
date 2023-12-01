@@ -4,8 +4,14 @@ namespace App\Actions;
 
 class DummyClass
 {
-    public function handle()
+
+    // ----------- -- --- --------- --------
+    // Description Of The Invokable Function
+    // ----------- -- --- --------- --------
+
+    public function __invoke()
     {
         //
     }
+
 }

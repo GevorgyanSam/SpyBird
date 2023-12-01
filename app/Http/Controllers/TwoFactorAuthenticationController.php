@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\LocationAction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
@@ -235,7 +236,7 @@ class TwoFactorAuthenticationController extends Controller
     // This Method Is For Two Factor Authentication Logic
     // ---- ------ -- --- --- ------ -------------- -----
 
-    public function twoFactorAuth(Request $request)
+    public function twoFactorAuth(Request $request, LocationAction $locationAction)
     {
         $failed_login_attempts = FailedLoginAttempt::where([
             'ip' => $request->ip(),
@@ -284,7 +285,7 @@ class TwoFactorAuthenticationController extends Controller
             'updated_at' => now()
         ]);
         Auth::login($user);
-        $location = LocationController::find($request->ip());
+        $location = $locationAction($request->ip());
         if (isset($location->message)) {
             $location = "Not Detected";
         } else {
@@ -342,7 +343,7 @@ class TwoFactorAuthenticationController extends Controller
     // This Method Is For Lost Email Authentication Logic
     // ---- ------ -- --- ---- ----- -------------- -----
 
-    public function lostEmailAuth(Request $request)
+    public function lostEmailAuth(Request $request, LocationAction $locationAction)
     {
         $failed_login_attempts = FailedLoginAttempt::where([
             'ip' => $request->ip(),
@@ -388,7 +389,7 @@ class TwoFactorAuthenticationController extends Controller
             'updated_at' => now()
         ]);
         Auth::login($user);
-        $location = LocationController::find($request->ip());
+        $location = $locationAction($request->ip());
         if (isset($location->message)) {
             $location = "Not Detected";
         } else {

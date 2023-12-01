@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\LocationAction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Models\User;
@@ -59,9 +60,9 @@ class SearchController extends Controller
     // This Method Is For Getting Nearby Contacts
     // ---- ------ -- --- ------- ------ --------
 
-    public function getNearbyContacts(Request $request)
+    public function getNearbyContacts(Request $request, LocationAction $locationAction)
     {
-        $location = LocationController::find($request->ip());
+        $location = $locationAction($request->ip());
         if (isset($location->message)) {
             $location = "Not Detected";
         } else {

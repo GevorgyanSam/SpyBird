@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\LocationAction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -47,7 +48,7 @@ class UserController extends Controller
     // This Method Is For Login Logic
     // ---- ------ -- --- ----- -----
 
-    public function loginAuth(Request $request)
+    public function loginAuth(Request $request, LocationAction $locationAction)
     {
         $failed_login_attempts = FailedLoginAttempt::where([
             'ip' => $request->ip(),
@@ -111,7 +112,7 @@ class UserController extends Controller
             'updated_at' => now()
         ]);
         Auth::login($credentials);
-        $location = LocationController::find($request->ip());
+        $location = $locationAction($request->ip());
         if (isset($location->message)) {
             $location = "Not Detected";
         } else {
@@ -197,7 +198,7 @@ class UserController extends Controller
     // This Method Is For Verifying Email After Registration
     // ---- ------ -- --- --------- ----- ----- ------------
 
-    public function verifyEmail(string $token, Request $request)
+    public function verifyEmail(string $token, Request $request, LocationAction $locationAction)
     {
         $verifiable = PersonalAccessToken::where(['token' => $token, 'type' => 'registration', 'status' => 1])->first();
         if (empty($verifiable)) {
@@ -230,7 +231,7 @@ class UserController extends Controller
         $emailData = (object) ['name' => $user->name];
         Mail::to($user->email)->send(new RegistrationSuccess($emailData));
         Auth::login($user);
-        $location = LocationController::find($request->ip());
+        $location = $locationAction($request->ip());
         if (isset($location->message)) {
             $location = "Not Detected";
         } else {
