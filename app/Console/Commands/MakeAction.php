@@ -27,11 +27,13 @@ class MakeAction extends Command
         if ($this->files->exists($filePath)) {
             $this->newLine();
             $this->output->write('<fg=white;bg=red> ERROR </> <fg=white>Action already exists.</>');
+            $this->newLine();
             return false;
         }
         $this->files->put($filePath, $this->buildClass($className));
         $this->newLine();
         $this->output->write("<fg=white;bg=blue> INFO </> <fg=white>Action</> [<fg=white;options=bold>app/Actions/{$className}.php</>] <fg=white>created successfully.</>");
+        $this->newLine();
     }
 
     protected function makeDirectory($path)

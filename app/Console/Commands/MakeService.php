@@ -27,11 +27,13 @@ class MakeService extends Command
         if ($this->files->exists($filePath)) {
             $this->newLine();
             $this->output->write('<fg=white;bg=red> ERROR </> <fg=white>Service already exists.</>');
+            $this->newLine();
             return false;
         }
         $this->files->put($filePath, $this->buildClass($className));
         $this->newLine();
         $this->output->write("<fg=white;bg=blue> INFO </> <fg=white>Service</> [<fg=white;options=bold>app/Services/{$className}.php</>] <fg=white>created successfully.</>");
+        $this->newLine();
     }
 
     protected function makeDirectory($path)

@@ -3,17 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Actions\LocationAction;
+use App\Jobs\DisableTwoFactorAuthenticationConfirmationJob;
+use App\Jobs\DisableTwoFactorAuthenticationJob;
+use App\Jobs\EnableTwoFactorAuthenticationConfirmationJob;
+use App\Jobs\EnableTwoFactorAuthenticationJob;
+use App\Jobs\NewLoginJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
-use App\Mail\EnableTwoFactorAuthentication;
-use App\Mail\DisableTwoFactorAuthentication;
-use App\Mail\EnableTwoFactorAuthenticationConfirmation;
-use App\Mail\DisableTwoFactorAuthenticationConfirmation;
-use App\Mail\NewLogin;
 use App\Models\User;
 use App\Models\LoginInfo;
 use App\Models\BackupCode;
@@ -53,11 +52,12 @@ class TwoFactorAuthenticationController extends Controller
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent()
         ]);
-        $emailData = (object) [
+        $jobData = (object) [
+            'email' => auth()->user()->email,
             'name' => auth()->user()->name,
             'token' => $token->token
         ];
-        Mail::to(auth()->user()->email)->send(new EnableTwoFactorAuthentication($emailData));
+        EnableTwoFactorAuthenticationJob::dispatch($jobData);
         return response()->json(['success' => true], 200);
     }
 
@@ -112,11 +112,12 @@ class TwoFactorAuthenticationController extends Controller
                 'created_at' => now()
             ]);
         }
-        $emailData = (object) [
+        $jobData = (object) [
+            'email' => $user->email,
             'name' => $user->name,
             'codes' => $backupCodes
         ];
-        Mail::to($user->email)->send(new EnableTwoFactorAuthenticationConfirmation($emailData));
+        EnableTwoFactorAuthenticationConfirmationJob::dispatch($jobData);
         return redirect()->route('user.login');
     }
 
@@ -147,11 +148,12 @@ class TwoFactorAuthenticationController extends Controller
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent()
         ]);
-        $emailData = (object) [
+        $jobData = (object) [
+            'email' => auth()->user()->email,
             'name' => auth()->user()->name,
             'token' => $token->token
         ];
-        Mail::to(auth()->user()->email)->send(new DisableTwoFactorAuthentication($emailData));
+        DisableTwoFactorAuthenticationJob::dispatch($jobData);
         return response()->json(['success' => true], 200);
     }
 
@@ -203,10 +205,11 @@ class TwoFactorAuthenticationController extends Controller
             'status' => 0,
             'updated_at' => now()
         ]);
-        $emailData = (object) [
+        $jobData = (object) [
+            'email' => $user->email,
             'name' => $user->name
         ];
-        Mail::to($user->email)->send(new DisableTwoFactorAuthenticationConfirmation($emailData));
+        DisableTwoFactorAuthenticationConfirmationJob::dispatch($jobData);
         return redirect()->route('user.login');
     }
 
@@ -311,13 +314,14 @@ class TwoFactorAuthenticationController extends Controller
             $device = $agent->platform();
         }
         $date = Carbon::parse($loginInfo->created_at)->format('d M H:i');
-        $emailData = (object) [
+        $jobData = (object) [
+            'email' => Auth::user()->email,
             'name' => Auth::user()->name,
             'device' => $device,
             'location' => $location,
             'date' => $date
         ];
-        Mail::to(Auth::user()->email)->send(new NewLogin($emailData));
+        NewLoginJob::dispatch($jobData);
         return response()->json(['success' => true], 200);
     }
 
@@ -415,13 +419,14 @@ class TwoFactorAuthenticationController extends Controller
             $device = $agent->platform();
         }
         $date = Carbon::parse($loginInfo->created_at)->format('d M H:i');
-        $emailData = (object) [
+        $jobData = (object) [
+            'email' => Auth::user()->email,
             'name' => Auth::user()->name,
             'device' => $device,
             'location' => $location,
             'date' => $date
         ];
-        Mail::to(Auth::user()->email)->send(new NewLogin($emailData));
+        NewLoginJob::dispatch($jobData);
         return response()->json(['success' => true], 200);
     }
 

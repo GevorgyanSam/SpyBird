@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\AccountTerminationConfirmationJob;
+use App\Jobs\AccountTerminationJob;
+use App\Jobs\PasswordResetJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use App\Models\LoginInfo;
 use App\Models\UserDataHistory;
@@ -14,9 +16,6 @@ use App\Models\User;
 use App\Models\Notification;
 use App\Models\PersonalAccessToken;
 use App\Models\PersonalAccessTokenEvent;
-use App\Mail\PasswordReset;
-use App\Mail\AccountTermination;
-use App\Mail\AccountTerminationConfirmation;
 use Jenssegers\Agent\Agent;
 
 class SettingsController extends Controller
@@ -220,11 +219,12 @@ class SettingsController extends Controller
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent()
         ]);
-        $emailData = (object) [
+        $jobData = (object) [
+            'email' => auth()->user()->email,
             'name' => auth()->user()->name,
             'token' => $token->token
         ];
-        Mail::to(auth()->user()->email)->send(new PasswordReset($emailData));
+        PasswordResetJob::dispatch($jobData);
         return response()->json(['success' => true], 200);
     }
 
@@ -272,11 +272,12 @@ class SettingsController extends Controller
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent()
         ]);
-        $emailData = (object) [
+        $jobData = (object) [
+            'email' => auth()->user()->email,
             'name' => auth()->user()->name,
             'token' => $token->token
         ];
-        Mail::to(auth()->user()->email)->send(new AccountTermination($emailData));
+        AccountTerminationJob::dispatch($jobData);
         return response()->json(['success' => true], 200);
     }
 
@@ -327,10 +328,11 @@ class SettingsController extends Controller
             'to' => 0,
             'created_at' => now()
         ]);
-        $emailData = (object) [
+        $jobData = (object) [
+            'email' => $user->email,
             'name' => $user->name
         ];
-        Mail::to($user->email)->send(new AccountTerminationConfirmation($emailData));
+        AccountTerminationConfirmationJob::dispatch($jobData);
         return redirect()->route('user.login');
     }
 
