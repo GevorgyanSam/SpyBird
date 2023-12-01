@@ -20,7 +20,7 @@ class MakeUser extends Command
             'name' => ['required']
         ]);
         if ($nameValidator->fails()) {
-            $this->error('Enter A Valid Name');
+            $this->output->write('<fg=white;bg=red> ERROR </> <fg=white>Enter a valid name.</>');
             return false;
         }
         $email = $this->ask('New User Email');
@@ -28,7 +28,7 @@ class MakeUser extends Command
             'email' => ['required', 'email:rfc,dns,filter', 'unique:users']
         ]);
         if ($emailValidator->fails()) {
-            $this->error('Enter A Valid Email Address');
+            $this->output->write('<fg=white;bg=red> ERROR </> <fg=white>Enter a valid email address.</>');
             return false;
         }
         $password = $this->secret('New User Password');
@@ -36,7 +36,7 @@ class MakeUser extends Command
             'password' => ['required', 'min:8']
         ]);
         if ($passwordValidator->fails()) {
-            $this->error('Enter A Valid Password');
+            $this->output->write('<fg=white;bg=red> ERROR </> <fg=white>Enter a valid password.</>');
             return false;
         }
         $newUser = User::create([
@@ -61,6 +61,6 @@ class MakeUser extends Command
             'updated_at' => now(),
             'deleted_at' => now()
         ]);
-        $this->info('User Created Successfully');
+        $this->output->write("<fg=white;bg=blue> INFO </> <fg=white>User created successfully.</>");
     }
 }
