@@ -11,13 +11,13 @@ use App\Models\Guest;
 use App\Models\User;
 use App\Models\LoginInfo;
 use App\Models\PersonalAccessToken;
-use App\Models\PersonalAccessTokenEvent;
 use App\Models\UserDataHistory;
 use App\Models\Notification;
 use App\Models\FailedLoginAttempt;
 use App\Services\UserLoginService;
 use App\Services\UserRegistrationService;
 use App\Services\UserResetService;
+use App\Services\UserTokenService;
 use App\Services\VerifyEmailService;
 
 class UserController extends Controller
@@ -98,38 +98,9 @@ class UserController extends Controller
     // This Method Is For Create New Password Page View
     // ---- ------ -- --- ------ --- -------- ---- ----
 
-    public function token(string $token, Request $request)
+    public function token(string $token, Request $request, UserTokenService $service)
     {
-        $verifiable = PersonalAccessToken::where(['token' => $token, 'type' => 'password_reset', 'status' => 1])->first();
-        if (empty($verifiable)) {
-            abort(404);
-        }
-        if ($verifiable->expires_at <= now()) {
-            abort(404);
-        }
-        PersonalAccessToken::where(['token' => $token])->update([
-            'status' => 0,
-            'updated_at' => now()
-        ]);
-        $tokenId = PersonalAccessToken::where('token', $token)->value('id');
-        PersonalAccessTokenEvent::create([
-            'token_id' => $tokenId,
-            'type' => 'usage',
-            'ip' => $request->ip(),
-            'user_agent' => $request->userAgent()
-        ]);
-        $user = User::where(['id' => $verifiable->user_id, 'status' => 1])->orWhereNull('email_verified_at')->first();
-        if (empty($user)) {
-            abort(404);
-        }
-        if (empty($user->email_verified_at)) {
-            User::where('id', $user->id)->update([
-                'status' => 1,
-                'activity' => 1,
-                'email_verified_at' => now()
-            ]);
-        }
-        return view('users.token', ['user' => $user, 'token' => $token]);
+        return $service->handle($token, $request);
     }
 
     // ---- ------ -- --- ------ --- -------- -----
