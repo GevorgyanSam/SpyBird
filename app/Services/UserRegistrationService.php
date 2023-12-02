@@ -11,17 +11,42 @@ use Illuminate\Support\Str;
 class UserRegistrationService
 {
 
+    protected const TOKEN_EXPIRY_HOURS = 1;
+
     // --- ---- -------- --- ---- ------------
     // The Main Function For User Registration
     // --- ---- -------- --- ---- ------------
 
-    public function register($request)
+    public function handle($request)
     {
+        $this->validate($request);
         $user = $this->createUser($request);
         $token = $this->createToken($user);
         $this->createTokenEvent($request, $token);
         $this->sendMail($user, $token);
         return response()->json(['success' => true], 200);
+    }
+
+    // ---- ------ -- --- ----------- ---- ----
+    // This Method Is For Validataing User Data
+    // ---- ------ -- --- ----------- ---- ----
+
+    protected function validate($request)
+    {
+        $rules = [
+            'name' => ['bail', 'required'],
+            'email' => ['bail', 'required', 'email:rfc,dns,filter', 'unique:users'],
+            'password' => ['bail', 'required', 'min:8']
+        ];
+        $messages = [
+            'email' => [
+                'enter valid :attribute address'
+            ],
+            'required' => 'enter :attribute',
+            'min' => 'at least :min characters',
+            'unique' => ':attribute already exists',
+        ];
+        $request->validate($rules, $messages);
     }
 
     // ---- ------ -- --- ------- ---- ---- ---- --------
@@ -30,7 +55,7 @@ class UserRegistrationService
 
     protected function createUser($request)
     {
-        $user = User::create([
+        return User::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'password' => $request->input('password'),
@@ -40,7 +65,6 @@ class UserRegistrationService
             'invisible' => 0,
             'created_at' => now()
         ]);
-        return $user;
     }
 
     // ---- ------ -- --- ------- ---- ---------- ----- ---- --------
@@ -49,15 +73,14 @@ class UserRegistrationService
 
     protected function createToken($user)
     {
-        $token = PersonalAccessToken::create([
+        return PersonalAccessToken::create([
             'user_id' => $user->id,
             'type' => 'registration',
             'token' => Str::random(60),
             'status' => 1,
             'created_at' => now(),
-            'expires_at' => now()->addHours(1)
+            'expires_at' => now()->addHours(self::TOKEN_EXPIRY_HOURS)
         ]);
-        return $token;
     }
 
     // ---- ------ -- --- ------- ----- -----

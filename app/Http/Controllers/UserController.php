@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Actions\LocationAction;
-use App\Jobs\AuthenticationCodeJob;
 use App\Jobs\PasswordChangeJob;
 use App\Jobs\PasswordResetJob;
 use App\Jobs\RegistrationSuccessJob;
@@ -20,7 +19,7 @@ use App\Models\PersonalAccessTokenEvent;
 use App\Models\UserDataHistory;
 use App\Models\Notification;
 use App\Models\FailedLoginAttempt;
-use App\Models\TwoFactorAuthentication;
+use App\Services\UserLoginService;
 use App\Services\UserRegistrationService;
 
 class UserController extends Controller
@@ -47,90 +46,9 @@ class UserController extends Controller
     // This Method Is For Login Logic
     // ---- ------ -- --- ----- -----
 
-    public function loginAuth(Request $request, LocationAction $locationAction)
+    public function loginAuth(Request $request, LocationAction $locationAction, UserLoginService $service)
     {
-        $failed_login_attempts = FailedLoginAttempt::where([
-            'ip' => $request->ip(),
-            'user_agent' => $request->userAgent()
-        ])->where('created_at', '>', now()->subHours(1))->count();
-        if ($failed_login_attempts >= 5) {
-            return response()->json(['errors' => ['title' => 'Too Many Requests', 'body' => 'Try Again After A While']], 429);
-        }
-        $rules = [
-            'email' => ['bail', 'required', 'email:rfc,dns,filter'],
-            'password' => ['bail', 'required', 'min:8']
-        ];
-        $messages = [
-            'email' => [
-                'enter valid :attribute address'
-            ],
-            'required' => 'enter :attribute',
-            'min' => 'at least :min characters',
-        ];
-        $request->validate($rules, $messages);
-        $credentials = User::where(['email' => $request->input('email'), 'status' => 1])->first();
-        if (empty($credentials)) {
-            return response()->json(['errors' => ['email' => ['Undefined Account']]], 422);
-        }
-        $check = Hash::check($request->input('password'), $credentials->password);
-        if (!$check) {
-            FailedLoginAttempt::create([
-                'user_id' => $credentials->id,
-                'type' => 'password',
-                'ip' => $request->ip(),
-                'user_agent' => $request->userAgent(),
-                'created_at' => now()
-            ]);
-            return response()->json(['errors' => ['password' => ['Wrong Password']]], 422);
-        }
-        if ($credentials->two_factor_authentication) {
-            $code = rand(10000000, 99999999);
-            TwoFactorAuthentication::create([
-                'user_id' => $credentials->id,
-                'code' => $code,
-                'status' => 1,
-                'created_at' => now(),
-                'expires_at' => now()->addMinutes(20)
-            ]);
-            $jobData = (object) [
-                'email' => $credentials->email,
-                'name' => $credentials->name,
-                'code' => $code
-            ];
-            AuthenticationCodeJob::dispatch($jobData);
-            $data = (object) [
-                'id' => $credentials->id,
-                'name' => $credentials->name,
-                'email' => $credentials->email,
-                'avatar' => $credentials->avatar
-            ];
-            session()->put('credentials', $data);
-            return response()->json(['two-factor' => true], 200);
-        }
-        LoginInfo::where(['user_id' => $credentials->id, 'status' => 1])->update([
-            'status' => 0,
-            'updated_at' => now()
-        ]);
-        Auth::login($credentials);
-        $location = $locationAction($request->ip());
-        if (isset($location->message)) {
-            $location = "Not Detected";
-        } else {
-            $location = $location->country_name . ', ' . $location->city;
-        }
-        $login_id = LoginInfo::create([
-            'user_id' => Auth::user()->id,
-            'ip' => $request->ip(),
-            'user_agent' => $request->userAgent(),
-            'location' => $location,
-            'status' => 1,
-            'created_at' => now(),
-            'expires_at' => now()->addHours(3)
-        ]);
-        session()->put('login-id', $login_id->id);
-        $cacheName = "device_" . Auth::user()->id;
-        Cache::forget($cacheName);
-        return response()->json(['success' => true], 200);
+        return $service->handle($request, $locationAction);
     }
 
     // ---- ------ -- --- ------------ ---- ----
@@ -148,21 +66,7 @@ class UserController extends Controller
 
     public function registerAuth(Request $request, UserRegistrationService $service)
     {
-        $rules = [
-            'name' => ['bail', 'required'],
-            'email' => ['bail', 'required', 'email:rfc,dns,filter', 'unique:users'],
-            'password' => ['bail', 'required', 'min:8']
-        ];
-        $messages = [
-            'email' => [
-                'enter valid :attribute address'
-            ],
-            'required' => 'enter :attribute',
-            'min' => 'at least :min characters',
-            'unique' => ':attribute already exists',
-        ];
-        $request->validate($rules, $messages);
-        return $service->register($request);
+        return $service->handle($request);
     }
 
     // ---- ------ -- --- --------- ----- ----- ------------
