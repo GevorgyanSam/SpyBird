@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Actions\LocationAction;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use App\Models\Guest;
-use App\Models\FailedLoginAttempt;
+use App\Services\LockscreenService;
 use App\Services\UserLoginService;
 use App\Services\UserPasswordChangeService;
 use App\Services\UserRegistrationService;
@@ -122,36 +121,9 @@ class UserController extends Controller
     // This Method Is For Lock Screen Logic
     // ---- ------ -- --- ---- ------ -----
 
-    public function lockscreenAuth(Request $request)
+    public function lockscreenAuth(Request $request, LockscreenService $service)
     {
-        $failed_login_attempts = FailedLoginAttempt::where([
-            'ip' => $request->ip(),
-            'user_agent' => $request->userAgent()
-        ])->where('created_at', '>', now()->subHours(1))->count();
-        if ($failed_login_attempts >= 5) {
-            return response()->json(['errors' => ['title' => 'Too Many Requests', 'body' => 'Try Again After A While']], 429);
-        }
-        $rules = [
-            'password' => ['bail', 'required', 'min:8']
-        ];
-        $messages = [
-            'required' => 'enter :attribute',
-            'min' => 'at least :min characters',
-        ];
-        $request->validate($rules, $messages);
-        $check = Hash::check($request->input('password'), auth()->user()->password);
-        if (!$check) {
-            FailedLoginAttempt::create([
-                'user_id' => auth()->user()->id,
-                'type' => 'password',
-                'ip' => $request->ip(),
-                'user_agent' => $request->userAgent(),
-                'created_at' => now()
-            ]);
-            return response()->json(['errors' => ['password' => ['Wrong Password']]], 422);
-        }
-        session()->forget('lockscreen');
-        return response()->json(['success' => true], 200);
+        return $service->handle($request);
     }
 
 }
