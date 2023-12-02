@@ -3,18 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Actions\LocationAction;
-use App\Jobs\PasswordChangeJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Cache;
 use App\Models\Guest;
-use App\Models\User;
-use App\Models\LoginInfo;
-use App\Models\PersonalAccessToken;
-use App\Models\UserDataHistory;
-use App\Models\Notification;
 use App\Models\FailedLoginAttempt;
 use App\Services\UserLoginService;
+use App\Services\UserPasswordChangeService;
 use App\Services\UserRegistrationService;
 use App\Services\UserResetService;
 use App\Services\UserTokenService;
@@ -107,49 +101,9 @@ class UserController extends Controller
     // This Method Is For Create New Password Logic
     // ---- ------ -- --- ------ --- -------- -----
 
-    public function tokenAuth(Request $request)
+    public function tokenAuth(Request $request, UserPasswordChangeService $service)
     {
-        $rules = [
-            'password' => ['bail', 'required', 'min:8', 'confirmed'],
-            'password_confirmation' => ['bail', 'required', 'min:8']
-        ];
-        $messages = [
-            'required' => 'enter :attribute',
-            'min' => 'at least :min characters',
-            'confirmed' => ':attribute does not match'
-        ];
-        $request->validate($rules, $messages);
-        $user = PersonalAccessToken::where('token', $request->input('token'))->first()->user;
-        User::find($user->id)->update([
-            'password' => $request->input('password'),
-            'updated_at' => now()
-        ]);
-        UserDataHistory::create([
-            'user_id' => $user->id,
-            'type' => 'password_change',
-            'created_at' => now()
-        ]);
-        Notification::create([
-            "user_id" => auth()->user()->id,
-            "sender_id" => auth()->user()->id,
-            "type" => "password_change",
-            "content" => "password updated successfully",
-            "seen" => 0,
-            "status" => 1,
-            "created_at" => now()
-        ]);
-        LoginInfo::where(['user_id' => $user->id, 'status' => 1])->update([
-            'status' => 0,
-            'updated_at' => now()
-        ]);
-        $cacheName = "device_" . $user->id;
-        Cache::forget($cacheName);
-        $jobData = (object) [
-            'email' => $user->email,
-            'name' => $user->name
-        ];
-        PasswordChangeJob::dispatch($jobData);
-        return response()->json(['success' => true], 200);
+        return $service->handle($request);
     }
 
     // ---- ------ -- --- ---- ------ ---- ----
