@@ -7,7 +7,6 @@ use App\Jobs\AuthenticationCodeJob;
 use App\Jobs\PasswordChangeJob;
 use App\Jobs\PasswordResetJob;
 use App\Jobs\RegistrationSuccessJob;
-use App\Jobs\VerifyEmailJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -22,6 +21,7 @@ use App\Models\UserDataHistory;
 use App\Models\Notification;
 use App\Models\FailedLoginAttempt;
 use App\Models\TwoFactorAuthentication;
+use App\Services\UserRegistrationService;
 
 class UserController extends Controller
 {
@@ -146,7 +146,7 @@ class UserController extends Controller
     // This Method Is For Registration Logic
     // ---- ------ -- --- ------------ -----
 
-    public function registerAuth(Request $request)
+    public function registerAuth(Request $request, UserRegistrationService $service)
     {
         $rules = [
             'name' => ['bail', 'required'],
@@ -162,37 +162,7 @@ class UserController extends Controller
             'unique' => ':attribute already exists',
         ];
         $request->validate($rules, $messages);
-        $newUser = User::create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => $request->input('password'),
-            'status' => 0,
-            'two_factor_authentication' => 0,
-            'activity' => 0,
-            'invisible' => 0,
-            'created_at' => now()
-        ]);
-        $newToken = PersonalAccessToken::create([
-            'user_id' => $newUser->id,
-            'type' => 'registration',
-            'token' => Str::random(60),
-            'status' => 1,
-            'created_at' => now(),
-            'expires_at' => now()->addHours(1)
-        ]);
-        PersonalAccessTokenEvent::create([
-            'token_id' => $newToken->id,
-            'type' => 'request',
-            'ip' => $request->ip(),
-            'user_agent' => $request->userAgent()
-        ]);
-        $jobData = (object) [
-            'email' => $newUser->email,
-            'name' => $newUser->name,
-            'token' => $newToken->token
-        ];
-        VerifyEmailJob::dispatch($jobData);
-        return response()->json(['success' => true], 200);
+        return $service->register($request);
     }
 
     // ---- ------ -- --- --------- ----- ----- ------------
