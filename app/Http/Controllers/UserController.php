@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Actions\LocationAction;
 use App\Jobs\PasswordChangeJob;
 use App\Jobs\PasswordResetJob;
-use App\Jobs\RegistrationSuccessJob;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
@@ -21,6 +19,7 @@ use App\Models\Notification;
 use App\Models\FailedLoginAttempt;
 use App\Services\UserLoginService;
 use App\Services\UserRegistrationService;
+use App\Services\VerifyEmailService;
 
 class UserController extends Controller
 {
@@ -73,59 +72,9 @@ class UserController extends Controller
     // This Method Is For Verifying Email After Registration
     // ---- ------ -- --- --------- ----- ----- ------------
 
-    public function verifyEmail(string $token, Request $request, LocationAction $locationAction)
+    public function verifyEmail(string $token, Request $request, LocationAction $locationAction, VerifyEmailService $service)
     {
-        $verifiable = PersonalAccessToken::where(['token' => $token, 'type' => 'registration', 'status' => 1])->first();
-        if (empty($verifiable)) {
-            abort(404);
-        }
-        if ($verifiable->expires_at <= now()) {
-            abort(404);
-        }
-        PersonalAccessToken::where(['token' => $token])->update([
-            'status' => 0,
-            'updated_at' => now()
-        ]);
-        $tokenId = PersonalAccessToken::where('token', $token)->value('id');
-        PersonalAccessTokenEvent::create([
-            'token_id' => $tokenId,
-            'type' => 'usage',
-            'ip' => $request->ip(),
-            'user_agent' => $request->userAgent()
-        ]);
-        $user = User::find($verifiable->user_id);
-        if (!empty($user->email_verified_at)) {
-            abort(404);
-        }
-        User::where(['id' => $verifiable->user_id])->update([
-            'status' => 1,
-            'activity' => 1,
-            'email_verified_at' => now()
-        ]);
-        $user = User::find($verifiable->user_id);
-        $jobData = (object) [
-            'email' => $user->email,
-            'name' => $user->name
-        ];
-        RegistrationSuccessJob::dispatch($jobData);
-        Auth::login($user);
-        $location = $locationAction($request->ip());
-        if (isset($location->message)) {
-            $location = "Not Detected";
-        } else {
-            $location = $location->country_name . ', ' . $location->city;
-        }
-        $login_id = LoginInfo::create([
-            'user_id' => $user->id,
-            'ip' => $request->ip(),
-            'user_agent' => $request->userAgent(),
-            'location' => $location,
-            'status' => 1,
-            'created_at' => now(),
-            'expires_at' => now()->addHours(3)
-        ]);
-        session()->put('login-id', $login_id->id);
-        return redirect()->route('index');
+        return $service->handle($token, $request, $locationAction);
     }
 
     // ---- ------ -- --- -------- ----- ---- ----
