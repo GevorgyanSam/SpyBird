@@ -4,11 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Actions\LocationAction;
 use App\Jobs\PasswordChangeJob;
-use App\Jobs\PasswordResetJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Str;
 use App\Models\Guest;
 use App\Models\User;
 use App\Models\LoginInfo;
@@ -19,6 +17,7 @@ use App\Models\Notification;
 use App\Models\FailedLoginAttempt;
 use App\Services\UserLoginService;
 use App\Services\UserRegistrationService;
+use App\Services\UserResetService;
 use App\Services\VerifyEmailService;
 
 class UserController extends Controller
@@ -90,47 +89,9 @@ class UserController extends Controller
     // This Method Is For Sending Password Reset Email
     // ---- ------ -- --- ------- -------- ----- -----
 
-    public function resetAuth(Request $request)
+    public function resetAuth(Request $request, UserResetService $service)
     {
-        $rules = [
-            'email' => ['bail', 'required', 'email:rfc,dns,filter'],
-        ];
-        $messages = [
-            'email' => [
-                'enter valid :attribute address'
-            ],
-            'required' => 'enter :attribute',
-        ];
-        $request->validate($rules, $messages);
-        $user = User::where('email', $request->input('email'))->where('status', 1)->orWhereNull('email_verified_at')->first();
-        if (empty($user)) {
-            return response()->json(['errors' => ['email' => ['Undefined Account']]], 422);
-        }
-        $old_tokens = PersonalAccessToken::where(['user_id' => $user->id, 'type' => 'password_reset'])->where('expires_at', '>', now())->count();
-        if ($old_tokens >= 2) {
-            return response()->json(['success' => true], 200);
-        }
-        $token = PersonalAccessToken::create([
-            'user_id' => $user->id,
-            'type' => 'password_reset',
-            'token' => Str::random(60),
-            'status' => 1,
-            'created_at' => now(),
-            'expires_at' => now()->addHours(1)
-        ]);
-        PersonalAccessTokenEvent::create([
-            'token_id' => $token->id,
-            'type' => 'request',
-            'ip' => $request->ip(),
-            'user_agent' => $request->userAgent()
-        ]);
-        $jobData = (object) [
-            'email' => $user->email,
-            'name' => $user->name,
-            'token' => $token->token
-        ];
-        PasswordResetJob::dispatch($jobData);
-        return response()->json(['success' => true], 200);
+        return $service->handle($request);
     }
 
     // ---- ------ -- --- ------ --- -------- ---- ----

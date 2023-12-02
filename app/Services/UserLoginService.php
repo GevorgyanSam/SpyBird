@@ -54,10 +54,10 @@ class UserLoginService
 
     protected function failedLoginAttemptCheck($request)
     {
-        return FailedLoginAttempt::where([
-            'ip' => $request->ip(),
-            'user_agent' => $request->userAgent()
-        ])->where('created_at', '>', now()->subHours(1))->count();
+        return FailedLoginAttempt::where('ip', $request->ip())
+            ->where('user_agent', $request->userAgent())
+            ->where('created_at', '>', now()->subHours(1))
+            ->count();
     }
 
     // ---- ------ -- --- ----------- ---- ----
@@ -86,7 +86,9 @@ class UserLoginService
 
     protected function getUserCredentials($request)
     {
-        return User::where(['email' => $request->input('email'), 'status' => 1])->first();
+        return User::where('email', $request->input('email'))
+            ->where('status', 1)
+            ->first();
     }
 
     // ---- ------ -- --- -------- ------ ----- -------
