@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\User;
 
 use App\Jobs\VerifyEmailJob;
 use App\Models\User;
@@ -8,7 +8,7 @@ use App\Models\PersonalAccessToken;
 use App\Models\PersonalAccessTokenEvent;
 use Illuminate\Support\Str;
 
-class UserRegistrationService
+class RegistrationService
 {
 
     protected const TOKEN_EXPIRY_HOURS = 1;

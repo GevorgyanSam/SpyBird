@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\User;
 
 use App\Jobs\AuthenticationCodeJob;
 use App\Models\FailedLoginAttempt;
@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cache;
 
-class UserLoginService
+class LoginService
 {
 
     protected const MAX_LOGIN_ATTEMPTS = 5;

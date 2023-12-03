@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\User;
 
 use App\Jobs\PasswordResetJob;
 use App\Models\PersonalAccessToken;
@@ -8,7 +8,7 @@ use App\Models\PersonalAccessTokenEvent;
 use App\Models\User;
 use Illuminate\Support\Str;
 
-class UserResetService
+class ResetService
 {
 
     protected const TOKEN_EXPIRY_HOURS = 1;

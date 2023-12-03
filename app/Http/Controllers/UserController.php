@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use App\Actions\LocationAction;
 use Illuminate\Http\Request;
 use App\Models\Guest;
-use App\Services\LockscreenService;
-use App\Services\UserLoginService;
-use App\Services\UserPasswordChangeService;
-use App\Services\UserRegistrationService;
-use App\Services\UserResetService;
-use App\Services\UserTokenService;
-use App\Services\VerifyEmailService;
+use App\Services\User\LockscreenService;
+use App\Services\User\LoginService;
+use App\Services\User\PasswordChangeService;
+use App\Services\User\RegistrationService;
+use App\Services\User\ResetService;
+use App\Services\User\TokenService;
+use App\Services\User\VerifyEmailService;
 
 class UserController extends Controller
 {
@@ -37,7 +37,7 @@ class UserController extends Controller
     // This Method Is For Login Logic
     // ---- ------ -- --- ----- -----
 
-    public function loginAuth(Request $request, LocationAction $locationAction, UserLoginService $service)
+    public function loginAuth(Request $request, LocationAction $locationAction, LoginService $service)
     {
         return $service->handle($request, $locationAction);
     }
@@ -55,7 +55,7 @@ class UserController extends Controller
     // This Method Is For Registration Logic
     // ---- ------ -- --- ------------ -----
 
-    public function registerAuth(Request $request, UserRegistrationService $service)
+    public function registerAuth(Request $request, RegistrationService $service)
     {
         return $service->handle($request);
     }
@@ -82,7 +82,7 @@ class UserController extends Controller
     // This Method Is For Sending Password Reset Email
     // ---- ------ -- --- ------- -------- ----- -----
 
-    public function resetAuth(Request $request, UserResetService $service)
+    public function resetAuth(Request $request, ResetService $service)
     {
         return $service->handle($request);
     }
@@ -91,7 +91,7 @@ class UserController extends Controller
     // This Method Is For Create New Password Page View
     // ---- ------ -- --- ------ --- -------- ---- ----
 
-    public function token(string $token, Request $request, UserTokenService $service)
+    public function token(string $token, Request $request, TokenService $service)
     {
         return $service->handle($token, $request);
     }
@@ -100,7 +100,7 @@ class UserController extends Controller
     // This Method Is For Create New Password Logic
     // ---- ------ -- --- ------ --- -------- -----
 
-    public function tokenAuth(Request $request, UserPasswordChangeService $service)
+    public function tokenAuth(Request $request, PasswordChangeService $service)
     {
         return $service->handle($request);
     }

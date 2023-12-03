@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\User;
 
 use App\Jobs\PasswordChangeJob;
 use App\Models\LoginInfo;
@@ -10,7 +10,7 @@ use App\Models\User;
 use App\Models\UserDataHistory;
 use Illuminate\Support\Facades\Cache;
 
-class UserPasswordChangeService
+class PasswordChangeService
 {
 
     // --- ---- -------- --- ------ --- --------

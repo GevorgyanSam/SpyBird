@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\User;
 
 use App\Models\PersonalAccessToken;
 use App\Models\PersonalAccessTokenEvent;
 use App\Models\User;
 
-class UserTokenService
+class TokenService
 {
 
     // --- ---- -------- --- ------ --- -------- ---- ----
