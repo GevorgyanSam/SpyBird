@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Actions\LocationAction;
 use App\Jobs\DisableTwoFactorAuthenticationConfirmationJob;
-use App\Jobs\DisableTwoFactorAuthenticationJob;
 use App\Jobs\NewLoginJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -19,6 +18,7 @@ use App\Models\PersonalAccessTokenEvent;
 use App\Models\FailedLoginAttempt;
 use App\Models\TwoFactorAuthentication;
 use App\Services\TwoFactorAuthentication\EnableService;
+use App\Services\TwoFactorAuthentication\RequestDisableService;
 use App\Services\TwoFactorAuthentication\RequestEnableService;
 use Jenssegers\Agent\Agent;
 
@@ -47,36 +47,9 @@ class TwoFactorAuthenticationController extends Controller
     // This Method Is For Requesting To Disable 2FA
     // ---- ------ -- --- ---------- -- ------- ---
 
-    public function requestDisableTwoFactor(Request $request)
+    public function requestDisableTwoFactor(Request $request, RequestDisableService $service)
     {
-        if (!auth()->user()->two_factor_authentication) {
-            return response()->json(['reload' => true], 200);
-        }
-        $old_tokens = PersonalAccessToken::where(['user_id' => auth()->user()->id, 'type' => 'disable_two_factor_authentication'])->where('expires_at', '>', now())->count();
-        if ($old_tokens >= 1) {
-            return response()->json([], 429);
-        }
-        $token = PersonalAccessToken::create([
-            'user_id' => auth()->user()->id,
-            'type' => 'disable_two_factor_authentication',
-            'token' => Str::random(60),
-            'status' => 1,
-            'created_at' => now(),
-            'expires_at' => now()->addHours(1)
-        ]);
-        PersonalAccessTokenEvent::create([
-            'token_id' => $token->id,
-            'type' => 'request',
-            'ip' => $request->ip(),
-            'user_agent' => $request->userAgent()
-        ]);
-        $jobData = (object) [
-            'email' => auth()->user()->email,
-            'name' => auth()->user()->name,
-            'token' => $token->token
-        ];
-        DisableTwoFactorAuthenticationJob::dispatch($jobData);
-        return response()->json(['success' => true], 200);
+        return $service->handle($request);
     }
 
     // ---- ------ -- --- --------- ---
