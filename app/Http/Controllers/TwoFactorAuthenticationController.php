@@ -6,7 +6,6 @@ use App\Actions\LocationAction;
 use App\Jobs\DisableTwoFactorAuthenticationConfirmationJob;
 use App\Jobs\DisableTwoFactorAuthenticationJob;
 use App\Jobs\EnableTwoFactorAuthenticationConfirmationJob;
-use App\Jobs\EnableTwoFactorAuthenticationJob;
 use App\Jobs\NewLoginJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -20,6 +19,7 @@ use App\Models\PersonalAccessToken;
 use App\Models\PersonalAccessTokenEvent;
 use App\Models\FailedLoginAttempt;
 use App\Models\TwoFactorAuthentication;
+use App\Services\TwoFactorAuthentication\RequestEnableService;
 use Jenssegers\Agent\Agent;
 
 class TwoFactorAuthenticationController extends Controller
@@ -29,36 +29,9 @@ class TwoFactorAuthenticationController extends Controller
     // This Method Is For Requesting To Enable 2FA
     // ---- ------ -- --- ---------- -- ------ ---
 
-    public function requestEnableTwoFactor(Request $request)
+    public function requestEnableTwoFactor(Request $request, RequestEnableService $service)
     {
-        if (auth()->user()->two_factor_authentication) {
-            return response()->json(['reload' => true], 200);
-        }
-        $old_tokens = PersonalAccessToken::where(['user_id' => auth()->user()->id, 'type' => 'enable_two_factor_authentication'])->where('expires_at', '>', now())->count();
-        if ($old_tokens >= 1) {
-            return response()->json([], 429);
-        }
-        $token = PersonalAccessToken::create([
-            'user_id' => auth()->user()->id,
-            'type' => 'enable_two_factor_authentication',
-            'token' => Str::random(60),
-            'status' => 1,
-            'created_at' => now(),
-            'expires_at' => now()->addHours(1)
-        ]);
-        PersonalAccessTokenEvent::create([
-            'token_id' => $token->id,
-            'type' => 'request',
-            'ip' => $request->ip(),
-            'user_agent' => $request->userAgent()
-        ]);
-        $jobData = (object) [
-            'email' => auth()->user()->email,
-            'name' => auth()->user()->name,
-            'token' => $token->token
-        ];
-        EnableTwoFactorAuthenticationJob::dispatch($jobData);
-        return response()->json(['success' => true], 200);
+        return $service->handle($request);
     }
 
     // ---- ------ -- --- -------- ---
