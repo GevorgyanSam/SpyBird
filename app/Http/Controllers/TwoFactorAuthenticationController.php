@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Actions\LocationAction;
-use App\Jobs\DisableTwoFactorAuthenticationConfirmationJob;
 use App\Jobs\NewLoginJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -13,10 +12,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\LoginInfo;
 use App\Models\BackupCode;
-use App\Models\PersonalAccessToken;
-use App\Models\PersonalAccessTokenEvent;
 use App\Models\FailedLoginAttempt;
 use App\Models\TwoFactorAuthentication;
+use App\Services\TwoFactorAuthentication\DisableService;
 use App\Services\TwoFactorAuthentication\EnableService;
 use App\Services\TwoFactorAuthentication\RequestDisableService;
 use App\Services\TwoFactorAuthentication\RequestEnableService;
@@ -56,56 +54,9 @@ class TwoFactorAuthenticationController extends Controller
     // This Method Is For Disabling 2FA
     // ---- ------ -- --- --------- ---
 
-    public function disableTwoFactor(Request $request, string $token)
+    public function disableTwoFactor(Request $request, string $token, DisableService $service)
     {
-        $verifiable = PersonalAccessToken::where(['token' => $token, 'type' => 'disable_two_factor_authentication', 'status' => 1])->first();
-        if (empty($verifiable)) {
-            abort(404);
-        }
-        if ($verifiable->expires_at <= now()) {
-            abort(404);
-        }
-        PersonalAccessToken::where(['token' => $token])->update([
-            'status' => 0,
-            'updated_at' => now()
-        ]);
-        $tokenId = PersonalAccessToken::where('token', $token)->value('id');
-        PersonalAccessTokenEvent::create([
-            'token_id' => $tokenId,
-            'type' => 'usage',
-            'ip' => $request->ip(),
-            'user_agent' => $request->userAgent()
-        ]);
-        $user = User::where(['id' => $verifiable->user_id, 'status' => 1])->first();
-        if (empty($user)) {
-            abort(404);
-        }
-        LoginInfo::where(['user_id' => $user->id, 'status' => 1])->update([
-            'status' => 0,
-            'updated_at' => now()
-        ]);
-        $cacheName = "device_" . $user->id;
-        if (Cache::has($cacheName)) {
-            Cache::forget($cacheName);
-        }
-        User::where(['id' => $user->id])->update([
-            'two_factor_authentication' => 0,
-            'updated_at' => now()
-        ]);
-        BackupCode::where(['user_id' => $user->id, 'status' => 1, 'updated_at' => null])->update([
-            'status' => 0,
-            'updated_at' => now()
-        ]);
-        TwoFactorAuthentication::where(['user_id' => $user->id, 'status' => 1, 'updated_at' => null])->update([
-            'status' => 0,
-            'updated_at' => now()
-        ]);
-        $jobData = (object) [
-            'email' => $user->email,
-            'name' => $user->name
-        ];
-        DisableTwoFactorAuthenticationConfirmationJob::dispatch($jobData);
-        return redirect()->route('user.login');
+        return $service->handle($request, $token);
     }
 
     // ---- ------ -- --- --- ------ -------------- ---- ----
