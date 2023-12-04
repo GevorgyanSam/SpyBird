@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 class LockscreenService
 {
 
-    protected const MAX_LOGIN_ATTEMPTS = 5;
+    private const MAX_LOGIN_ATTEMPTS = 5;
 
     // --- ---- -------- --- ----------
     // The Main Function For Lockscreen
@@ -34,7 +34,7 @@ class LockscreenService
     // This Method Is For Checking For Failed Login Attempts
     // ---- ------ -- --- -------- --- ------ ----- --------
 
-    protected function failedLoginAttemptCheck($request)
+    private function failedLoginAttemptCheck($request)
     {
         return FailedLoginAttempt::where('ip', $request->ip())
             ->where('user_agent', $request->userAgent())
@@ -46,7 +46,7 @@ class LockscreenService
     // This Method Is For Validating User Data
     // ---- ------ -- --- ---------- ---- ----
 
-    protected function validate($request)
+    private function validate($request)
     {
         $rules = [
             'password' => ['bail', 'required', 'min:8']
@@ -62,7 +62,7 @@ class LockscreenService
     // This Method Is For Creating Failed Login Attempt
     // ---- ------ -- --- -------- ------ ----- -------
 
-    protected function createFailedLoginAttempt($request)
+    private function createFailedLoginAttempt($request)
     {
         FailedLoginAttempt::create([
             'user_id' => auth()->user()->id,
@@ -77,7 +77,7 @@ class LockscreenService
     // This Method Is For Deleting Lock Screen From Session
     // ---- ------ -- --- -------- ---- ------ ---- -------
 
-    protected function forget()
+    private function forget()
     {
         session()->forget('lockscreen');
     }

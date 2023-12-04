@@ -37,7 +37,7 @@ class DisableService
     // This Method Is For Getting Personal Access Token
     // ---- ------ -- --- ------- -------- ------ -----
 
-    protected function getToken($token)
+    private function getToken($token)
     {
         $verifiable = PersonalAccessToken::where('token', $token)
             ->where('type', 'disable_two_factor_authentication')
@@ -56,7 +56,7 @@ class DisableService
     // This Method Is For Inactive Token
     // ---- ------ -- --- -------- -----
 
-    protected function destroyToken($token)
+    private function destroyToken($token)
     {
         PersonalAccessToken::where('token', $token)
             ->update([
@@ -69,7 +69,7 @@ class DisableService
     // This Method Is For Getting Token Id
     // ---- ------ -- --- ------- ----- --
 
-    protected function getTokenId($token)
+    private function getTokenId($token)
     {
         return PersonalAccessToken::where('token', $token)
             ->value('id');
@@ -79,7 +79,7 @@ class DisableService
     // This Method Is For Creating Personal Access Token Event
     // ---- ------ -- --- -------- -------- ------ ----- -----
 
-    protected function createTokenEvent($tokenId, $request)
+    private function createTokenEvent($tokenId, $request)
     {
         PersonalAccessTokenEvent::create([
             'token_id' => $tokenId,
@@ -93,7 +93,7 @@ class DisableService
     // This Method Is For Getting Token Owner
     // ---- ------ -- --- ------- ----- -----
 
-    protected function getTokenOwner($verifiable)
+    private function getTokenOwner($verifiable)
     {
         $user = User::where('id', $verifiable->user_id)
             ->where('status', 1)
@@ -108,7 +108,7 @@ class DisableService
     // This Method Is For Logging Out Of Other Devices
     // ---- ------ -- --- ------- --- -- ----- -------
 
-    protected function logoutOtherDevices($user)
+    private function logoutOtherDevices($user)
     {
         LoginInfo::where('user_id', $user->id)
             ->where('status', 1)
@@ -126,7 +126,7 @@ class DisableService
     // This Method Is For Disabling 2FA
     // ---- ------ -- --- --------- ---
 
-    protected function disableTwoFactor($user)
+    private function disableTwoFactor($user)
     {
         User::where('id', $user->id)
             ->update([
@@ -139,7 +139,7 @@ class DisableService
     // This Method Is For Inactivating Backup Codes
     // ---- ------ -- --- ------------ ------ -----
 
-    protected function destroyBackupCodes($user)
+    private function destroyBackupCodes($user)
     {
         BackupCode::where('user_id', $user->id)
             ->where('status', 1)
@@ -154,7 +154,7 @@ class DisableService
     // This Method Is For Inactivating 2FA Codes
     // ---- ------ -- --- ------------ --- -----
 
-    protected function destroyTwoFactorCodes($user)
+    private function destroyTwoFactorCodes($user)
     {
         TwoFactorAuthentication::where('user_id', $user->id)
             ->where('status', 1)
@@ -169,7 +169,7 @@ class DisableService
     // This Method Is For Sending Confirmation Email
     // ---- ------ -- --- ------- ------------ -----
 
-    protected function sendMail($user)
+    private function sendMail($user)
     {
         $jobData = (object) [
             'email' => $user->email,

@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Cache;
 class LoginService
 {
 
-    protected const MAX_LOGIN_ATTEMPTS = 5;
-    protected const TWO_FACTOR_EXPIRY_MINUTES = 20;
-    protected const LOGIN_EXPIRY_HOURS = 3;
+    private const MAX_LOGIN_ATTEMPTS = 5;
+    private const TWO_FACTOR_EXPIRY_MINUTES = 20;
+    private const LOGIN_EXPIRY_HOURS = 3;
 
     // --- ---- -------- --- ---- -----
     // The Main Function For User Login
@@ -52,7 +52,7 @@ class LoginService
     // This Method Is For Checking For Failed Login Attempts
     // ---- ------ -- --- -------- --- ------ ----- --------
 
-    protected function failedLoginAttemptCheck($request)
+    private function failedLoginAttemptCheck($request)
     {
         return FailedLoginAttempt::where('ip', $request->ip())
             ->where('user_agent', $request->userAgent())
@@ -64,7 +64,7 @@ class LoginService
     // This Method Is For Validataing User Data
     // ---- ------ -- --- ----------- ---- ----
 
-    protected function validate($request)
+    private function validate($request)
     {
         $rules = [
             'email' => ['bail', 'required', 'email:rfc,dns,filter'],
@@ -84,7 +84,7 @@ class LoginService
     // This Method Is For Getting User Credentials
     // ---- ------ -- --- ------- ---- -----------
 
-    protected function getUserCredentials($request)
+    private function getUserCredentials($request)
     {
         return User::where('email', $request->input('email'))
             ->where('status', 1)
@@ -95,7 +95,7 @@ class LoginService
     // This Method Is For Creating Failed Login Attempt
     // ---- ------ -- --- -------- ------ ----- -------
 
-    protected function createFailedLoginAttempt($request, $credentials)
+    private function createFailedLoginAttempt($request, $credentials)
     {
         FailedLoginAttempt::create([
             'user_id' => $credentials->id,
@@ -110,7 +110,7 @@ class LoginService
     // This Method Is For Storing 2FA Code Into Database
     // ---- ------ -- --- ------- --- ---- ---- --------
 
-    protected function storeTwoFactorAuthenticationCode($credentials)
+    private function storeTwoFactorAuthenticationCode($credentials)
     {
         $code = rand(10000000, 99999999);
         TwoFactorAuthentication::create([
@@ -127,7 +127,7 @@ class LoginService
     // This Method Is For Sending Mail With 2FA Code
     // ---- ------ -- --- ------- ---- ---- --- ----
 
-    protected function sendMail($credentials, $code)
+    private function sendMail($credentials, $code)
     {
         $jobData = (object) [
             'email' => $credentials->email,
@@ -141,7 +141,7 @@ class LoginService
     // This Method Is For Storing 2FA Credentials In Session
     // ---- ------ -- --- ------- --- ----------- -- -------
 
-    protected function saveTwoFactorCredentials($credentials)
+    private function saveTwoFactorCredentials($credentials)
     {
         $data = (object) [
             'id' => $credentials->id,
@@ -156,7 +156,7 @@ class LoginService
     // This Method Is Designed To Terminate Other Users Sessions On This Account And Log That User Back In
     // ---- ------ -- -------- -- --------- ----- ----- -------- -- ---- ------- --- --- ---- ---- ---- --
 
-    protected function login($credentials, $request, $locationAction)
+    private function login($credentials, $request, $locationAction)
     {
         LoginInfo::where(['user_id' => $credentials->id, 'status' => 1])->update([
             'status' => 0,

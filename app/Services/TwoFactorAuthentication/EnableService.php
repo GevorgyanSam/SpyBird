@@ -35,7 +35,7 @@ class EnableService
     // This Method Is For Getting Personal Access Token
     // ---- ------ -- --- ------- -------- ------ -----
 
-    protected function getToken($token)
+    private function getToken($token)
     {
         $verifiable = PersonalAccessToken::where('token', $token)
             ->where('type', 'enable_two_factor_authentication')
@@ -54,7 +54,7 @@ class EnableService
     // This Method Is For Inactive Token
     // ---- ------ -- --- -------- -----
 
-    protected function destroyToken($token)
+    private function destroyToken($token)
     {
         PersonalAccessToken::where('token', $token)
             ->update([
@@ -67,7 +67,7 @@ class EnableService
     // This Method Is For Getting Token Id
     // ---- ------ -- --- ------- ----- --
 
-    protected function getTokenId($token)
+    private function getTokenId($token)
     {
         return PersonalAccessToken::where('token', $token)
             ->value('id');
@@ -77,7 +77,7 @@ class EnableService
     // This Method Is For Creating Personal Access Token Event
     // ---- ------ -- --- -------- -------- ------ ----- -----
 
-    protected function createTokenEvent($tokenId, $request)
+    private function createTokenEvent($tokenId, $request)
     {
         PersonalAccessTokenEvent::create([
             'token_id' => $tokenId,
@@ -91,7 +91,7 @@ class EnableService
     // This Method Is For Getting Token Owner
     // ---- ------ -- --- ------- ----- -----
 
-    protected function getTokenOwner($verifiable)
+    private function getTokenOwner($verifiable)
     {
         $user = User::where('id', $verifiable->user_id)
             ->where('status', 1)
@@ -106,7 +106,7 @@ class EnableService
     // This Method Is For Logging Out Of Other Devices
     // ---- ------ -- --- ------- --- -- ----- -------
 
-    protected function logoutOtherDevices($user)
+    private function logoutOtherDevices($user)
     {
         LoginInfo::where(['user_id' => $user->id, 'status' => 1])->update([
             'status' => 0,
@@ -122,7 +122,7 @@ class EnableService
     // This Method Is For Enabling 2FA
     // ---- ------ -- --- -------- ---
 
-    protected function enableTwoFactor($user)
+    private function enableTwoFactor($user)
     {
         User::where(['id' => $user->id])->update([
             'two_factor_authentication' => 1,
@@ -134,7 +134,7 @@ class EnableService
     // This Method Is For Creating Backup Codes For 2FA
     // ---- ------ -- --- -------- ------ ----- --- ---
 
-    protected function createBackupCodes($user)
+    private function createBackupCodes($user)
     {
         $backupCodes = [];
         for ($i = 0; $i < 6; $i++) {
@@ -154,7 +154,7 @@ class EnableService
     // This Method Is For Sending Confirmation Email
     // ---- ------ -- --- ------- ------------ -----
 
-    protected function sendMail($user, $backupCodes)
+    private function sendMail($user, $backupCodes)
     {
         $jobData = (object) [
             'email' => $user->email,

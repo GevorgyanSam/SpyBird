@@ -28,7 +28,7 @@ class TokenService
     // This Method Is For Checking Token Activity
     // ---- ------ -- --- -------- ----- --------
 
-    protected function checkTokenActivity($token)
+    private function checkTokenActivity($token)
     {
         $verifiable = PersonalAccessToken::where('token', $token)
             ->where('type', 'password_reset')
@@ -47,7 +47,7 @@ class TokenService
     // This Method Is For Deactivating Token
     // ---- ------ -- --- ------------ -----
 
-    protected function destroyToken($token)
+    private function destroyToken($token)
     {
         PersonalAccessToken::where(['token' => $token])->update([
             'status' => 0,
@@ -59,7 +59,7 @@ class TokenService
     // This Method Is For Getting Token Id
     // ---- ------ -- --- ------- ----- --
 
-    protected function getTokenId($token)
+    private function getTokenId($token)
     {
         return PersonalAccessToken::where('token', $token)
             ->value('id');
@@ -69,7 +69,7 @@ class TokenService
     // This Method Is For Creating Token Event
     // ---- ------ -- --- -------- ----- -----
 
-    protected function createTokenEvent($request, $tokenId)
+    private function createTokenEvent($request, $tokenId)
     {
         PersonalAccessTokenEvent::create([
             'token_id' => $tokenId,
@@ -83,7 +83,7 @@ class TokenService
     // This Method Is For Getting Token Owner
     // ---- ------ -- --- ------- ----- -----
 
-    protected function getTokenOwner($verifiable)
+    private function getTokenOwner($verifiable)
     {
         $user = User::where(['id' => $verifiable->user_id, 'status' => 1])->orWhereNull('email_verified_at')->first();
         if (empty($user)) {
@@ -96,7 +96,7 @@ class TokenService
     // This Method Is For Activating User If He Is Not Active
     // ---- ------ -- --- ---------- ---- -- -- -- --- ------
 
-    protected function updateIfInactive($user)
+    private function updateIfInactive($user)
     {
         if (empty($user->email_verified_at)) {
             User::where('id', $user->id)->update([

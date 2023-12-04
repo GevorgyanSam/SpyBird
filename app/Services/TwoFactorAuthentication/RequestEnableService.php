@@ -10,8 +10,8 @@ use Illuminate\Support\Str;
 class RequestEnableService
 {
 
-    protected const MAX_TOKEN_COUNT = 1;
-    protected const TOKEN_EXPIRY_HOURS = 1;
+    private const MAX_TOKEN_COUNT = 1;
+    private const TOKEN_EXPIRY_HOURS = 1;
 
     // --- ---- -------- --- ---------- -- ------ ---
     // The Main Function For Requesting To Enable 2FA
@@ -36,7 +36,7 @@ class RequestEnableService
     // This Method Is Designed To Verify That The User Has Already Enabled 2FA
     // ---- ------ -- -------- -- ------ ---- --- ---- --- ------- ------- ---
 
-    protected function isEnable()
+    private function isEnable()
     {
         return auth()->user()->two_factor_authentication ? true : false;
     }
@@ -45,7 +45,7 @@ class RequestEnableService
     // This Method Is For Getting Old Tokens
     // ---- ------ -- --- ------- --- ------
 
-    protected function getOldTokens()
+    private function getOldTokens()
     {
         return PersonalAccessToken::where('user_id', auth()->user()->id)
             ->where('type', 'enable_two_factor_authentication')
@@ -57,7 +57,7 @@ class RequestEnableService
     // This Method Is For Creating Personal Access Token For Enabling 2FA
     // ---- ------ -- --- -------- -------- ------ ----- --- -------- ---
 
-    protected function createToken()
+    private function createToken()
     {
         return PersonalAccessToken::create([
             'user_id' => auth()->user()->id,
@@ -73,7 +73,7 @@ class RequestEnableService
     // This Method Is For Creating Personal Access Token Event
     // ---- ------ -- --- -------- -------- ------ ----- -----
 
-    protected function createTokenEvent($token, $request)
+    private function createTokenEvent($token, $request)
     {
         PersonalAccessTokenEvent::create([
             'token_id' => $token->id,
@@ -87,7 +87,7 @@ class RequestEnableService
     // This Method Is For Sending Email
     // ---- ------ -- --- ------- -----
 
-    protected function sendMail($token)
+    private function sendMail($token)
     {
         $jobData = (object) [
             'email' => auth()->user()->email,

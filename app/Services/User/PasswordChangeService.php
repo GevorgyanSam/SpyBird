@@ -33,7 +33,7 @@ class PasswordChangeService
     // This Method Is For Validataing User Data
     // ---- ------ -- --- ----------- ---- ----
 
-    protected function validate($request)
+    private function validate($request)
     {
         $rules = [
             'password' => ['bail', 'required', 'min:8', 'confirmed'],
@@ -51,7 +51,7 @@ class PasswordChangeService
     // This Method Is For Getting Token Owner
     // ---- ------ -- --- ------- ----- -----
 
-    protected function getTokenOwner($request)
+    private function getTokenOwner($request)
     {
         return PersonalAccessToken::where('token', $request->input('token'))
             ->first()
@@ -62,7 +62,7 @@ class PasswordChangeService
     // This Method Is For Updating User Password
     // ---- ------ -- --- -------- ---- --------
 
-    protected function updateUserPassword($user, $request)
+    private function updateUserPassword($user, $request)
     {
         User::find($user->id)->update([
             'password' => $request->input('password'),
@@ -74,7 +74,7 @@ class PasswordChangeService
     // This Method Is For Creating User Data History
     // ---- ------ -- --- -------- ---- ---- -------
 
-    protected function createHistory($user)
+    private function createHistory($user)
     {
         UserDataHistory::create([
             'user_id' => $user->id,
@@ -87,7 +87,7 @@ class PasswordChangeService
     // This Method Is For Creating Notification
     // ---- ------ -- --- -------- ------------
 
-    protected function createNotification($user)
+    private function createNotification($user)
     {
         Notification::create([
             "user_id" => $user->id,
@@ -104,7 +104,7 @@ class PasswordChangeService
     // This Method Is For Logging Out Of Other Devices
     // ---- ------ -- --- ------- --- -- ----- -------
 
-    protected function logoutOtherDevices($user)
+    private function logoutOtherDevices($user)
     {
         LoginInfo::where(['user_id' => $user->id, 'status' => 1])->update([
             'status' => 0,
@@ -118,7 +118,7 @@ class PasswordChangeService
     // This Method Is For Sending Confirmation Email
     // ---- ------ -- --- ------- ------------ -----
 
-    protected function sendMail($user)
+    private function sendMail($user)
     {
         $jobData = (object) [
             'email' => $user->email,

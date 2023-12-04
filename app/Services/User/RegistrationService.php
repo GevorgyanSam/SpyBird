@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 class RegistrationService
 {
 
-    protected const TOKEN_EXPIRY_HOURS = 1;
+    private const TOKEN_EXPIRY_HOURS = 1;
 
     // --- ---- -------- --- ---- ------------
     // The Main Function For User Registration
@@ -31,7 +31,7 @@ class RegistrationService
     // This Method Is For Validataing User Data
     // ---- ------ -- --- ----------- ---- ----
 
-    protected function validate($request)
+    private function validate($request)
     {
         $rules = [
             'name' => ['bail', 'required'],
@@ -53,7 +53,7 @@ class RegistrationService
     // This Method Is For Storing User Data Into Database
     // ---- ------ -- --- ------- ---- ---- ---- --------
 
-    protected function createUser($request)
+    private function createUser($request)
     {
         return User::create([
             'name' => $request->input('name'),
@@ -71,7 +71,7 @@ class RegistrationService
     // This Method Is For Storing User Verifiable Token Into Database
     // ---- ------ -- --- ------- ---- ---------- ----- ---- --------
 
-    protected function createToken($user)
+    private function createToken($user)
     {
         return PersonalAccessToken::create([
             'user_id' => $user->id,
@@ -87,7 +87,7 @@ class RegistrationService
     // This Method Is For Storing Token Event
     // ---- ------ -- --- ------- ----- -----
 
-    protected function createTokenEvent($request, $token)
+    private function createTokenEvent($request, $token)
     {
         PersonalAccessTokenEvent::create([
             'token_id' => $token->id,
@@ -101,7 +101,7 @@ class RegistrationService
     // This Method Is For Sending Mail For User Verification
     // ---- ------ -- --- ------- ---- --- ---- ------------
 
-    protected function sendMail($user, $token)
+    private function sendMail($user, $token)
     {
         $jobData = (object) [
             'email' => $user->email,

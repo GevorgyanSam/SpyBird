@@ -11,8 +11,8 @@ use Illuminate\Support\Str;
 class ResetService
 {
 
-    protected const TOKEN_EXPIRY_HOURS = 1;
-    protected const MAX_TOKEN_COUNT = 2;
+    private const TOKEN_EXPIRY_HOURS = 1;
+    private const MAX_TOKEN_COUNT = 2;
 
     // --- ---- -------- --- -------- -----
     // The Main Function For Password Reset
@@ -39,7 +39,7 @@ class ResetService
     // This Method Is For Validataing User Data
     // ---- ------ -- --- ----------- ---- ----
 
-    protected function validate($request)
+    private function validate($request)
     {
         $rules = [
             'email' => ['bail', 'required', 'email:rfc,dns,filter'],
@@ -57,7 +57,7 @@ class ResetService
     // This Method Is For Getting User
     // ---- ------ -- --- ------- ----
 
-    protected function getUser($request)
+    private function getUser($request)
     {
         return User::where('email', $request->input('email'))
             ->where('status', 1)
@@ -69,7 +69,7 @@ class ResetService
     // This Method Is For Getting Old Tokens
     // ---- ------ -- --- ------- --- ------
 
-    protected function getOldTokens($user)
+    private function getOldTokens($user)
     {
         return PersonalAccessToken::where('user_id', $user->id)
             ->where('type', 'password_reset')
@@ -81,7 +81,7 @@ class ResetService
     // This Method Is For Creating Personal Access Token
     // ---- ------ -- --- -------- -------- ------ -----
 
-    protected function createToken($user)
+    private function createToken($user)
     {
         return PersonalAccessToken::create([
             'user_id' => $user->id,
@@ -97,7 +97,7 @@ class ResetService
     // This Method Is For Creating Personal Access Token Event
     // ---- ------ -- --- -------- -------- ------ ----- -----
 
-    protected function createTokenEvent($request, $token)
+    private function createTokenEvent($request, $token)
     {
         PersonalAccessTokenEvent::create([
             'token_id' => $token->id,
@@ -111,7 +111,7 @@ class ResetService
     // This Method Is For Sending Password Reset Email
     // ---- ------ -- --- ------- -------- ----- -----
 
-    protected function sendMail($user, $token)
+    private function sendMail($user, $token)
     {
         $jobData = (object) [
             'email' => $user->email,

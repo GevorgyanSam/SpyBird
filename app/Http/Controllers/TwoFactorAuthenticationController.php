@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Actions\LocationAction;
 use App\Jobs\NewLoginJob;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +17,7 @@ use App\Services\TwoFactorAuthentication\DisableService;
 use App\Services\TwoFactorAuthentication\EnableService;
 use App\Services\TwoFactorAuthentication\RequestDisableService;
 use App\Services\TwoFactorAuthentication\RequestEnableService;
+use App\Services\TwoFactorAuthentication\TwoFactorViewService;
 use Jenssegers\Agent\Agent;
 
 class TwoFactorAuthenticationController extends Controller
@@ -63,22 +63,9 @@ class TwoFactorAuthenticationController extends Controller
     // This Method Is For Two Factor Authentication Page View
     // ---- ------ -- --- --- ------ -------------- ---- ----
 
-    public function twoFactor()
+    public function twoFactor(TwoFactorViewService $service)
     {
-        if (!session()->has('credentials')) {
-            return redirect()->route('user.login');
-        }
-        $credentials = session()->get('credentials');
-        if (isset($credentials->visited)) {
-            session()->forget('credentials');
-            return redirect()->route('user.login');
-        }
-        $credentials->visited = true;
-        $position = Str::position($credentials->email, '@');
-        $replacement = substr($credentials->email, 1, $position - 2);
-        $masked_email = str_replace($replacement, '*****', $credentials->email);
-        $credentials->masked = $masked_email;
-        return view('users.two-factor', ['credentials' => $credentials]);
+        return $service->handle();
     }
 
     // ---- ------ -- --- --- ------ -------------- -----
