@@ -20,7 +20,8 @@ class MakeUser extends Command
             'name' => ['required']
         ]);
         if ($nameValidator->fails()) {
-            $this->output->write('<fg=white;bg=red> ERROR </> <fg=white>Enter a valid name.</>');
+            $nameError = $nameValidator->errors()->get('name')[0];
+            $this->output->write("<fg=white;bg=red> ERROR </> <fg=white>{$nameError}</>");
             return false;
         }
         $email = $this->ask('New User Email');
@@ -28,7 +29,8 @@ class MakeUser extends Command
             'email' => ['required', 'email:rfc,dns,filter', 'unique:users']
         ]);
         if ($emailValidator->fails()) {
-            $this->output->write('<fg=white;bg=red> ERROR </> <fg=white>Enter a valid email address.</>');
+            $emailError = $emailValidator->errors()->get('email')[0];
+            $this->output->write("<fg=white;bg=red> ERROR </> <fg=white>{$emailError}</>");
             return false;
         }
         $password = $this->secret('New User Password');
@@ -36,7 +38,8 @@ class MakeUser extends Command
             'password' => ['required', 'min:8']
         ]);
         if ($passwordValidator->fails()) {
-            $this->output->write('<fg=white;bg=red> ERROR </> <fg=white>Enter a valid password.</>');
+            $passwordError = $passwordValidator->errors()->get('password')[0];
+            $this->output->write("<fg=white;bg=red> ERROR </> <fg=white>{$passwordError}</>");
             return false;
         }
         $newUser = User::create([

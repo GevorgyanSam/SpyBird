@@ -15,6 +15,7 @@ use App\Models\FailedLoginAttempt;
 use App\Models\TwoFactorAuthentication;
 use App\Services\TwoFactorAuthentication\DisableService;
 use App\Services\TwoFactorAuthentication\EnableService;
+use App\Services\TwoFactorAuthentication\LostEmailViewService;
 use App\Services\TwoFactorAuthentication\RequestDisableService;
 use App\Services\TwoFactorAuthentication\RequestEnableService;
 use App\Services\TwoFactorAuthentication\TwoFactorViewService;
@@ -162,18 +163,9 @@ class TwoFactorAuthenticationController extends Controller
     // This Method Is For Lost Email Authentication Page View
     // ---- ------ -- --- ---- ----- -------------- ---- ----
 
-    public function lostEmail()
+    public function lostEmail(LostEmailViewService $service)
     {
-        if (!session()->has('credentials')) {
-            return redirect()->route('user.login');
-        }
-        $credentials = session()->get('credentials');
-        if (isset($credentials->lost_email)) {
-            session()->forget('credentials');
-            return redirect()->route('user.login');
-        }
-        $credentials->lost_email = true;
-        return view('users.lost-email', ['credentials' => $credentials]);
+        return $service->handle();
     }
 
     // ---- ------ -- --- ---- ----- -------------- -----
