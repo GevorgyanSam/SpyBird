@@ -2,6 +2,7 @@
 
 namespace App\Services\User;
 
+use App\Actions\LocationAction;
 use App\Jobs\RegistrationSuccessJob;
 use App\Models\LoginInfo;
 use App\Models\PersonalAccessToken;
@@ -18,7 +19,7 @@ class VerifyEmailService
     // The Main Function For Verify Email
     // --- ---- -------- --- ------ -----
 
-    public function handle($token, $request, $locationAction)
+    public function handle($token, $request)
     {
         $verifiable = $this->checkTokenActivity($token);
         $this->destroyToken($token);
@@ -28,7 +29,7 @@ class VerifyEmailService
         $this->activateTokenOwner($verifiable);
         $this->sendMail($user);
         $this->login($user);
-        $location = $this->getLocation($locationAction, $request);
+        $location = $this->getLocation($request);
         $login_id = $this->createLoginInfo($user, $request, $location);
         $this->updateSession($login_id);
         return redirect()->route('index');
@@ -143,8 +144,9 @@ class VerifyEmailService
     // This Method Is For Getting Location
     // ---- ------ -- --- ------- --------
 
-    private function getLocation($locationAction, $request)
+    private function getLocation($request)
     {
+        $locationAction = new LocationAction();
         $location = $locationAction($request->ip());
         if (isset($location->message)) {
             $location = "Not Detected";

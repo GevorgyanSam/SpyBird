@@ -18,7 +18,7 @@ class SearchController extends Controller
     public function getSuggestedContacts()
     {
         $users = User::with('latestLoginInfo')
-            ->select(['id', 'name', 'avatar', 'activity'])
+            ->select('id', 'name', 'avatar', 'activity')
             ->where('id', '!=', auth()->user()->id)
             ->where('status', 1)
             ->where('invisible', 0)
@@ -60,8 +60,9 @@ class SearchController extends Controller
     // This Method Is For Getting Nearby Contacts
     // ---- ------ -- --- ------- ------ --------
 
-    public function getNearbyContacts(Request $request, LocationAction $locationAction)
+    public function getNearbyContacts(Request $request)
     {
+        $locationAction = new LocationAction();
         $location = $locationAction($request->ip());
         if (isset($location->message)) {
             $location = "Not Detected";
@@ -71,14 +72,12 @@ class SearchController extends Controller
         $loginInfo = LoginInfo::select('login_info.status', 'users.id', 'users.name', 'users.avatar', 'users.activity')
             ->where('login_info.location', $location)
             ->where('login_info.status', 1)
-            ->whereHas('user', function ($query) {
-                $query->where('id', '!=', auth()->user()->id)
-                    ->where('status', 1)
-                    ->where('invisible', 0);
-            })
-            ->join('users', 'login_info.user_id', '=', 'users.id')
+            ->where('users.id', '!=', auth()->user()->id)
+            ->where('users.status', 1)
+            ->where('users.invisible', 0)
             ->inRandomOrder()
             ->limit(10)
+            ->join('users', 'login_info.user_id', '=', 'users.id')
             ->get();
         if (!count($loginInfo)) {
             return response()->json(['empty' => true], 200);
@@ -114,7 +113,7 @@ class SearchController extends Controller
     {
         $search = $request->input('search');
         $users = User::with('latestLoginInfo')
-            ->select(['id', 'name', 'avatar', 'activity'])
+            ->select('id', 'name', 'avatar', 'activity')
             ->where('id', '!=', auth()->user()->id)
             ->where('status', 1)
             ->where('invisible', 0)

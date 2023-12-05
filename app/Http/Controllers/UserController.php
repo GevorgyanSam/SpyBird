@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\LocationAction;
 use Illuminate\Http\Request;
 use App\Models\Guest;
 use App\Services\User\LockscreenService;
@@ -37,9 +36,9 @@ class UserController extends Controller
     // This Method Is For Login Logic
     // ---- ------ -- --- ----- -----
 
-    public function loginAuth(Request $request, LocationAction $locationAction, LoginService $service)
+    public function loginAuth(Request $request, LoginService $service)
     {
-        return $service->handle($request, $locationAction);
+        return $service->handle($request);
     }
 
     // ---- ------ -- --- ------------ ---- ----
@@ -64,9 +63,9 @@ class UserController extends Controller
     // This Method Is For Verifying Email After Registration
     // ---- ------ -- --- --------- ----- ----- ------------
 
-    public function verifyEmail(string $token, Request $request, LocationAction $locationAction, VerifyEmailService $service)
+    public function verifyEmail(string $token, Request $request, VerifyEmailService $service)
     {
-        return $service->handle($token, $request, $locationAction);
+        return $service->handle($token, $request);
     }
 
     // ---- ------ -- --- -------- ----- ---- ----

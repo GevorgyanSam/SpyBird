@@ -2,6 +2,7 @@
 
 namespace App\Services\User;
 
+use App\Actions\LocationAction;
 use App\Jobs\AuthenticationCodeJob;
 use App\Models\FailedLoginAttempt;
 use App\Models\LoginInfo;
@@ -22,7 +23,7 @@ class LoginService
     // The Main Function For User Login
     // --- ---- -------- --- ---- -----
 
-    public function handle($request, $locationAction)
+    public function handle($request)
     {
         $count = $this->failedLoginAttemptCheck($request);
         if ($count >= self::MAX_LOGIN_ATTEMPTS) {
@@ -46,7 +47,7 @@ class LoginService
         }
         $this->logoutOtherDevices($credentials);
         $this->login($credentials);
-        $location = $this->getLocation($locationAction, $request);
+        $location = $this->getLocation($request);
         $login_id = $this->createLoginInfo($request, $location);
         $this->updateSession($login_id);
         $this->clearCache();
@@ -184,8 +185,9 @@ class LoginService
     // This Method Is For Getting Location
     // ---- ------ -- --- ------- --------
 
-    private function getLocation($locationAction, $request)
+    private function getLocation($request)
     {
+        $locationAction = new LocationAction();
         $location = $locationAction($request->ip());
         if (isset($location->message)) {
             $location = "Not Detected";
