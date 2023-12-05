@@ -27,7 +27,10 @@ class VerifyEmailService
         $user = $this->getTokenOwner($verifiable);
         $this->activateTokenOwner($verifiable);
         $this->sendMail($user);
-        $this->login($user, $request, $locationAction);
+        $this->login($user);
+        $location = $this->getLocation($locationAction, $request);
+        $login_id = $this->createLoginInfo($user, $request, $location);
+        $this->updateSession($login_id);
         return redirect()->route('index');
     }
 
@@ -37,7 +40,10 @@ class VerifyEmailService
 
     private function checkTokenActivity($token)
     {
-        $verifiable = PersonalAccessToken::where(['token' => $token, 'type' => 'registration', 'status' => 1])->first();
+        $verifiable = PersonalAccessToken::where('token', $token)
+            ->where('type', 'registration')
+            ->where('status', 1)
+            ->first();
         if (empty($verifiable)) {
             abort(404);
         }
@@ -53,10 +59,11 @@ class VerifyEmailService
 
     private function destroyToken($token)
     {
-        PersonalAccessToken::where(['token' => $token])->update([
-            'status' => 0,
-            'updated_at' => now()
-        ]);
+        PersonalAccessToken::where('token', $token)
+            ->update([
+                'status' => 0,
+                'updated_at' => now()
+            ]);
     }
 
     // ---- ------ -- --- ------- ----- --
@@ -65,7 +72,8 @@ class VerifyEmailService
 
     private function getTokenId($token)
     {
-        return PersonalAccessToken::where('token', $token)->value('id');
+        return PersonalAccessToken::where('token', $token)
+            ->value('id');
     }
 
     // ---- ------ -- --- -------- ----- -----
@@ -101,11 +109,12 @@ class VerifyEmailService
 
     private function activateTokenOwner($verifiable)
     {
-        User::where(['id' => $verifiable->user_id])->update([
-            'status' => 1,
-            'activity' => 1,
-            'email_verified_at' => now()
-        ]);
+        User::where('id', $verifiable->user_id)
+            ->update([
+                'status' => 1,
+                'activity' => 1,
+                'email_verified_at' => now()
+            ]);
     }
 
     // ---- ------ -- --- ------- ------------ ----- -- ----
@@ -125,16 +134,33 @@ class VerifyEmailService
     // This Method Is For User Login After Activation
     // ---- ------ -- --- ---- ----- ----- ----------
 
-    private function login($user, $request, $locationAction)
+    private function login($user)
     {
         Auth::login($user);
+    }
+
+    // ---- ------ -- --- ------- --------
+    // This Method Is For Getting Location
+    // ---- ------ -- --- ------- --------
+
+    private function getLocation($locationAction, $request)
+    {
         $location = $locationAction($request->ip());
         if (isset($location->message)) {
             $location = "Not Detected";
         } else {
             $location = $location->country_name . ', ' . $location->city;
         }
-        $login_id = LoginInfo::create([
+        return $location;
+    }
+
+    // ---- ------ -- --- -------- ----- ----
+    // This Method Is For Creating Login Info
+    // ---- ------ -- --- -------- ----- ----
+
+    private function createLoginInfo($user, $request, $location)
+    {
+        return LoginInfo::create([
             'user_id' => $user->id,
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent(),
@@ -143,6 +169,14 @@ class VerifyEmailService
             'created_at' => now(),
             'expires_at' => now()->addHours(self::LOGIN_EXPIRY_HOURS)
         ]);
+    }
+
+    // ---- ------ -- --- ------- ----- -- -- -------
+    // This Method Is For Storing Login Id In Session
+    // ---- ------ -- --- ------- ----- -- -- -------
+
+    private function updateSession($login_id)
+    {
         session()->put('login-id', $login_id->id);
     }
 

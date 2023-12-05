@@ -49,10 +49,11 @@ class TokenService
 
     private function destroyToken($token)
     {
-        PersonalAccessToken::where(['token' => $token])->update([
-            'status' => 0,
-            'updated_at' => now()
-        ]);
+        PersonalAccessToken::where('token', $token)
+            ->update([
+                'status' => 0,
+                'updated_at' => now()
+            ]);
     }
 
     // ---- ------ -- --- ------- ----- --
@@ -85,7 +86,16 @@ class TokenService
 
     private function getTokenOwner($verifiable)
     {
-        $user = User::where(['id' => $verifiable->user_id, 'status' => 1])->orWhereNull('email_verified_at')->first();
+        $user = User::
+            where(function ($query) use ($verifiable) {
+                $query->where('id', $verifiable->user_id)
+                    ->where('status', 1);
+            })
+            ->orWhere(function ($query) use ($verifiable) {
+                $query->where('id', $verifiable->user_id)
+                    ->whereNull('email_verified_at');
+            })
+            ->first();
         if (empty($user)) {
             abort(404);
         }
@@ -99,11 +109,12 @@ class TokenService
     private function updateIfInactive($user)
     {
         if (empty($user->email_verified_at)) {
-            User::where('id', $user->id)->update([
-                'status' => 1,
-                'activity' => 1,
-                'email_verified_at' => now()
-            ]);
+            User::where('id', $user->id)
+                ->update([
+                    'status' => 1,
+                    'activity' => 1,
+                    'email_verified_at' => now()
+                ]);
         }
     }
 

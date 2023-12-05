@@ -108,10 +108,12 @@ class EnableService
 
     private function logoutOtherDevices($user)
     {
-        LoginInfo::where(['user_id' => $user->id, 'status' => 1])->update([
-            'status' => 0,
-            'updated_at' => now()
-        ]);
+        LoginInfo::where('user_id', $user->id)
+            ->where('status', 1)
+            ->update([
+                'status' => 0,
+                'updated_at' => now()
+            ]);
         $cacheName = "device_" . $user->id;
         if (Cache::has($cacheName)) {
             Cache::forget($cacheName);
@@ -124,10 +126,11 @@ class EnableService
 
     private function enableTwoFactor($user)
     {
-        User::where(['id' => $user->id])->update([
-            'two_factor_authentication' => 1,
-            'updated_at' => now()
-        ]);
+        User::where('id', $user->id)
+            ->update([
+                'two_factor_authentication' => 1,
+                'updated_at' => now()
+            ]);
     }
 
     // ---- ------ -- --- -------- ------ ----- --- ---

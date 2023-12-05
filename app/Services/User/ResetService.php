@@ -59,9 +59,15 @@ class ResetService
 
     private function getUser($request)
     {
-        return User::where('email', $request->input('email'))
-            ->where('status', 1)
-            ->orWhereNull('email_verified_at')
+        return User::
+            where(function ($query) use ($request) {
+                $query->where('email', $request->input('email'))
+                    ->where('status', 1);
+            })
+            ->orWhere(function ($query) use ($request) {
+                $query->where('email', $request->input('email'))
+                    ->whereNull('email_verified_at');
+            })
             ->first();
     }
 

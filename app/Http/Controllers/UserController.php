@@ -111,7 +111,7 @@ class UserController extends Controller
 
     public function lockscreen()
     {
-        if (!session()->has('lockscreen')) {
+        if (session()->missing('lockscreen')) {
             return redirect()->route('index');
         }
         return view('users.lockscreen');

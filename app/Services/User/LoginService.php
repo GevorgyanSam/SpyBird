@@ -44,7 +44,12 @@ class LoginService
             $this->saveTwoFactorCredentials($credentials);
             return response()->json(['two-factor' => true], 200);
         }
-        $this->login($credentials, $request, $locationAction);
+        $this->logoutOtherDevices($credentials);
+        $this->login($credentials);
+        $location = $this->getLocation($locationAction, $request);
+        $login_id = $this->createLoginInfo($request, $location);
+        $this->updateSession($login_id);
+        $this->clearCache();
         return response()->json(['success' => true], 200);
     }
 
@@ -152,24 +157,51 @@ class LoginService
         session()->put('credentials', $data);
     }
 
+    // ---- ------ -- --- ------- --- -- ----- -------
+    // This Method Is For Logging Out Of Other Devices
+    // ---- ------ -- --- ------- --- -- ----- -------
+
+    private function logoutOtherDevices($credentials)
+    {
+        LoginInfo::where('user_id', $credentials->id)
+            ->where('status', 1)
+            ->update([
+                'status' => 0,
+                'updated_at' => now()
+            ]);
+    }
+
     // ---- ------ -- -------- -- --------- ----- ----- -------- -- ---- ------- --- --- ---- ---- ---- --
     // This Method Is Designed To Terminate Other Users Sessions On This Account And Log That User Back In
     // ---- ------ -- -------- -- --------- ----- ----- -------- -- ---- ------- --- --- ---- ---- ---- --
 
-    private function login($credentials, $request, $locationAction)
+    private function login($credentials)
     {
-        LoginInfo::where(['user_id' => $credentials->id, 'status' => 1])->update([
-            'status' => 0,
-            'updated_at' => now()
-        ]);
         Auth::login($credentials);
+    }
+
+    // ---- ------ -- --- ------- --------
+    // This Method Is For Getting Location
+    // ---- ------ -- --- ------- --------
+
+    private function getLocation($locationAction, $request)
+    {
         $location = $locationAction($request->ip());
         if (isset($location->message)) {
             $location = "Not Detected";
         } else {
             $location = $location->country_name . ', ' . $location->city;
         }
-        $login_id = LoginInfo::create([
+        return $location;
+    }
+
+    // ---- ------ -- --- -------- ----- ----
+    // This Method Is For Creating Login Info
+    // ---- ------ -- --- -------- ----- ----
+
+    private function createLoginInfo($request, $location)
+    {
+        return LoginInfo::create([
             'user_id' => Auth::user()->id,
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent(),
@@ -178,7 +210,23 @@ class LoginService
             'created_at' => now(),
             'expires_at' => now()->addHours(self::LOGIN_EXPIRY_HOURS)
         ]);
+    }
+
+    // ---- ------ -- --- ------- ----- -- -- -------
+    // This Method Is For Storing Login Id In Session
+    // ---- ------ -- --- ------- ----- -- -- -------
+
+    private function updateSession($login_id)
+    {
         session()->put('login-id', $login_id->id);
+    }
+
+    // ---- ------ -- --- -------- ----- ------ -----
+    // This Method Is For Clearing Cache Before Login
+    // ---- ------ -- --- -------- ----- ------ -----
+
+    private function clearCache()
+    {
         $cacheName = "device_" . Auth::user()->id;
         Cache::forget($cacheName);
     }

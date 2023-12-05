@@ -64,10 +64,11 @@ class PasswordChangeService
 
     private function updateUserPassword($user, $request)
     {
-        User::find($user->id)->update([
-            'password' => $request->input('password'),
-            'updated_at' => now()
-        ]);
+        User::find($user->id)
+            ->update([
+                'password' => $request->input('password'),
+                'updated_at' => now()
+            ]);
     }
 
     // ---- ------ -- --- -------- ---- ---- -------
@@ -106,10 +107,12 @@ class PasswordChangeService
 
     private function logoutOtherDevices($user)
     {
-        LoginInfo::where(['user_id' => $user->id, 'status' => 1])->update([
-            'status' => 0,
-            'updated_at' => now()
-        ]);
+        LoginInfo::where('user_id', $user->id)
+            ->where('status', 1)
+            ->update([
+                'status' => 0,
+                'updated_at' => now()
+            ]);
         $cacheName = "device_" . $user->id;
         Cache::forget($cacheName);
     }
