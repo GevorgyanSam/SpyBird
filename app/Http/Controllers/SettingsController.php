@@ -33,7 +33,10 @@ class SettingsController extends Controller
             return $devices;
         }
         $devices = [];
-        $loginInfo = LoginInfo::where(['user_id' => auth()->user()->id])->orderByDesc('created_at')->limit(4)->get();
+        $loginInfo = LoginInfo::where('user_id', auth()->user()->id)
+            ->orderByDesc('created_at')
+            ->limit(4)
+            ->get();
         foreach ($loginInfo as $item) {
             $agent = new Agent();
             $agent->setUserAgent($item->user_agent);
@@ -65,10 +68,12 @@ class SettingsController extends Controller
         if (auth()->user()->invisible) {
             return response()->json(['reload' => true], 200);
         }
-        User::where(['id' => auth()->user()->id, 'status' => 1])->update([
-            'invisible' => 1,
-            'updated_at' => now()
-        ]);
+        User::where('id', auth()->user()->id)
+            ->where('status', 1)
+            ->update([
+                'invisible' => 1,
+                'updated_at' => now()
+            ]);
         return response()->json(['success' => true], 200);
     }
 
@@ -81,10 +86,12 @@ class SettingsController extends Controller
         if (!auth()->user()->invisible) {
             return response()->json(['reload' => true], 200);
         }
-        User::where(['id' => auth()->user()->id, 'status' => 1])->update([
-            'invisible' => 0,
-            'updated_at' => now()
-        ]);
+        User::where('id', auth()->user()->id)
+            ->where('status', 1)
+            ->update([
+                'invisible' => 0,
+                'updated_at' => now()
+            ]);
         return response()->json(['success' => true], 200);
     }
 
@@ -97,10 +104,12 @@ class SettingsController extends Controller
         if (auth()->user()->activity) {
             return response()->json(['reload' => true], 200);
         }
-        User::where(['id' => auth()->user()->id, 'status' => 1])->update([
-            'activity' => 1,
-            'updated_at' => now()
-        ]);
+        User::where('id', auth()->user()->id)
+            ->where('status', 1)
+            ->update([
+                'activity' => 1,
+                'updated_at' => now()
+            ]);
         return response()->json(['success' => true], 200);
     }
 
@@ -113,10 +122,12 @@ class SettingsController extends Controller
         if (!auth()->user()->activity) {
             return response()->json(['reload' => true], 200);
         }
-        User::where(['id' => auth()->user()->id, 'status' => 1])->update([
-            'activity' => 0,
-            'updated_at' => now()
-        ]);
+        User::where('id', auth()->user()->id)
+            ->where('status', 1)
+            ->update([
+                'activity' => 0,
+                'updated_at' => now()
+            ]);
         return response()->json(['success' => true], 200);
     }
 
@@ -156,10 +167,12 @@ class SettingsController extends Controller
                 "status" => 1,
                 "created_at" => now()
             ]);
-            User::where(["id" => auth()->user()->id, "status" => 1])->update([
-                "avatar" => $path,
-                "updated_at" => now()
-            ]);
+            User::where("id", auth()->user()->id)
+                ->where("status", 1)
+                ->update([
+                    "avatar" => $path,
+                    "updated_at" => now()
+                ]);
         }
         if ($request->name) {
             UserDataHistory::create([
@@ -178,10 +191,12 @@ class SettingsController extends Controller
                 "status" => 1,
                 "created_at" => now()
             ]);
-            User::where(["id" => auth()->user()->id, "status" => 1])->update([
-                "name" => strtolower($request->name),
-                "updated_at" => now()
-            ]);
+            User::where("id", auth()->user()->id)
+                ->where("status", 1)
+                ->update([
+                    "name" => strtolower($request->name),
+                    "updated_at" => now()
+                ]);
         }
         if ($request->name || $request->file("avatar")) {
             $user = User::find(auth()->user()->id);
@@ -234,13 +249,18 @@ class SettingsController extends Controller
 
     public function deleteDevice(int $id)
     {
-        $loginInfo = LoginInfo::where(['id' => $id, 'user_id' => auth()->user()->id, 'status' => 0, 'deleted_at' => null])->get();
+        $loginInfo = LoginInfo::where('id', $id)
+            ->where('user_id', auth()->user()->id)
+            ->where('status', 0)
+            ->where('deleted_at', null)
+            ->get();
         if (!$loginInfo->count()) {
             return response()->json([], 404);
         }
-        LoginInfo::where(['id' => $id])->update([
-            'deleted_at' => now()
-        ]);
+        LoginInfo::where('id', $id)
+            ->update([
+                'deleted_at' => now()
+            ]);
         $cacheName = "device_" . auth()->user()->id;
         if (Cache::has($cacheName)) {
             Cache::forget($cacheName);
@@ -254,7 +274,10 @@ class SettingsController extends Controller
 
     public function deleteAccount(Request $request)
     {
-        $old_tokens = PersonalAccessToken::where(['user_id' => auth()->user()->id, 'type' => 'account_termination'])->where('expires_at', '>', now())->count();
+        $old_tokens = PersonalAccessToken::where('user_id', auth()->user()->id)
+            ->where('type', 'account_termination')
+            ->where('expires_at', '>', now())
+            ->count();
         if ($old_tokens >= 1) {
             return response()->json(['error' => true], 429);
         }
@@ -287,40 +310,50 @@ class SettingsController extends Controller
 
     public function accountTermination(Request $request, string $token)
     {
-        $verifiable = PersonalAccessToken::where(['token' => $token, 'type' => 'account_termination', 'status' => 1])->first();
+        $verifiable = PersonalAccessToken::where('token', $token)
+            ->where('type', 'account_termination')
+            ->where('status', 1)
+            ->first();
         if (empty($verifiable)) {
             abort(404);
         }
         if ($verifiable->expires_at <= now()) {
             abort(404);
         }
-        PersonalAccessToken::where(['token' => $token])->update([
-            'status' => 0,
-            'updated_at' => now()
-        ]);
-        $tokenId = PersonalAccessToken::where('token', $token)->value('id');
+        PersonalAccessToken::where('token', $token)
+            ->update([
+                'status' => 0,
+                'updated_at' => now()
+            ]);
+        $tokenId = PersonalAccessToken::where('token', $token)
+            ->value('id');
         PersonalAccessTokenEvent::create([
             'token_id' => $tokenId,
             'type' => 'usage',
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent()
         ]);
-        $user = User::where(['id' => $verifiable->user_id, 'status' => 1])->first();
+        $user = User::where('id', $verifiable->user_id)
+            ->where('status', 1)
+            ->first();
         if (empty($user)) {
             abort(404);
         }
-        LoginInfo::where(['user_id' => $user->id, 'status' => 1])->update([
-            'status' => 0,
-            'updated_at' => now()
-        ]);
+        LoginInfo::where('user_id', $user->id)
+            ->where('status', 1)
+            ->update([
+                'status' => 0,
+                'updated_at' => now()
+            ]);
         $cacheName = "device_" . $user->id;
         if (Cache::has($cacheName)) {
             Cache::forget($cacheName);
         }
-        User::where(['id' => $user->id])->update([
-            'status' => 0,
-            'updated_at' => now()
-        ]);
+        User::where('id', $user->id)
+            ->update([
+                'status' => 0,
+                'updated_at' => now()
+            ]);
         UserDataHistory::create([
             'user_id' => $user->id,
             'type' => 'account_termination',
@@ -352,10 +385,12 @@ class SettingsController extends Controller
 
     public function logout(Request $request)
     {
-        LoginInfo::where(['user_id' => Auth::user()->id, 'status' => 1])->update([
-            'status' => 0,
-            'updated_at' => now()
-        ]);
+        LoginInfo::where('user_id', Auth::user()->id)
+            ->where('status', 1)
+            ->update([
+                'status' => 0,
+                'updated_at' => now()
+            ]);
         $cacheName = "device_" . auth()->user()->id;
         if (Cache::has($cacheName)) {
             Cache::forget($cacheName);

@@ -40,10 +40,11 @@ class HomeController extends Controller
         $loginInfo = LoginInfo::findOrfail($login_id);
         if (Auth::check() && $loginInfo->status) {
             if ($loginInfo->expires_at < now()) {
-                LoginInfo::where(['id' => $login_id])->update([
-                    'status' => 0,
-                    'updated_at' => now()
-                ]);
+                LoginInfo::where('id', $login_id)
+                    ->update([
+                        'status' => 0,
+                        'updated_at' => now()
+                    ]);
                 $cacheName = "device_" . $loginInfo->user_id;
                 if (Cache::has($cacheName)) {
                     Cache::forget($cacheName);
@@ -68,10 +69,11 @@ class HomeController extends Controller
             return response()->json(["reload" => true], 200);
         }
         if (!Auth::check() && $loginInfo->status) {
-            LoginInfo::where(['id' => $login_id])->update([
-                'status' => 0,
-                'updated_at' => now()
-            ]);
+            LoginInfo::where('id', $login_id)
+                ->update([
+                    'status' => 0,
+                    'updated_at' => now()
+                ]);
             $cacheName = "device_" . $loginInfo->user_id;
             if (Cache::has($cacheName)) {
                 Cache::forget($cacheName);

@@ -93,10 +93,10 @@ class TwoFactorAuthenticationController extends Controller
 
     public function lostEmailAuth(Request $request)
     {
-        $failed_login_attempts = FailedLoginAttempt::where([
-            'ip' => $request->ip(),
-            'user_agent' => $request->userAgent()
-        ])->where('created_at', '>', now()->subHours(1))->count();
+        $failed_login_attempts = FailedLoginAttempt::where('ip', $request->ip())
+            ->where('user_agent', $request->userAgent())
+            ->where('created_at', '>', now()->subHours(1))
+            ->count();
         if ($failed_login_attempts >= 5) {
             return response()->json([], 429);
         }
@@ -111,7 +111,9 @@ class TwoFactorAuthenticationController extends Controller
             'required' => 'enter :attribute',
         ];
         $request->validate($rules, $messages);
-        $backup_code = BackupCode::where(['code' => $request->input('code'), 'user_id' => $credentials->id])->first();
+        $backup_code = BackupCode::where('code', $request->input('code'))
+            ->where('user_id', $credentials->id)
+            ->first();
         if (empty($backup_code) || !$backup_code->status) {
             FailedLoginAttempt::create([
                 'user_id' => $credentials->id,
@@ -127,15 +129,18 @@ class TwoFactorAuthenticationController extends Controller
                 return response()->json(['errors' => ['code' => ['This Code Was Used']]], 422);
             }
         }
-        BackupCode::where(['id' => $backup_code->id])->update([
-            'status' => 0,
-            'updated_at' => now()
-        ]);
+        BackupCode::where('id', $backup_code->id)
+            ->update([
+                'status' => 0,
+                'updated_at' => now()
+            ]);
         $user = User::findOrfail($credentials->id);
-        LoginInfo::where(['user_id' => $user->id, 'status' => 1])->update([
-            'status' => 0,
-            'updated_at' => now()
-        ]);
+        LoginInfo::where('user_id', $user->id)
+            ->where('status', 1)
+            ->update([
+                'status' => 0,
+                'updated_at' => now()
+            ]);
         Auth::login($user);
         $locationAction = new LocationAction();
         $location = $locationAction($request->ip());
