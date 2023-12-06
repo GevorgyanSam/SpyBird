@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\LoginInfo;
+use App\Services\Settings\GetLoginHistoryService;
 use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
@@ -14,9 +15,9 @@ class HomeController extends Controller
     // This Method Is For Index Page View
     // ---- ------ -- --- ----- ---- ----
 
-    public function index()
+    public function index(GetLoginHistoryService $getLoginHistoryService)
     {
-        $devices = SettingsController::getLoginHistory();
+        $devices = $getLoginHistoryService->handle();
         return view('pages.index', ['devices' => $devices]);
     }
 
@@ -24,9 +25,9 @@ class HomeController extends Controller
     // This Method Is For Chat Page View
     // ---- ------ -- --- ---- ---- ----
 
-    public function room(int $id)
+    public function room(int $id, GetLoginHistoryService $getLoginHistoryService)
     {
-        $devices = SettingsController::getLoginHistory();
+        $devices = $getLoginHistoryService->handle();
         return view('pages.room', ['devices' => $devices]);
     }
 

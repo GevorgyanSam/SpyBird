@@ -6,7 +6,6 @@ use App\Jobs\AccountTerminationConfirmationJob;
 use App\Jobs\AccountTerminationJob;
 use App\Jobs\PasswordResetJob;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
@@ -16,48 +15,9 @@ use App\Models\User;
 use App\Models\Notification;
 use App\Models\PersonalAccessToken;
 use App\Models\PersonalAccessTokenEvent;
-use Jenssegers\Agent\Agent;
 
 class SettingsController extends Controller
 {
-
-    // ---- ------ -- --- ------- ----- ------- -------- --------- -----
-    // This Method Is For Getting Login History (Device, Location, Date)
-    // ---- ------ -- --- ------- ----- ------- -------- --------- -----
-
-    public static function getLoginHistory(): array
-    {
-        $cacheName = "device_" . auth()->user()->id;
-        if (Cache::has($cacheName)) {
-            $devices = Cache::get($cacheName);
-            return $devices;
-        }
-        $devices = [];
-        $loginInfo = LoginInfo::where('user_id', auth()->user()->id)
-            ->orderByDesc('created_at')
-            ->limit(4)
-            ->get();
-        foreach ($loginInfo as $item) {
-            $agent = new Agent();
-            $agent->setUserAgent($item->user_agent);
-            $device = $agent->device();
-            if (!$device || strtolower($device) == "webkit") {
-                $device = $agent->platform();
-            }
-            $date = Carbon::parse($item->created_at)->format('d M H:i');
-            $link = route("delete-device", ["id" => $item->id]);
-            array_push($devices, [
-                'link' => $link,
-                'status' => $item->status,
-                'platform' => $device,
-                'location' => $item->location,
-                'date' => $date,
-                'deleted_at' => $item->deleted_at
-            ]);
-        }
-        Cache::put($cacheName, $devices, now()->addHours(1));
-        return $devices;
-    }
 
     // ---- ------ -- --- ---------- -- ------ --------- ----
     // This Method Is For Requesting To Enable Invisible Mode

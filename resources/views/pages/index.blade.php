@@ -500,7 +500,6 @@
                             <h2>devices</h2>
                             <div class="box">
                                 @foreach ($devices as $device)
-                                @if (!$device['deleted_at'])
                                 <div class="static devices">
                                     <div class="visible">
                                         <div>
@@ -517,7 +516,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                @endif
                                 @endforeach
                             </div>
                         </div>
