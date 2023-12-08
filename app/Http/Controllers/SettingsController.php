@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\AccountTerminationConfirmationJob;
-use App\Jobs\AccountTerminationJob;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
 use App\Models\LoginInfo;
@@ -13,6 +11,7 @@ use App\Models\UserDataHistory;
 use App\Models\User;
 use App\Models\PersonalAccessToken;
 use App\Models\PersonalAccessTokenEvent;
+use App\Services\Settings\DeleteAccountService;
 use App\Services\Settings\DeleteDeviceService;
 use App\Services\Settings\PasswordResetService;
 use App\Services\Settings\RequestDisableInvisibleService;
@@ -91,36 +90,9 @@ class SettingsController extends Controller
     // This Method Is For Account Termination Email
     // ---- ------ -- --- ------- ----------- -----
 
-    public function deleteAccount(Request $request)
+    public function deleteAccount(Request $request, DeleteAccountService $service)
     {
-        $old_tokens = PersonalAccessToken::where('user_id', auth()->user()->id)
-            ->where('type', 'account_termination')
-            ->where('expires_at', '>', now())
-            ->count();
-        if ($old_tokens >= 1) {
-            return response()->json(['error' => true], 429);
-        }
-        $token = PersonalAccessToken::create([
-            'user_id' => auth()->user()->id,
-            'type' => 'account_termination',
-            'token' => Str::random(60),
-            'status' => 1,
-            'created_at' => now(),
-            'expires_at' => now()->addHours(1)
-        ]);
-        PersonalAccessTokenEvent::create([
-            'token_id' => $token->id,
-            'type' => 'request',
-            'ip' => $request->ip(),
-            'user_agent' => $request->userAgent()
-        ]);
-        $jobData = (object) [
-            'email' => auth()->user()->email,
-            'name' => auth()->user()->name,
-            'token' => $token->token
-        ];
-        AccountTerminationJob::dispatch($jobData);
-        return response()->json(['success' => true], 200);
+        return $service->handle($request);
     }
 
     // ---- ------ -- --- ------- -----------
