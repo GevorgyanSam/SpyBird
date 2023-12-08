@@ -13,6 +13,7 @@ use App\Models\UserDataHistory;
 use App\Models\User;
 use App\Models\PersonalAccessToken;
 use App\Models\PersonalAccessTokenEvent;
+use App\Services\Settings\DeleteDeviceService;
 use App\Services\Settings\PasswordResetService;
 use App\Services\Settings\RequestDisableInvisibleService;
 use App\Services\Settings\RequestEnableInvisibleService;
@@ -81,25 +82,9 @@ class SettingsController extends Controller
     // This Method Is For Deleting Device From Settings
     // ---- ------ -- --- -------- ------ ---- --------
 
-    public function deleteDevice(int $id)
+    public function deleteDevice(int $id, DeleteDeviceService $service)
     {
-        $loginInfo = LoginInfo::where('id', $id)
-            ->where('user_id', auth()->user()->id)
-            ->where('status', 0)
-            ->where('deleted_at', null)
-            ->get();
-        if (!$loginInfo->count()) {
-            return response()->json([], 404);
-        }
-        LoginInfo::where('id', $id)
-            ->update([
-                'deleted_at' => now()
-            ]);
-        $cacheName = "device_" . auth()->user()->id;
-        if (Cache::has($cacheName)) {
-            Cache::forget($cacheName);
-        }
-        return response()->json(['success' => true], 200);
+        return $service->handle($id);
     }
 
     // ---- ------ -- --- ------- ----------- -----
