@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Models\Notification;
 use App\Models\PersonalAccessToken;
 use App\Models\PersonalAccessTokenEvent;
+use App\Services\Settings\RequestDisableInvisibleService;
 use App\Services\Settings\RequestEnableInvisibleService;
 
 class SettingsController extends Controller
@@ -33,18 +34,9 @@ class SettingsController extends Controller
     // This Method Is For Requesting To Disable Invisible Mode
     // ---- ------ -- --- ---------- -- ------- --------- ----
 
-    public function requestDisableInvisible()
+    public function requestDisableInvisible(RequestDisableInvisibleService $service)
     {
-        if (!auth()->user()->invisible) {
-            return response()->json(['reload' => true], 200);
-        }
-        User::where('id', auth()->user()->id)
-            ->where('status', 1)
-            ->update([
-                'invisible' => 0,
-                'updated_at' => now()
-            ]);
-        return response()->json(['success' => true], 200);
+        return $service->handle();
     }
 
     // ---- ------ -- --- ---------- -- ---- --------

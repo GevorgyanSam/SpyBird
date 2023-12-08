@@ -4,19 +4,19 @@ namespace App\Services\Settings;
 
 use App\Models\User;
 
-class RequestEnableInvisibleService
+class RequestDisableInvisibleService
 {
 
-    // --- ---- -------- --- -------- --------- ----
-    // The Main Function For Enabling Invisible Mode
-    // --- ---- -------- --- -------- --------- ----
+    // --- ---- -------- --- --------- --------- ----
+    // The Main Function For Disabling Invisible Mode
+    // --- ---- -------- --- --------- --------- ----
 
     public function handle()
     {
-        if ($this->enabledInvisible()) {
+        if ($this->disabledInvisible()) {
             return response()->json(['reload' => true], 200);
         }
-        $this->enableInvisible();
+        $this->disableInvisible();
         return response()->json(['success' => true], 200);
     }
 
@@ -24,21 +24,21 @@ class RequestEnableInvisibleService
     // This Method Is Designed To Check Whether The User Is Already In Invisible Mode Or Not
     // ---- ------ -- -------- -- ----- ------- --- ---- -- ------- -- --------- ---- -- ---
 
-    private function enabledInvisible()
+    private function disabledInvisible()
     {
-        return auth()->user()->invisible;
+        return !auth()->user()->invisible;
     }
 
-    // ---- ------ -- --- -------- --------- ----
-    // This Method Is For Enabling Invisible Mode
-    // ---- ------ -- --- -------- --------- ----
+    // ---- ------ -- --- --------- --------- ----
+    // This Method Is For Disabling Invisible Mode
+    // ---- ------ -- --- --------- --------- ----
 
-    private function enableInvisible()
+    private function disableInvisible()
     {
         User::where('id', auth()->user()->id)
             ->where('status', 1)
             ->update([
-                'invisible' => 1,
+                'invisible' => 0,
                 'updated_at' => now()
             ]);
     }
