@@ -12,13 +12,13 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\LoginInfo;
 use App\Models\UserDataHistory;
 use App\Models\User;
-use App\Models\Notification;
 use App\Models\PersonalAccessToken;
 use App\Models\PersonalAccessTokenEvent;
 use App\Services\Settings\RequestDisableInvisibleService;
 use App\Services\Settings\RequestEnableInvisibleService;
 use App\Services\Settings\RequestHideActivityService;
 use App\Services\Settings\RequestShowActivityService;
+use App\Services\Settings\UpdateProfileService;
 
 class SettingsController extends Controller
 {
@@ -63,79 +63,9 @@ class SettingsController extends Controller
     // This Method Is For Update Profile
     // ---- ------ -- --- ------ -------
 
-    public function updateProfile(Request $request)
+    public function updateProfile(Request $request, UpdateProfileService $service)
     {
-        $rules = [
-            'avatar' => ['bail', 'nullable', 'file', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5000'],
-            'name' => ['bail', 'nullable']
-        ];
-        $messages = [
-            "max" => ":attribute is too big"
-        ];
-        $request->validate($rules, $messages);
-        if (strtolower($request->name) == strtolower(auth()->user()->name)) {
-            return response()->json(["errors" => ["name" => ["You Are Using The Same Name"]]], 422);
-        }
-        if ($request->hasFile("avatar") && $request->file("avatar")->isValid()) {
-            $fileName = Str::random(10) . "_" . now()->timestamp . "_" . auth()->user()->id . "." . $request->file("avatar")->getClientOriginalExtension();
-            $path = $request->file("avatar")->storeAs("assets", $fileName);
-            UserDataHistory::create([
-                "user_id" => auth()->user()->id,
-                "type" => "avatar_change",
-                "from" => auth()->user()->avatar,
-                "to" => $path,
-                "created_at" => now()
-            ]);
-            Notification::create([
-                "user_id" => auth()->user()->id,
-                "sender_id" => auth()->user()->id,
-                "type" => "avatar_change",
-                "content" => "avatar updated successfully",
-                "seen" => 0,
-                "status" => 1,
-                "created_at" => now()
-            ]);
-            User::where("id", auth()->user()->id)
-                ->where("status", 1)
-                ->update([
-                    "avatar" => $path,
-                    "updated_at" => now()
-                ]);
-        }
-        if ($request->name) {
-            UserDataHistory::create([
-                "user_id" => auth()->user()->id,
-                "type" => "name_change",
-                "from" => strtolower(auth()->user()->name),
-                "to" => strtolower($request->name),
-                "created_at" => now()
-            ]);
-            Notification::create([
-                "user_id" => auth()->user()->id,
-                "sender_id" => auth()->user()->id,
-                "type" => "name_change",
-                "content" => "name updated successfully",
-                "seen" => 0,
-                "status" => 1,
-                "created_at" => now()
-            ]);
-            User::where("id", auth()->user()->id)
-                ->where("status", 1)
-                ->update([
-                    "name" => strtolower($request->name),
-                    "updated_at" => now()
-                ]);
-        }
-        if ($request->name || $request->file("avatar")) {
-            $user = User::find(auth()->user()->id);
-            $avatar = $user->avatar ? "<img src='" . asset('storage/' . $user->avatar) . "'>" : $user->name[0];
-            $data = (object) [
-                'avatar' => $avatar,
-                'name' => $user->name
-            ];
-            return response()->json(["success" => true, "data" => $data], 200);
-        }
-        return response()->json(["default" => true], 200);
+        return $service->handle($request);
     }
 
     // ---- ------ -- --- -------- -----
