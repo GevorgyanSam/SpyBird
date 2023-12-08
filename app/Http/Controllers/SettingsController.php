@@ -17,6 +17,7 @@ use App\Models\PersonalAccessToken;
 use App\Models\PersonalAccessTokenEvent;
 use App\Services\Settings\RequestDisableInvisibleService;
 use App\Services\Settings\RequestEnableInvisibleService;
+use App\Services\Settings\RequestHideActivityService;
 use App\Services\Settings\RequestShowActivityService;
 
 class SettingsController extends Controller
@@ -53,18 +54,9 @@ class SettingsController extends Controller
     // This Method Is For Requesting To Hide Activity
     // ---- ------ -- --- ---------- -- ---- --------
 
-    public function requestHideActivity()
+    public function requestHideActivity(RequestHideActivityService $service)
     {
-        if (!auth()->user()->activity) {
-            return response()->json(['reload' => true], 200);
-        }
-        User::where('id', auth()->user()->id)
-            ->where('status', 1)
-            ->update([
-                'activity' => 0,
-                'updated_at' => now()
-            ]);
-        return response()->json(['success' => true], 200);
+        return $service->handle();
     }
 
     // ---- ------ -- --- ------ -------
