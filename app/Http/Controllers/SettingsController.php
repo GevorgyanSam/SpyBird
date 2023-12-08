@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Jobs\AccountTerminationConfirmationJob;
 use App\Jobs\AccountTerminationJob;
-use App\Jobs\PasswordResetJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
@@ -14,6 +13,7 @@ use App\Models\UserDataHistory;
 use App\Models\User;
 use App\Models\PersonalAccessToken;
 use App\Models\PersonalAccessTokenEvent;
+use App\Services\Settings\PasswordResetService;
 use App\Services\Settings\RequestDisableInvisibleService;
 use App\Services\Settings\RequestEnableInvisibleService;
 use App\Services\Settings\RequestHideActivityService;
@@ -72,33 +72,9 @@ class SettingsController extends Controller
     // This Method Is For Password Reset
     // ---- ------ -- --- -------- -----
 
-    public function passwordReset(Request $request)
+    public function passwordReset(Request $request, PasswordResetService $service)
     {
-        $old_tokens = PersonalAccessToken::where(['user_id' => auth()->user()->id, 'type' => 'password_reset'])->where('expires_at', '>', now())->count();
-        if ($old_tokens >= 2) {
-            return response()->json(['success' => true], 200);
-        }
-        $token = PersonalAccessToken::create([
-            'user_id' => auth()->user()->id,
-            'type' => 'password_reset',
-            'token' => Str::random(60),
-            'status' => 1,
-            'created_at' => now(),
-            'expires_at' => now()->addHours(1)
-        ]);
-        PersonalAccessTokenEvent::create([
-            'token_id' => $token->id,
-            'type' => 'request',
-            'ip' => $request->ip(),
-            'user_agent' => $request->userAgent()
-        ]);
-        $jobData = (object) [
-            'email' => auth()->user()->email,
-            'name' => auth()->user()->name,
-            'token' => $token->token
-        ];
-        PasswordResetJob::dispatch($jobData);
-        return response()->json(['success' => true], 200);
+        return $service->handle($request);
     }
 
     // ---- ------ -- --- -------- ------ ---- --------
