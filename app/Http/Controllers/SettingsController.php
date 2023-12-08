@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Auth;
-use App\Models\LoginInfo;
 use App\Services\Settings\AccountTerminationService;
 use App\Services\Settings\DeleteAccountService;
 use App\Services\Settings\DeleteDeviceService;
+use App\Services\Settings\LogoutService;
 use App\Services\Settings\PasswordResetService;
 use App\Services\Settings\RequestDisableInvisibleService;
 use App\Services\Settings\RequestEnableInvisibleService;
@@ -114,22 +112,9 @@ class SettingsController extends Controller
     // This Method Is For Logout
     // ---- ------ -- --- ------
 
-    public function logout(Request $request)
+    public function logout(LogoutService $service)
     {
-        LoginInfo::where('user_id', Auth::user()->id)
-            ->where('status', 1)
-            ->update([
-                'status' => 0,
-                'updated_at' => now()
-            ]);
-        $cacheName = "device_" . auth()->user()->id;
-        if (Cache::has($cacheName)) {
-            Cache::forget($cacheName);
-        }
-        Auth::logout();
-        session()->invalidate();
-        session()->regenerateToken();
-        return response()->json(['success' => true], 200);
+        return $service->handle();
     }
 
 }
