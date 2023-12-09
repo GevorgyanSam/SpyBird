@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Notification;
+use App\Services\Notifications\GetNotificationsService;
 
 class NotificationsController extends Controller
 {
@@ -12,18 +12,9 @@ class NotificationsController extends Controller
     // This Method Is For Getting Notifications
     // ---- ------ -- --- ------- -------------
 
-    public function getNotifications()
+    public function getNotifications(GetNotificationsService $service)
     {
-        $notifications = Notification::with('sender')
-            ->where('user_id', auth()->user()->id)
-            ->where('status', 1)
-            ->orderByDesc('created_at')
-            ->orderByDesc('id')
-            ->get();
-        if (count($notifications)) {
-            return response()->json(['data' => $notifications], 200);
-        }
-        return response()->json(['empty' => true], 200);
+        return $service->handle();
     }
 
     // ---- ------ -- --- ------- --- -------------
