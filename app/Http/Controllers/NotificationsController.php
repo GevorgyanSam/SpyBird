@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Notification;
 use App\Services\Notifications\CheckNewNotificationsService;
 use App\Services\Notifications\ClearNotificationsService;
 use App\Services\Notifications\DeleteNotificationService;
 use App\Services\Notifications\GetNewNotificationsService;
 use App\Services\Notifications\GetNotificationsService;
+use App\Services\Notifications\SetSeenNotificationsService;
 
 class NotificationsController extends Controller
 {
@@ -61,18 +61,9 @@ class NotificationsController extends Controller
     // This Method Is For Setting "Seen" To New Notifications
     // ---- ------ -- --- ------- ------ -- --- -------------
 
-    public function setSeenNotifications()
+    public function setSeenNotifications(SetSeenNotificationsService $service)
     {
-        $count = Notification::where('user_id', auth()->user()->id)
-            ->where('status', 1)
-            ->where('seen', 0)
-            ->update([
-                'seen' => 1,
-                'updated_at' => now()
-            ]);
-        if ($count) {
-            return response()->json(['success' => true], 200);
-        }
+        return $service->handle();
     }
 
 }
