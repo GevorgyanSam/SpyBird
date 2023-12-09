@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Models\User;
 use App\Models\LoginInfo;
+use App\Services\Search\GetSuggestedContactsService;
 
 class SearchController extends Controller
 {
@@ -15,45 +16,9 @@ class SearchController extends Controller
     // This Method Is For Getting Suggested Contacts
     // ---- ------ -- --- ------- --------- --------
 
-    public function getSuggestedContacts()
+    public function getSuggestedContacts(GetSuggestedContactsService $service)
     {
-        $users = User::with('latestLoginInfo')
-            ->select('id', 'name', 'avatar', 'activity')
-            ->where('id', '!=', auth()->user()->id)
-            ->where('status', 1)
-            ->where('invisible', 0)
-            ->inRandomOrder()
-            ->limit(10)
-            ->get();
-        if (!count($users)) {
-            return response()->json(['empty' => true], 200);
-        }
-        $suggested_contacts = $users->map(function ($user) {
-            $avatar = $user->avatar;
-            if ($avatar) {
-                $avatar = asset('storage/' . $user->avatar);
-            }
-            if (!$user->activity) {
-                return [
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'avatar' => $avatar,
-                    'hidden' => true
-                ];
-            }
-            $date = $user->latestLoginInfo->updated_at;
-            if ($date) {
-                $date = Carbon::parse($date)->format('d M H:i');
-            }
-            return [
-                'id' => $user->id,
-                'name' => $user->name,
-                'avatar' => $avatar,
-                'status' => $user->latestLoginInfo->status,
-                'updated_at' => $date
-            ];
-        });
-        return response()->json(['data' => $suggested_contacts], 200);
+        return $service->handle();
     }
 
     // ---- ------ -- --- ------- ------ --------
