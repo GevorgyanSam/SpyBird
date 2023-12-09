@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notification;
+use App\Services\Notifications\CheckNewNotificationsService;
 use App\Services\Notifications\ClearNotificationsService;
 use App\Services\Notifications\DeleteNotificationService;
 use App\Services\Notifications\GetNewNotificationsService;
@@ -51,13 +52,9 @@ class NotificationsController extends Controller
     // This Method Is For Checking For New Notifications
     // ---- ------ -- --- -------- --- --- -------------
 
-    public function checkNewNotifications()
+    public function checkNewNotifications(CheckNewNotificationsService $service)
     {
-        $count = Notification::where('user_id', auth()->user()->id)
-            ->where('status', 1)
-            ->where('seen', 0)
-            ->count();
-        return response()->json(['count' => $count], 200);
+        return $service->handle();
     }
 
     // ---- ------ -- --- ------- ------ -- --- -------------
