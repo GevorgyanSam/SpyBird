@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Notification;
 use App\Services\Notifications\ClearNotificationsService;
+use App\Services\Notifications\DeleteNotificationService;
 use App\Services\Notifications\GetNewNotificationsService;
 use App\Services\Notifications\GetNotificationsService;
 
@@ -41,19 +42,9 @@ class NotificationsController extends Controller
     // This Method Is For Deleting Notification
     // ---- ------ -- --- -------- ------------
 
-    public function deleteNotification(int $id)
+    public function deleteNotification(int $id, DeleteNotificationService $service)
     {
-        $count = Notification::where('id', $id)
-            ->where('user_id', auth()->user()->id)
-            ->where('sender_id', auth()->user()->id)
-            ->where('status', 1)
-            ->update([
-                'status' => 0,
-                'updated_at' => now()
-            ]);
-        if ($count) {
-            return response()->json(['success' => true], 200);
-        }
+        return $service->handle($id);
     }
 
     // ---- ------ -- --- -------- --- --- -------------
