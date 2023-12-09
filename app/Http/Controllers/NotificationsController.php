@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notification;
+use App\Services\Notifications\GetNewNotificationsService;
 use App\Services\Notifications\GetNotificationsService;
 
 class NotificationsController extends Controller
@@ -21,19 +22,9 @@ class NotificationsController extends Controller
     // This Method Is For Getting New Notifications
     // ---- ------ -- --- ------- --- -------------
 
-    public function getNewNotifications()
+    public function getNewNotifications(GetNewNotificationsService $service)
     {
-        $notifications = Notification::with('sender')
-            ->where('user_id', auth()->user()->id)
-            ->where('status', 1)
-            ->where('seen', 0)
-            ->orderByDesc('created_at')
-            ->orderByDesc('id')
-            ->get();
-        if (count($notifications)) {
-            return response()->json(['data' => $notifications], 200);
-        }
-        return response()->json(['empty' => true], 200);
+        return $service->handle();
     }
 
     // ---- ------ -- --- -------- --- -------------
