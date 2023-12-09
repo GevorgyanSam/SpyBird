@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\LocationAction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Models\User;
-use App\Models\LoginInfo;
+use App\Services\Search\GetNearbyContactsService;
 use App\Services\Search\GetSuggestedContactsService;
 
 class SearchController extends Controller
@@ -25,49 +24,9 @@ class SearchController extends Controller
     // This Method Is For Getting Nearby Contacts
     // ---- ------ -- --- ------- ------ --------
 
-    public function getNearbyContacts(Request $request)
+    public function getNearbyContacts(Request $request, GetNearbyContactsService $service)
     {
-        $locationAction = new LocationAction();
-        $location = $locationAction($request->ip());
-        if (isset($location->message)) {
-            $location = "Not Detected";
-        } else {
-            $location = $location->country_name . ', ' . $location->city;
-        }
-        $loginInfo = LoginInfo::select('login_info.status', 'users.id', 'users.name', 'users.avatar', 'users.activity')
-            ->where('login_info.location', $location)
-            ->where('login_info.status', 1)
-            ->where('users.id', '!=', auth()->user()->id)
-            ->where('users.status', 1)
-            ->where('users.invisible', 0)
-            ->inRandomOrder()
-            ->limit(10)
-            ->join('users', 'login_info.user_id', '=', 'users.id')
-            ->get();
-        if (!count($loginInfo)) {
-            return response()->json(['empty' => true], 200);
-        }
-        $nearby_contacts = $loginInfo->map(function ($contact) {
-            $avatar = $contact->avatar;
-            if ($avatar) {
-                $avatar = asset('storage/' . $contact->avatar);
-            }
-            if (!$contact->activity) {
-                return [
-                    'id' => $contact->id,
-                    'name' => $contact->name,
-                    'avatar' => $avatar,
-                    'hidden' => true
-                ];
-            }
-            return [
-                'id' => $contact->id,
-                'name' => $contact->name,
-                'avatar' => $avatar,
-                'status' => $contact->status
-            ];
-        });
-        return response()->json(['data' => $nearby_contacts], 200);
+        return $service->handle($request);
     }
 
     // ---- ------ -- --- --------- --------
