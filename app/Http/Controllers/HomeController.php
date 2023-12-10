@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\LoginInfo;
 use App\Services\Friends\GetFriendshipStatusService;
+use App\Services\Home\CheckAuthenticationService;
 use App\Services\Settings\GetLoginHistoryService;
-use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
 {
@@ -36,53 +34,9 @@ class HomeController extends Controller
     // This Method Is For Checking Authentication
     // ---- ------ -- --- -------- --------------
 
-    public function checkAuthentication(Request $request)
+    public function checkAuthentication(Request $request, CheckAuthenticationService $service)
     {
-        $login_id = session()->get('login-id');
-        $loginInfo = LoginInfo::findOrfail($login_id);
-        if (Auth::check() && $loginInfo->status) {
-            if ($loginInfo->expires_at < now()) {
-                LoginInfo::where('id', $login_id)
-                    ->update([
-                        'status' => 0,
-                        'updated_at' => now()
-                    ]);
-                $cacheName = "device_" . $loginInfo->user_id;
-                if (Cache::has($cacheName)) {
-                    Cache::forget($cacheName);
-                }
-                Auth::logout();
-                session()->invalidate();
-                session()->regenerateToken();
-                return response()->json(["reload" => true], 200);
-            }
-            $lockscreen = session()->get('lockscreen');
-            if ($lockscreen) {
-                if ($request->header('referer') != route('user.lockscreen')) {
-                    return response()->json(["reload" => true], 200);
-                }
-            }
-            return response()->json(["authenticated" => true], 200);
-        }
-        if (Auth::check() && !$loginInfo->status) {
-            Auth::logout();
-            session()->invalidate();
-            session()->regenerateToken();
-            return response()->json(["reload" => true], 200);
-        }
-        if (!Auth::check() && $loginInfo->status) {
-            LoginInfo::where('id', $login_id)
-                ->update([
-                    'status' => 0,
-                    'updated_at' => now()
-                ]);
-            $cacheName = "device_" . $loginInfo->user_id;
-            if (Cache::has($cacheName)) {
-                Cache::forget($cacheName);
-            }
-            return response()->json(["reload" => true], 200);
-        }
-        return response()->json(["reload" => true], 200);
+        return $service->handle($request);
     }
 
     // ---- ------ -- --- ------- ------------ ------- -----
