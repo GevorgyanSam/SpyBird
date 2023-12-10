@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\LoginInfo;
+use App\Services\Friends\GetFriendshipStatusService;
 use App\Services\Settings\GetLoginHistoryService;
 use Illuminate\Support\Facades\Cache;
 
@@ -91,7 +92,8 @@ class HomeController extends Controller
     public function getRelationship(int $id)
     {
         $response = (object) [];
-        $response->friend = FriendsController::getFriendshipStatus($id);
+        $service = new GetFriendshipStatusService();
+        $response->friend = $service->handle($id);
         return response()->json($response, 200);
     }
 

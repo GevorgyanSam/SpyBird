@@ -5,46 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Friend;
 use App\Models\Notification;
+use App\Services\Friends\GetFriendshipStatusService;
+use App\Services\Friends\GetFriendshipService;
 
 class FriendsController extends Controller
 {
-
-    // ---- ------ -- --- ------- ---------- ------- -----
-    // This Method Is For Getting Friendship Between Users
-    // ---- ------ -- --- ------- ---------- ------- -----
-
-    public static function getFriendship(int $id)
-    {
-        $friend = Friend::
-            where(function ($query) use ($id) {
-                $query->where('status', 1)
-                    ->where('user_id', auth()->user()->id)
-                    ->where('friend_user_id', $id);
-            })
-            ->orWhere(function ($query) use ($id) {
-                $query->where('status', 1)
-                    ->where('friend_user_id', auth()->user()->id)
-                    ->where('user_id', $id);
-            })
-            ->first();
-        return $friend;
-    }
-
-    // ---- ------ -- --- ------- ---------- ------ ------- -----
-    // This Method Is For Getting Friendship Status Between Users
-    // ---- ------ -- --- ------- ---------- ------ ------- -----
-
-    public static function getFriendshipStatus(int $id)
-    {
-        $friend = self::getFriendship($id);
-        if (empty($friend)) {
-            return 'request';
-        }
-        if ($friend->verified == 'accepted') {
-            return 'remove';
-        }
-        return 'pending';
-    }
 
     // ---- ------ -- --- ------- ------ ------- -- ----- ----
     // This Method Is For Sending Friend Request To Other User
@@ -55,7 +20,8 @@ class FriendsController extends Controller
         if (auth()->user()->id == $id) {
             return response()->json(['error' => true], 403);
         }
-        $status = $this->getFriendshipStatus($id);
+        $service = new GetFriendshipStatusService();
+        $status = $service->handle($id);
         if ($status != 'request') {
             return response()->json(['error' => true], 403);
         }
@@ -87,7 +53,8 @@ class FriendsController extends Controller
         if (auth()->user()->id == $id) {
             return response()->json(['error' => true], 403);
         }
-        $status = $this->getFriendshipStatus($id);
+        $service = new GetFriendshipStatusService();
+        $status = $service->handle($id);
         if ($status != 'remove') {
             return response()->json(['error' => true], 403);
         }
@@ -122,7 +89,8 @@ class FriendsController extends Controller
         if (auth()->user()->id == $id) {
             return response()->json(['error' => true], 403);
         }
-        $friendship = $this->getFriendship($id);
+        $service = new GetFriendshipService();
+        $friendship = $service->handle($id);
         if (empty($friendship) || $friendship->verified != 'pending') {
             return response()->json(['error' => true], 403);
         }
@@ -152,7 +120,8 @@ class FriendsController extends Controller
         if (auth()->user()->id == $id) {
             return response()->json(['error' => true], 403);
         }
-        $friendship = $this->getFriendship($id);
+        $service = new GetFriendshipService();
+        $friendship = $service->handle($id);
         if (empty($friendship) || $friendship->verified != 'pending') {
             return response()->json(['error' => true], 403);
         }
