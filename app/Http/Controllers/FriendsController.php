@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Friend;
 use App\Models\Notification;
-use App\Services\Friends\GetFriendshipStatusService;
 use App\Services\Friends\GetFriendshipService;
+use App\Services\Friends\RemoveFromFriendsService;
 use App\Services\Friends\SendFriendRequestService;
 
 class FriendsController extends Controller
@@ -25,36 +25,9 @@ class FriendsController extends Controller
     // This Method Is For Removing From Friend List
     // ---- ------ -- --- -------- ---- ------ ----
 
-    public function removeFromFriends(int $id)
+    public function removeFromFriends(int $id, RemoveFromFriendsService $service)
     {
-        if (auth()->user()->id == $id) {
-            return response()->json(['error' => true], 403);
-        }
-        $service = new GetFriendshipStatusService();
-        $status = $service->handle($id);
-        if ($status != 'remove') {
-            return response()->json(['error' => true], 403);
-        }
-        $check = Friend::
-            where(function ($query) use ($id) {
-                $query->where('status', 1)
-                    ->where('verified', 'accepted')
-                    ->where('user_id', auth()->user()->id)
-                    ->where('friend_user_id', $id);
-            })
-            ->orWhere(function ($query) use ($id) {
-                $query->where('status', 1)
-                    ->where('verified', 'accepted')
-                    ->where('friend_user_id', auth()->user()->id)
-                    ->where('user_id', $id);
-            })
-            ->update([
-                'status' => 0,
-                'updated_at' => now()
-            ]);
-        if ($check) {
-            return response()->json(['success' => true], 200);
-        }
+        return $service->handle($id);
     }
 
     // ---- ------ -- -------- -- ------- --- ------ -------
