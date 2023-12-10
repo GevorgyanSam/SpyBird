@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Friend;
 use App\Models\Notification;
+use App\Services\Friends\ConfirmFriendRequestService;
 use App\Services\Friends\GetFriendshipService;
 use App\Services\Friends\RemoveFromFriendsService;
 use App\Services\Friends\SendFriendRequestService;
@@ -34,31 +35,9 @@ class FriendsController extends Controller
     // This Method Is Intended To Confirm The Friend Request
     // ---- ------ -- -------- -- ------- --- ------ -------
 
-    public function confirmFriendRequest(Request $request, int $id)
+    public function confirmFriendRequest(Request $request, int $id, ConfirmFriendRequestService $service)
     {
-        if (auth()->user()->id == $id) {
-            return response()->json(['error' => true], 403);
-        }
-        $service = new GetFriendshipService();
-        $friendship = $service->handle($id);
-        if (empty($friendship) || $friendship->verified != 'pending') {
-            return response()->json(['error' => true], 403);
-        }
-        $check = Friend::where('id', $friendship->id)
-            ->update([
-                'verified' => 'accepted',
-                'updated_at' => now()
-            ]);
-        Notification::where('id', $request->input('notification'))
-            ->where('user_id', auth()->user()->id)
-            ->where('status', 1)
-            ->update([
-                'status' => 0,
-                'updated_at' => now()
-            ]);
-        if ($check) {
-            return response()->json(['success' => true], 200);
-        }
+        return $service->handle($request, $id);
     }
 
     // ---- ------ -- -------- -- ------ --- ------ -------
