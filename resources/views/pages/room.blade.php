@@ -268,9 +268,9 @@
                 <div class="friendsParent">
                     <h3>Friends</h3>
                     <div>
-                        <x-form method="post">
+                        <x-form id="searchFriends" method="post" action="{{ route('search-friends') }}">
                             <div class="formItem">
-                                <input type="text" placeholder="Search People">
+                                <input type="text" placeholder="Search People" name="search" autocomplete="off">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </div>
                         </x-form>

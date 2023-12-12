@@ -36,6 +36,12 @@ Object.values(SettingsComponent).forEach((method) => method());
 SearchComponent.switchSearch();
 SearchComponent.searchContacts();
 
+// ------- ------- -------
+// Execute Friends Methods
+// ------- ------- -------
+
+FriendsComponent.searchFriends();
+
 // ------- ------------- -------
 // Execute Notifications Methods
 // ------- ------------- -------

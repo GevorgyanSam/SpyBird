@@ -21,9 +21,10 @@ export function getFriends() {
         },
         success: function (response) {
             if (response.data) {
+                showFriends();
                 setFriends(response.data);
             } else if (response.empty) {
-                clearFriends();
+                hideFriends();
             }
             loading(false);
         },
@@ -76,10 +77,81 @@ function setFriends(data) {
 }
 
 // ---- ------ -- --- -------- --- ------- ----
-// This Method Is For Clearing The Friends Page
+// This Method Is For Clearing The Friends List
 // ---- ------ -- --- -------- --- ------- ----
 
 function clearFriends() {
     const parent = $(".friendsParent .personParent");
     parent.empty();
+}
+
+// ---- ------ -- --- ------ --- ------- ----
+// This Method Is For Hiding The Friends Page
+// ---- ------ -- --- ------ --- ------- ----
+
+function hideFriends() {
+    const parent = $(".friendsParent");
+    const empty = parent.find("> div.emptyParent");
+    const content = parent.find("> div:not(.emptyParent)");
+    content.hide();
+    empty.addClass("active");
+}
+
+// ---- ------ -- --- ------- --- ------- ----
+// This Method Is For Showing The Friends Page
+// ---- ------ -- --- ------- --- ------- ----
+
+function showFriends() {
+    const parent = $(".friendsParent");
+    const empty = parent.find("> div.emptyParent");
+    const content = parent.find("> div:not(.emptyParent)");
+    empty.removeClass("active");
+    content.show();
+}
+
+// ---- ------ -- --- --------- --------
+// This Method Is For Searching Contacts
+// ---- ------ -- --- --------- --------
+
+export function searchFriends() {
+    const search = $("form#searchFriends");
+    const inp = search.find("input[name=search]");
+
+    search.on("submit", (e) => {
+        e.preventDefault();
+    });
+
+    inp.on("blur", () => {
+        if (!inp.val()) {
+            getContent("friends");
+        }
+    });
+
+    inp.on("input", (e) => {
+        e.preventDefault();
+
+        if (!e.target.value.length) {
+            clearFriends();
+            return false;
+        }
+
+        $.ajax({
+            url: search.attr("action"),
+            method: search.attr("method"),
+            data: search.serialize(),
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            success: function (response) {
+                if (response.data) {
+                    setFriends(response.data);
+                } else if (response.empty) {
+                    clearFriends();
+                }
+            },
+            error: function (error) {
+                location.reload();
+            },
+        });
+    });
 }

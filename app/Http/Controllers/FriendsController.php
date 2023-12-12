@@ -7,6 +7,7 @@ use App\Services\Friends\ConfirmFriendRequestService;
 use App\Services\Friends\GetFriendsService;
 use App\Services\Friends\RejectFriendRequestService;
 use App\Services\Friends\RemoveFromFriendsService;
+use App\Services\Friends\SearchFriendsService;
 use App\Services\Friends\SendFriendRequestService;
 
 class FriendsController extends Controller
@@ -55,6 +56,15 @@ class FriendsController extends Controller
     public function getFriends(GetFriendsService $service)
     {
         return $service->handle();
+    }
+
+    // ---- ------ -- --- --------- ---- -------
+    // This Method Is For Searching From Friends
+    // ---- ------ -- --- --------- ---- -------
+
+    public function searchFriends(Request $request, SearchFriendsService $service)
+    {
+        return $service->handle($request);
     }
 
 }
