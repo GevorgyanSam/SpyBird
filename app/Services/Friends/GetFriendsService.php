@@ -3,6 +3,7 @@
 namespace App\Services\Friends;
 
 use App\Models\Friend;
+use Illuminate\Support\Carbon;
 
 class GetFriendsService
 {
@@ -46,6 +47,7 @@ class GetFriendsService
                             ->where('invisible', 0);
                     });
             })
+            ->orderByDesc('created_at')
             ->get();
     }
 
@@ -64,7 +66,38 @@ class GetFriendsService
 
     private function processData($users)
     {
-        return $users;
+        return $users->map(function ($user) {
+            if ($user->user_id == auth()->user()->id) {
+                return $this->fetchAssocData($user->friendUser);
+            } else {
+                return $this->fetchAssocData($user->user);
+            }
+        });
+    }
+
+    // ---- ------ -- --- ------------ ---- -- -----
+    // This Method Is For Transforming Data To Array
+    // ---- ------ -- --- ------------ ---- -- -----
+
+    private function fetchAssocData($user)
+    {
+        $avatar = $user->avatar ? asset('storage/' . $user->avatar) : null;
+        $date = $user->latestLoginInfo->updated_at ? Carbon::parse($user->latestLoginInfo->updated_at)->format('d M H:i') : null;
+        if (!$user->activity) {
+            return [
+                'id' => $user->id,
+                'name' => $user->name,
+                'avatar' => $avatar,
+                'hidden' => true
+            ];
+        }
+        return [
+            'id' => $user->id,
+            'name' => $user->name,
+            'avatar' => $avatar,
+            'status' => $user->latestLoginInfo->status,
+            'updated_at' => $date
+        ];
     }
 
 }

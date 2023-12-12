@@ -274,28 +274,7 @@
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </div>
                         </x-form>
-                        <div class="personParent">
-                            <div class="person">
-                                <div>
-                                    <div class="avatar active">
-                                        <img src="https://offsetcode.com/themes/messenger/2.2.0/assets/img/avatars/1.jpg">
-                                    </div>
-                                </div>
-                                <div class="personInfo">
-                                    <h4>william pearson</h4>
-                                    <div class="status">online</div>
-                                </div>
-                                <div class="personSettings">
-                                    <i class="fa-solid fa-ellipsis-vertical"></i>
-                                    <div class="dropdownMenu">
-                                        <div class="dropdownItem">send message</div>
-                                        <div class="dropdownItem">remove from friends</div>
-                                        <div class="line"></div>
-                                        <div class="dropdownItem danger">block user</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="personParent"></div>
                     </div>
                     <div class="emptyParent">
                         <div class="content">

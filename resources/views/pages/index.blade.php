@@ -274,28 +274,7 @@
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </div>
                         </x-form>
-                        <div class="personParent">
-                            <div class="person">
-                                <div>
-                                    <div class="avatar active">
-                                        <img src="https://imgs.search.brave.com/gQWYzwf_Qnt-Xf0GFD7hKey-F6mXq4jTdtBPhd5u8ew/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9mcmVl/cG5naW1nLmNvbS9z/dGF0aWMvaW1nL3lv/dXR1YmUucG5n">
-                                    </div>
-                                </div>
-                                <div class="personInfo">
-                                    <h4>william pearson</h4>
-                                    <div class="status">online</div>
-                                </div>
-                                <div class="personSettings">
-                                    <i class="fa-solid fa-ellipsis-vertical"></i>
-                                    <div class="dropdownMenu">
-                                        <div class="dropdownItem">send message</div>
-                                        <div class="dropdownItem">remove from friends</div>
-                                        <div class="line"></div>
-                                        <div class="dropdownItem danger">block user</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="personParent"></div>
                     </div>
                     <div class="emptyParent">
                         <div class="content">

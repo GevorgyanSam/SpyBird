@@ -54,10 +54,8 @@ class GetSuggestedContactsService
     private function processData($users)
     {
         return $users->map(function ($user) {
-            $avatar = $user->avatar;
-            if ($avatar) {
-                $avatar = asset('storage/' . $user->avatar);
-            }
+            $avatar = $user->avatar ? asset('storage/' . $user->avatar) : null;
+            $date = $user->latestLoginInfo->updated_at ? Carbon::parse($user->latestLoginInfo->updated_at)->format('d M H:i') : null;
             if (!$user->activity) {
                 return [
                     'id' => $user->id,
@@ -65,10 +63,6 @@ class GetSuggestedContactsService
                     'avatar' => $avatar,
                     'hidden' => true
                 ];
-            }
-            $date = $user->latestLoginInfo->updated_at;
-            if ($date) {
-                $date = Carbon::parse($date)->format('d M H:i');
             }
             return [
                 'id' => $user->id,
