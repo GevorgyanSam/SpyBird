@@ -18,6 +18,10 @@ import * as SearchComponent from "./components/search";
 // Import Notifications Methods From Components.
 // ------ ------------- ------- ---- -----------
 import * as NotificationsComponent from "./components/notifications";
+// ------ ------- ------- ---- -----------
+// Import Friends Methods From Components.
+// ------ ------- ------- ---- -----------
+import * as FriendsComponent from "./components/friends";
 
 // ------- -------- -------
 // Execute Settings Methods
@@ -97,6 +101,8 @@ export function getContent(page) {
         }
     } else if (page === "notifications") {
         NotificationsComponent.getNotifications();
+    } else if (page === "friends") {
+        FriendsComponent.getFriends();
     }
 }
 

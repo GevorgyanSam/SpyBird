@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\Friends\ConfirmFriendRequestService;
+use App\Services\Friends\GetFriendsService;
 use App\Services\Friends\RejectFriendRequestService;
 use App\Services\Friends\RemoveFromFriendsService;
 use App\Services\Friends\SendFriendRequestService;
@@ -45,6 +46,15 @@ class FriendsController extends Controller
     public function rejectFriendRequest(Request $request, int $id, RejectFriendRequestService $service)
     {
         return $service->handle($request, $id);
+    }
+
+    // ---- ------ -- --- ------- -------
+    // This Method Is For Getting Friends
+    // ---- ------ -- --- ------- -------
+
+    public function getFriends(GetFriendsService $service)
+    {
+        return $service->handle();
     }
 
 }

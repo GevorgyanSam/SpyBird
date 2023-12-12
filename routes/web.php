@@ -94,6 +94,7 @@ Route::middleware(['auth', 'lockscreen'])->group(function () {
         Route::post('/remove-from-friends/{id}', 'removeFromFriends')->name('remove-from-friends');
         Route::post('/confirm-friend-request/{id}', 'confirmFriendRequest')->name('confirm-friend-request');
         Route::post('/reject-friend-request/{id}', 'rejectFriendRequest')->name('reject-friend-request');
+        Route::post('/get-friends', 'getFriends')->name('get-friends');
 
     });
 

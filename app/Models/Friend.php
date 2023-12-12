@@ -26,4 +26,12 @@ class Friend extends Model
     ];
     public $incrementing = true;
     public $timestamps = false;
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    public function friendUser()
+    {
+        return $this->belongsTo(User::class, 'friend_user_id');
+    }
 }
