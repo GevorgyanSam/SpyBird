@@ -41,6 +41,8 @@ SearchComponent.searchContacts();
 // ------- ------- -------
 
 FriendsComponent.searchFriends();
+FriendsComponent.getNewFriends();
+setInterval(FriendsComponent.getNewFriends, 3000);
 
 // ------- ------------- -------
 // Execute Notifications Methods

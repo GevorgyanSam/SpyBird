@@ -40,8 +40,19 @@ export function getFriends() {
 // ---- ------ -- --- ------- -------
 
 function setFriends(data) {
+    sessionStorage.setItem("friends", JSON.stringify(data));
     const parent = $(".friendsParent .personParent");
     parent.empty();
+    let content = transformFriendsDataToHtml(data);
+    parent.html(content);
+    toggleDropdown();
+}
+
+// ---- ------ -- ------------ ---- -- ----
+// This Method Is Transforming Data To Html
+// ---- ------ -- ------------ ---- -- ----
+
+function transformFriendsDataToHtml(data) {
     let content = "";
     data.forEach((user) => {
         let avatar = user.avatar
@@ -72,8 +83,7 @@ function setFriends(data) {
         </div>
         `;
     });
-    parent.html(content);
-    toggleDropdown();
+    return content;
 }
 
 // ---- ------ -- --- -------- --- ------- ----
@@ -154,4 +164,51 @@ export function searchFriends() {
             },
         });
     });
+}
+
+// ---- ------ -- --- ------- --- -------
+// This Method Is For Getting New Friends
+// ---- ------ -- --- ------- --- -------
+
+export function getNewFriends() {
+    let page = sessionStorage.getItem("current-page");
+    let input = $("form#searchFriends input[name=search]");
+    if (page !== "friends" || input.val() || input.is(":focus")) {
+        return false;
+    }
+    $.ajax({
+        url: "/get-friends",
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        success: function (response) {
+            console.log(response);
+            if (response.data) {
+                showFriends();
+                setNewFriends(response.data);
+            } else if (response.empty) {
+                hideFriends();
+            }
+        },
+        error: function (error) {
+            location.reload();
+        },
+    });
+}
+
+// ---- ------ -- --- ------- --- -------
+// This Method Is For Setting New Friends
+// ---- ------ -- --- ------- --- -------
+
+function setNewFriends(data) {
+    let oldData = sessionStorage.getItem("friends");
+    let newData = JSON.stringify(data);
+    if (oldData !== newData) {
+        sessionStorage.setItem("friends", newData);
+        let parent = $(".friendsParent .personParent");
+        let content = transformFriendsDataToHtml(data);
+        parent.html(content);
+        toggleDropdown();
+    }
 }
