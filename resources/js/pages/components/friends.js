@@ -229,6 +229,7 @@ export function removeFromFriendsAnimation(friend) {
         );
         setTimeout(() => {
             friend.remove();
+            sessionStorage.removeItem("friends");
             getNewFriends();
         }, 300);
     }
