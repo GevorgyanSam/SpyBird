@@ -177,6 +177,9 @@ function dropdownItem() {
                 break;
             case "removeFromFriends":
                 removeFromFriends(id);
+                FriendsComponent.removeFromFriendsAnimation(
+                    $(this).parents(".person")
+                );
                 break;
         }
     });

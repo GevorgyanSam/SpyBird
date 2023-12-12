@@ -183,7 +183,6 @@ export function getNewFriends() {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
         success: function (response) {
-            console.log(response);
             if (response.data) {
                 showFriends();
                 setNewFriends(response.data);
@@ -210,5 +209,27 @@ function setNewFriends(data) {
         let content = transformFriendsDataToHtml(data);
         parent.html(content);
         toggleDropdown();
+    }
+}
+
+// ---- ------ -- -- --------- --- -------- ---- -------
+// This Method Is An Animation For Removing From Friends
+// ---- ------ -- -- --------- --- -------- ---- -------
+
+export function removeFromFriendsAnimation(friend) {
+    let page = sessionStorage.getItem("current-page");
+    if (page == "friends") {
+        friend.animate(
+            {
+                height: 0,
+                opacity: 0,
+                scale: 0,
+            },
+            200
+        );
+        setTimeout(() => {
+            friend.remove();
+            getNewFriends();
+        }, 300);
     }
 }
