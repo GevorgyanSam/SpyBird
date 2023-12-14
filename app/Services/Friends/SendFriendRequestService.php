@@ -14,9 +14,6 @@ class SendFriendRequestService
 
     public function handle($id)
     {
-        if ($this->selfRequest($id)) {
-            return response()->json(['error' => true], 403);
-        }
         $service = new GetFriendshipStatusService();
         $status = $service->handle($id);
         if ($this->existsRelationship($status)) {
@@ -25,15 +22,6 @@ class SendFriendRequestService
         $this->sendRequest($id);
         $this->createNotification($id);
         return response()->json(['success' => true], 200);
-    }
-
-    // ---- ------ -------- ------- ------ ------- -- --------
-    // This Method Prevents Sending Friend Request To Yourself
-    // ---- ------ -------- ------- ------ ------- -- --------
-
-    private function selfRequest($id)
-    {
-        return (auth()->user()->id == $id) ? true : false;
     }
 
     // ---- ------ -- -------- -- ----- -- ----- ------------ ------- ----- -- ---

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\Block\GetBlockedRelationshipService;
 use App\Services\Friends\GetFriendshipStatusService;
@@ -46,6 +47,14 @@ class HomeController extends Controller
 
     public function getRelationship(int $id)
     {
+        $user = User::where('id', $id)
+            ->where('id', '!=', auth()->user()->id)
+            ->where('status', 1)
+            ->where('invisible', 0)
+            ->count();
+        if (!$user) {
+            return response()->json(['error' => true], 404);
+        }
         $response = (object) [];
         $friendshipStatusService = new GetFriendshipStatusService();
         $response->friend = $friendshipStatusService->handle($id);
