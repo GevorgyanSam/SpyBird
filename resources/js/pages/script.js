@@ -181,6 +181,12 @@ function dropdownItem() {
                     $(this).parents(".person")
                 );
                 break;
+            case "unblockUser":
+                unblockUser(id);
+                break;
+            case "blockUser":
+                blockUser(id);
+                break;
         }
     });
 }
@@ -222,11 +228,22 @@ function setDropdownMenu(data, id) {
                 '<div class="dropdownItem" data-job="removeFromFriends">remove from friends</div>';
             break;
     }
+    let blocked = "";
+    switch (data.blocked) {
+        case "block":
+            blocked =
+                '<div class="dropdownItem danger" data-job="blockUser">block user</div>';
+            break;
+        case "unblock":
+            blocked =
+                '<div class="dropdownItem danger" data-job="unblockUser">unblock user</div>';
+            break;
+    }
     let content = `
         <div class="dropdownItem">send message</div>
         ${friend}
         <div class="line"></div>
-        <div class="dropdownItem danger">block user</div>
+        ${blocked}
     `;
     dropdownMenu.html(content);
     dropdownItem();
@@ -257,6 +274,42 @@ function sendFriendRequest(id) {
 function removeFromFriends(id) {
     $.ajax({
         url: `/remove-from-friends/${id}`,
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        success: function (response) {},
+        error: function (error) {
+            location.reload();
+        },
+    });
+}
+
+// ---- ------ -- -------- -- ------- ----
+// This Method Is Designed To Unblock User
+// ---- ------ -- -------- -- ------- ----
+
+function unblockUser(id) {
+    $.ajax({
+        url: `/unblock-user/${id}`,
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        success: function (response) {},
+        error: function (error) {
+            location.reload();
+        },
+    });
+}
+
+// ---- ------ -- -------- -- ----- ----
+// This Method Is Designed To Block User
+// ---- ------ -- -------- -- ----- ----
+
+function blockUser(id) {
+    $.ajax({
+        url: `/block-user/${id}`,
         method: "POST",
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),

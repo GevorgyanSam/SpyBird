@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Services\Block\GetBlockedRelationshipService;
 use App\Services\Friends\GetFriendshipStatusService;
 use App\Services\Home\CheckAuthenticationService;
 use App\Services\Settings\GetLoginHistoryService;
@@ -46,8 +47,10 @@ class HomeController extends Controller
     public function getRelationship(int $id)
     {
         $response = (object) [];
-        $service = new GetFriendshipStatusService();
-        $response->friend = $service->handle($id);
+        $friendshipStatusService = new GetFriendshipStatusService();
+        $response->friend = $friendshipStatusService->handle($id);
+        $blockedRelationshipService = new GetBlockedRelationshipService();
+        $response->blocked = $blockedRelationshipService->handle($id);
         return response()->json($response, 200);
     }
 

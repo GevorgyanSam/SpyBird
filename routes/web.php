@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BlockController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TermsController;
 use App\Http\Controllers\HomeController;
@@ -96,6 +97,13 @@ Route::middleware(['auth', 'lockscreen'])->group(function () {
         Route::post('/reject-friend-request/{id}', 'rejectFriendRequest')->name('reject-friend-request');
         Route::post('/get-friends', 'getFriends')->name('get-friends');
         Route::post('/search-friends', 'searchFriends')->name('search-friends');
+
+    });
+
+    Route::controller(BlockController::class)->group(function () {
+
+        Route::post('/unblock-user/{id}', 'unblockUser')->name('unblock-user');
+        Route::post('/block-user/{id}', 'blockUser')->name('block-user');
 
     });
 
