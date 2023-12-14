@@ -224,6 +224,8 @@
 
                 .emptyParent {
                     .content {
+                        transform: translateY(0);
+
                         .item {
                             i {
                                 font-size: 18px;
