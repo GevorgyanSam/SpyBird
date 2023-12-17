@@ -51,6 +51,12 @@ class GetNearbyContactsService
             ->where('users.id', '!=', auth()->user()->id)
             ->where('users.status', 1)
             ->where('users.invisible', 0)
+            ->whereNotIn('users.id', function ($query) {
+                $query->select('user_id')
+                    ->from('blocked_users')
+                    ->where('status', 1)
+                    ->where('blocked_user_id', auth()->user()->id);
+            })
             ->inRandomOrder()
             ->limit(10)
             ->join('users', 'login_info.user_id', '=', 'users.id')

@@ -13,12 +13,28 @@ class BlockUserService
 
     public function handle($id)
     {
+        if ($this->blockedBy($id)) {
+            return response()->json(['error' => true], 401);
+        }
         $service = new GetBlockedRelationshipService();
         $status = $service->handle($id);
         if ($this->blocked($status)) {
             return response()->json(['error' => true], 401);
         }
         $this->block($id);
+    }
+
+    // ---- ------ -- -------- -- ----- -- ---- ---- ------- ------- -- ---
+    // This Method Is Designed To Check Is This User Already Blocked Or Not
+    // ---- ------ -- -------- -- ----- -- ---- ---- ------- ------- -- ---
+
+    private function blockedBy($id)
+    {
+        $blocked = BlockedUser::where('user_id', $id)
+            ->where('blocked_user_id', auth()->user()->id)
+            ->where('status', 1)
+            ->count();
+        return $blocked ? true : false;
     }
 
     // ---- ------ -- -------- -- ----- -- ---- ---- ------- -- ---

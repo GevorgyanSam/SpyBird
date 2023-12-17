@@ -33,6 +33,12 @@ class GetSuggestedContactsService
             ->where('id', '!=', auth()->user()->id)
             ->where('status', 1)
             ->where('invisible', 0)
+            ->whereNotIn('id', function ($query) {
+                $query->select('user_id')
+                    ->from('blocked_users')
+                    ->where('status', 1)
+                    ->where('blocked_user_id', auth()->user()->id);
+            })
             ->inRandomOrder()
             ->limit(10)
             ->get();
