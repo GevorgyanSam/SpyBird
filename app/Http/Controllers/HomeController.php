@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BlockedUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\Block\GetBlockedRelationshipService;
@@ -53,6 +54,13 @@ class HomeController extends Controller
             ->where('invisible', 0)
             ->count();
         if (!$user) {
+            return response()->json(['error' => true], 404);
+        }
+        $blocked = BlockedUser::where('user_id', $id)
+            ->where('blocked_user_id', auth()->user()->id)
+            ->where('status', 1)
+            ->count();
+        if ($blocked) {
             return response()->json(['error' => true], 404);
         }
         $response = (object) [];
