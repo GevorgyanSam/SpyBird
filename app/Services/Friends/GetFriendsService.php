@@ -35,7 +35,13 @@ class GetFriendsService
                     ->where('user_id', auth()->user()->id)
                     ->whereHas('friendUser', function ($friendUserQuery) {
                         $friendUserQuery->where('status', 1)
-                            ->where('invisible', 0);
+                            ->where('invisible', 0)
+                            ->whereNotIn('id', function ($query) {
+                                $query->select('user_id')
+                                    ->from('blocked_users')
+                                    ->where('status', 1)
+                                    ->where('blocked_user_id', auth()->user()->id);
+                            });
                     });
             })
             ->orWhere(function ($query) {
@@ -44,7 +50,13 @@ class GetFriendsService
                     ->where('friend_user_id', auth()->user()->id)
                     ->whereHas('user', function ($userQuery) {
                         $userQuery->where('status', 1)
-                            ->where('invisible', 0);
+                            ->where('invisible', 0)
+                            ->whereNotIn('id', function ($query) {
+                                $query->select('user_id')
+                                    ->from('blocked_users')
+                                    ->where('status', 1)
+                                    ->where('blocked_user_id', auth()->user()->id);
+                            });
                     });
             })
             ->orderByDesc('created_at')

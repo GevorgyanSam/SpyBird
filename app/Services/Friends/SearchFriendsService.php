@@ -37,7 +37,13 @@ class SearchFriendsService
                     ->whereHas('friendUser', function ($friendUserQuery) use ($search) {
                         $friendUserQuery->where('name', 'like', "%$search%")
                             ->where('status', 1)
-                            ->where('invisible', 0);
+                            ->where('invisible', 0)
+                            ->whereNotIn('id', function ($query) {
+                                $query->select('user_id')
+                                    ->from('blocked_users')
+                                    ->where('status', 1)
+                                    ->where('blocked_user_id', auth()->user()->id);
+                            });
                     });
             })
             ->orWhere(function ($query) use ($search) {
@@ -47,7 +53,13 @@ class SearchFriendsService
                     ->whereHas('user', function ($userQuery) use ($search) {
                         $userQuery->where('name', 'like', "%$search%")
                             ->where('status', 1)
-                            ->where('invisible', 0);
+                            ->where('invisible', 0)
+                            ->whereNotIn('id', function ($query) {
+                                $query->select('user_id')
+                                    ->from('blocked_users')
+                                    ->where('status', 1)
+                                    ->where('blocked_user_id', auth()->user()->id);
+                            });
                     });
             })
             ->orderByDesc('created_at')
