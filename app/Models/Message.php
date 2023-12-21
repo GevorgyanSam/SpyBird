@@ -15,6 +15,7 @@ class Message extends Model
     protected $guarded = [];
     protected $casts = [
         'status' => 'boolean',
+        'seen' => 'boolean',
         'liked' => 'boolean'
     ];
     protected $fillable = [
@@ -22,6 +23,7 @@ class Message extends Model
         'room_id',
         'message',
         'liked',
+        'seen',
         'status',
         'created_at',
         'updated_at'

@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->foreignId('room_id');
             $table->text('message');
             $table->integer('liked');
+            $table->integer('seen');
             $table->integer('status');
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();

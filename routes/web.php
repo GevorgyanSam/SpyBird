@@ -53,6 +53,7 @@ Route::middleware(['auth', 'lockscreen'])->group(function () {
         Route::post('/check-authentication', 'checkAuthentication')->name('check-authentication')->withoutMiddleware('lockscreen');
         Route::post('/get-relationship/{id}', 'getRelationship')->name('get-relationship');
         Route::post('/send-message/{id}', 'sendMessage')->name('send-message');
+        Route::post('/get-chats', 'getChats')->name('get-chats');
 
     });
 

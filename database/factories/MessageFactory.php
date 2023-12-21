@@ -13,6 +13,7 @@ class MessageFactory extends Factory
             'room_id' => fake()->numberBetween(1, 100),
             'message' => fake()->sentence(fake()->numberBetween(1, 50)),
             'liked' => fake()->numberBetween(0, 1),
+            'seen' => fake()->numberBetween(0, 1),
             'status' => fake()->numberBetween(0, 1),
             'created_at' => fake()->dateTime(),
             'updated_at' => fake()->dateTime()
