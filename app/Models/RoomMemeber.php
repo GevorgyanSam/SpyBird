@@ -16,7 +16,7 @@ class RoomMemeber extends Model
     protected $fillable = [
         'user_id',
         'room_id',
-        'updated_at'
+        'created_at'
     ];
     public $incrementing = true;
     public $timestamps = false;

@@ -172,6 +172,9 @@ function dropdownItem() {
         let id = $(this).parent(".dropdownMenu").data("user-id");
         let job = $(this).data("job");
         switch (job) {
+            case "sendMessage":
+                sendMessage(id);
+                break;
             case "sendFriendRequest":
                 sendFriendRequest(id);
                 break;
@@ -217,6 +220,8 @@ function getRelationship(id) {
 
 function setDropdownMenu(data, id) {
     let dropdownMenu = $(`.dropdownMenu[data-user-id=${id}]`);
+    let message =
+        '<div class="dropdownItem" data-job="sendMessage">send message</div>';
     let friend = "";
     switch (data.friend) {
         case "request":
@@ -240,13 +245,39 @@ function setDropdownMenu(data, id) {
             break;
     }
     let content = `
-        <div class="dropdownItem">send message</div>
+        ${message}
         ${friend}
         <div class="line"></div>
         ${blocked}
     `;
     dropdownMenu.html(content);
     dropdownItem();
+}
+
+// ---- ------ -- --- ------- -------
+// This Method Is For Sending Message
+// ---- ------ -- --- ------- -------
+
+function sendMessage(id) {
+    $.ajax({
+        url: `/send-message/${id}`,
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        success: function (response) {
+            if (response.room_id) {
+                let id = response.room_id;
+                sessionStorage.removeItem("current-page");
+                location.href = `/room/${id}`;
+            } else {
+                location.reload();
+            }
+        },
+        error: function (error) {
+            location.reload();
+        },
+    });
 }
 
 // ---- ------ -- --- ------- ------ ------- -- ----- ----
