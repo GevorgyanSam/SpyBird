@@ -133,13 +133,13 @@ class HomeController extends Controller
     public function getChats()
     {
         $chats = RoomMemeber::select(
-            'room_members.user_id',
             'room_members.room_id',
             'users.name',
             'users.activity',
             'users.avatar',
             'login_info.status',
             'messages.message',
+            'messages.created_at',
             DB::raw('(SELECT COUNT(*) FROM messages WHERE messages.room_id = room_members.room_id AND messages.seen = 0 AND messages.user_id != ' . auth()->user()->id . ') as unread_message_count'))
             ->join('users', 'room_members.user_id', '=', 'users.id')
             ->join(DB::raw('(SELECT user_id, MAX(created_at) AS latest_login FROM login_info GROUP BY user_id) as latest_login_info'), function ($join) {
@@ -148,7 +148,7 @@ class HomeController extends Controller
             ->join('login_info', function ($join) {
                 $join->on('users.id', '=', 'login_info.user_id')->on('latest_login_info.latest_login', '=', 'login_info.created_at');
             })
-            ->join(DB::raw('(SELECT room_id, message, ROW_NUMBER() OVER (PARTITION BY room_id ORDER BY created_at DESC) AS row_num FROM messages WHERE status = 1) as messages'), function ($join) {
+            ->join(DB::raw('(SELECT room_id, message, created_at, ROW_NUMBER() OVER (PARTITION BY room_id ORDER BY created_at DESC) AS row_num FROM messages WHERE status = 1) as messages'), function ($join) {
                 $join->on('room_members.room_id', '=', 'messages.room_id')->where('messages.row_num', '=', 1);
             })
             ->whereIn('room_members.room_id', function ($query) {
@@ -167,11 +167,13 @@ class HomeController extends Controller
             ->where('room_members.user_id', '!=', auth()->user()->id)
             ->where('users.status', '=', 1)
             ->where('users.invisible', '=', 0)
+            ->orderByDesc('unread_message_count')
+            ->orderByDesc('messages.created_at')
             ->get();
         if (!$chats->count()) {
             return response()->json(['empty' => true], 200);
         }
-        return response()->json(['chats' => $chats], 200);
+        return response()->json(['data' => $chats], 200);
     }
 
 }

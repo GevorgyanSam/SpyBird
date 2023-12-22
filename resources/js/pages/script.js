@@ -22,6 +22,10 @@ import * as NotificationsComponent from "./components/notifications";
 // Import Friends Methods From Components.
 // ------ ------- ------- ---- -----------
 import * as FriendsComponent from "./components/friends";
+// ------ ---- ------- ---- -----------
+// Import Chat Methods From Components.
+// ------ ---- ------- ---- -----------
+import * as ChatComponent from "./components/chat";
 
 // ------- -------- -------
 // Execute Settings Methods
@@ -111,6 +115,8 @@ export function getContent(page) {
         NotificationsComponent.getNotifications();
     } else if (page === "friends") {
         FriendsComponent.getFriends();
+    } else if (page === 'chat') {
+        ChatComponent.getChats();
     }
 }
 
