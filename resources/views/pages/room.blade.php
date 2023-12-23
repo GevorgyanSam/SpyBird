@@ -102,9 +102,9 @@
                 <div class="chatParent">
                     <h3>Chat</h3>
                     <div>
-                        <x-form method="post">
+                        <x-form id="searchChats" method="post" action="{{ route('search-chats') }}">
                             <div class="formItem">
-                                <input type="text" placeholder="Search Messages">
+                                <input type="text" placeholder="Search Messages" name="search" autocomplete="off">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </div>
                         </x-form>

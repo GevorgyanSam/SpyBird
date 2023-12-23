@@ -110,3 +110,59 @@ function showChats() {
     empty.removeClass("active");
     content.show();
 }
+
+// ---- ------ -- --- -------- --- ---- ----
+// This Method Is For Clearing The Chat Page
+// ---- ------ -- --- -------- --- ---- ----
+
+function clearChats() {
+    const parent = $(".chatParent .contentParent");
+    parent.empty();
+}
+
+// ---- ------ -- --- --------- --------
+// This Method Is For Searching Contacts
+// ---- ------ -- --- --------- --------
+
+export function searchChats() {
+    const search = $("form#searchChats");
+    const inp = search.find("input[name=search]");
+
+    search.on("submit", (e) => {
+        e.preventDefault();
+    });
+
+    inp.on("blur", () => {
+        if (!inp.val()) {
+            getContent("chat");
+        }
+    });
+
+    inp.on("input", (e) => {
+        e.preventDefault();
+
+        if (!e.target.value.length) {
+            clearChats();
+            return false;
+        }
+
+        $.ajax({
+            url: search.attr("action"),
+            method: search.attr("method"),
+            data: search.serialize(),
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            success: function (response) {
+                if (response.data) {
+                    setChats(response.data);
+                } else if (response.empty) {
+                    clearChats();
+                }
+            },
+            error: function (error) {
+                location.reload();
+            },
+        });
+    });
+}

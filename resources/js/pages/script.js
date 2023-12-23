@@ -48,6 +48,12 @@ FriendsComponent.searchFriends();
 FriendsComponent.getNewFriends();
 setInterval(FriendsComponent.getNewFriends, 3000);
 
+// ------- ---- -------
+// Execute Chat Methods
+// ------- ---- -------
+
+ChatComponent.searchChats();
+
 // ------- ------------- -------
 // Execute Notifications Methods
 // ------- ------------- -------
@@ -103,8 +109,8 @@ changePages();
 export function getContent(page) {
     if (page === "search") {
         let search = $(".searchParent .switchParent > div.active").data("name");
-        let value = $("form#searchContacts input[name=search]").val();
-        if (!value) {
+        let searchInput = $("form#searchContacts input[name=search]").val();
+        if (!searchInput) {
             if (search === "familiar") {
                 SearchComponent.getSuggestedContacts();
             } else if (search === "nearby") {
@@ -114,9 +120,15 @@ export function getContent(page) {
     } else if (page === "notifications") {
         NotificationsComponent.getNotifications();
     } else if (page === "friends") {
-        FriendsComponent.getFriends();
-    } else if (page === 'chat') {
-        ChatComponent.getChats();
+        let friendsInput = $("form#searchFriends input[name=search]").val();
+        if (!friendsInput) {
+            FriendsComponent.getFriends();
+        }
+    } else if (page === "chat") {
+        let chatInput = $("form#searchChats input[name=search]").val();
+        if (!chatInput) {
+            ChatComponent.getChats();
+        }
     }
 }
 
