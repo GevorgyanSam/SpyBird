@@ -43,7 +43,7 @@ function setChats(data) {
     sessionStorage.setItem("chats", JSON.stringify(data));
     const parent = $(".chatParent .contentParent");
     parent.empty();
-    let content = transformFriendsDataToHtml(data);
+    let content = transformChatDataToHtml(data);
     parent.html(content);
 }
 
@@ -51,7 +51,7 @@ function setChats(data) {
 // This Method Is Transforming Data To Html
 // ---- ------ -- ------------ ---- -- ----
 
-function transformFriendsDataToHtml(data) {
+function transformChatDataToHtml(data) {
     let content = "";
     data.forEach((user) => {
         let avatar = user.avatar
@@ -166,3 +166,65 @@ export function searchChats() {
         });
     });
 }
+
+// ---- ------ -- --- ---------- ---- ----- ------
+// This Method Is For Monitoring Chat Every Second
+// ---- ------ -- --- ---------- ---- ----- ------
+
+export function monitorChats() {
+    let page = sessionStorage.getItem("current-page");
+    let input = $("form#searchChats input[name=search]");
+    if (input.val() || input.is(":focus")) {
+        return false;
+    }
+    checkNewChats();
+    if (page === "chat") {
+        getNewChats();
+    }
+}
+
+// ---- ------ -- --- ------- --- -----
+// This Method Is For Getting New Chats
+// ---- ------ -- --- ------- --- -----
+
+function getNewChats() {
+    $.ajax({
+        url: "/get-chats",
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        success: function (response) {
+            if (response.data) {
+                showChats();
+                setNewChats(response.data);
+            } else if (response.empty) {
+                hideChats();
+            }
+        },
+        error: function (error) {
+            location.reload();
+        },
+    });
+}
+
+// ---- ------ -- --- ------- -----
+// This Method Is For Setting Chats
+// ---- ------ -- --- ------- -----
+
+function setNewChats(data) {
+    let oldData = sessionStorage.getItem("chats");
+    let newData = JSON.stringify(data);
+    if (oldData !== newData) {
+        sessionStorage.setItem("chats", newData);
+        let parent = $(".chatParent .contentParent");
+        let content = transformChatDataToHtml(data);
+        parent.html(content);
+    }
+}
+
+// ---- ------ -- --- ------- ----- -- --- --------
+// This Method Is For Getting Count Of New Messages
+// ---- ------ -- --- ------- ----- -- --- --------
+
+function checkNewChats() {}

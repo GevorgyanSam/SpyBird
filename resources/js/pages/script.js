@@ -53,6 +53,8 @@ setInterval(FriendsComponent.getNewFriends, 3000);
 // ------- ---- -------
 
 ChatComponent.searchChats();
+ChatComponent.monitorChats();
+setInterval(ChatComponent.monitorChats, 1000);
 
 // ------- ------------- -------
 // Execute Notifications Methods
