@@ -227,4 +227,54 @@ function setNewChats(data) {
 // This Method Is For Getting Count Of New Messages
 // ---- ------ -- --- ------- ----- -- --- --------
 
-function checkNewChats() {}
+function checkNewChats() {
+    $.ajax({
+        url: "/get-chats",
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        success: function (response) {
+            if (response.data) {
+                let count = filterCount(response.data);
+                count ? showChatCount(count) : hideChatCount();
+            } else {
+                hideChatCount();
+            }
+        },
+        error: function (error) {
+            location.reload();
+        },
+    });
+}
+
+// ---- ------ -- -------- -- ------ ----- ---- --------
+// This Method Is Designed To Filter Count From Messages
+// ---- ------ -- -------- -- ------ ----- ---- --------
+
+function filterCount(data) {
+    let count = data.filter((item) => item.unread_message_count > 0).length;
+    return count;
+}
+
+// ---- ------ -- --- ------- --- ------------- -----
+// This Method Is For Showing New Notifications Count
+// ---- ------ -- --- ------- --- ------------- -----
+
+function showChatCount(int) {
+    let count = int > 9 ? "9+" : int;
+    let element = $("nav li[data-name=chat] i");
+    let content = `<div class="count">${count}</div>`;
+    if (element.html() != content) {
+        element.html(content);
+    }
+}
+
+// ---- ------ -- --- ------ ------------- -----
+// This Method Is For Hiding Notifications Count
+// ---- ------ -- --- ------ ------------- -----
+
+function hideChatCount() {
+    let element = $("nav li[data-name=chat] i");
+    element.empty();
+}
