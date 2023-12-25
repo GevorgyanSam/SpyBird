@@ -1,11 +1,3 @@
-// ------ ---- ------------ ---- -----------
-// Import Push Notification From Components.
-// ------ ---- ------------ ---- -----------
-import notify from "../components/push-notifications";
-// ------ ------- ------ ---- -----------
-// Import Loading Method From Components.
-// ------ ------- ------ ---- -----------
-import loading from "../components/loading";
 // ------ -------- ------- ---- -----------
 // Import Settings Methods From Components.
 // ------ -------- ------- ---- -----------
@@ -53,8 +45,8 @@ setInterval(FriendsComponent.getNewFriends, 3000);
 // ------- ---- -------
 
 ChatComponent.searchChats();
-ChatComponent.monitorChats();
-setInterval(ChatComponent.monitorChats, 1000);
+ChatComponent.getNewChats();
+setInterval(ChatComponent.getNewChats, 1000);
 
 // ------- ------------- -------
 // Execute Notifications Methods

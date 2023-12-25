@@ -167,27 +167,16 @@ export function searchChats() {
     });
 }
 
-// ---- ------ -- --- ---------- ---- ----- ------
-// This Method Is For Monitoring Chat Every Second
-// ---- ------ -- --- ---------- ---- ----- ------
+// ---- ------ -- --- ------- --- -----
+// This Method Is For Getting New Chats
+// ---- ------ -- --- ------- --- -----
 
-export function monitorChats() {
+export function getNewChats() {
     let page = sessionStorage.getItem("current-page");
     let input = $("form#searchChats input[name=search]");
     if (input.val() || input.is(":focus")) {
         return false;
     }
-    checkNewChats();
-    if (page === "chat") {
-        getNewChats();
-    }
-}
-
-// ---- ------ -- --- ------- --- -----
-// This Method Is For Getting New Chats
-// ---- ------ -- --- ------- --- -----
-
-function getNewChats() {
     $.ajax({
         url: "/get-chats",
         method: "POST",
@@ -196,10 +185,16 @@ function getNewChats() {
         },
         success: function (response) {
             if (response.data) {
-                showChats();
-                setNewChats(response.data);
-            } else if (response.empty) {
+                let count = filterCount(response.data);
+                count ? showChatCount(count) : hideChatCount();
+                if (page === "chat") {
+                    showChats();
+                    setNewChats(response.data);
+                }
+            } else if (response.empty && page === "chat") {
                 hideChats();
+            } else {
+                hideChatCount();
             }
         },
         error: function (error) {
@@ -221,31 +216,6 @@ function setNewChats(data) {
         let content = transformChatDataToHtml(data);
         parent.html(content);
     }
-}
-
-// ---- ------ -- --- ------- ----- -- --- --------
-// This Method Is For Getting Count Of New Messages
-// ---- ------ -- --- ------- ----- -- --- --------
-
-function checkNewChats() {
-    $.ajax({
-        url: "/get-chats",
-        method: "POST",
-        headers: {
-            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-        },
-        success: function (response) {
-            if (response.data) {
-                let count = filterCount(response.data);
-                count ? showChatCount(count) : hideChatCount();
-            } else {
-                hideChatCount();
-            }
-        },
-        error: function (error) {
-            location.reload();
-        },
-    });
 }
 
 // ---- ------ -- -------- -- ------ ----- ---- --------
