@@ -427,14 +427,18 @@
                         </div>
                         <div class="profile">
                             <div>
-                                <div class="avatar active">
-                                    <img src="https://imgs.search.brave.com/gQWYzwf_Qnt-Xf0GFD7hKey-F6mXq4jTdtBPhd5u8ew/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9mcmVl/cG5naW1nLmNvbS9z/dGF0aWMvaW1nL3lv/dXR1YmUucG5n">
+                                <div class="avatar {{ $client->active }}">
+                                    @if($client->avatar)
+                                        <img src="{{ $client->avatar }}">
+                                    @else
+                                        {{ $client->name[0] }}
+                                    @endif
                                 </div>
                             </div>
                             <div>
                                 <div class="info">
-                                    <h2>william pearson</h2>
-                                    <h3>online</h3>
+                                    <h2>{{ $client->name }}</h2>
+                                    <h3>{{ $client->status }}</h3>
                                 </div>
                             </div>
                         </div>

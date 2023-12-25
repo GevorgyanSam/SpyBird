@@ -9,6 +9,7 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\FriendsController;
+use App\Http\Controllers\RoomController;
 use App\Http\Controllers\TwoFactorAuthenticationController;
 
 // ----- ------ --- --- ----- -----
@@ -49,12 +50,17 @@ Route::middleware(['auth', 'lockscreen'])->group(function () {
     Route::controller(HomeController::class)->group(function () {
 
         Route::get('/', 'index')->name('index');
-        Route::get('/room/{id}', 'room')->name('room');
         Route::post('/check-authentication', 'checkAuthentication')->name('check-authentication')->withoutMiddleware('lockscreen');
         Route::post('/get-relationship/{id}', 'getRelationship')->name('get-relationship');
         Route::post('/send-message/{id}', 'sendMessage')->name('send-message');
         Route::post('/get-chats', 'getChats')->name('get-chats');
         Route::post('/search-chats', 'searchChats')->name('search-chats');
+
+    });
+
+    Route::controller(RoomController::class)->group(function () {
+
+        Route::get('/room/{id}', 'room')->name('room');
 
     });
 

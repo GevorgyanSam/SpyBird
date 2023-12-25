@@ -26,16 +26,6 @@ class HomeController extends Controller
         return view('pages.index', ['devices' => $devices]);
     }
 
-    // ---- ------ -- --- ---- ---- ----
-    // This Method Is For Chat Page View
-    // ---- ------ -- --- ---- ---- ----
-
-    public function room(int $id, GetLoginHistoryService $getLoginHistoryService)
-    {
-        $devices = $getLoginHistoryService->handle();
-        return view('pages.room', ['devices' => $devices]);
-    }
-
     // ---- ------ -- --- -------- --------------
     // This Method Is For Checking Authentication
     // ---- ------ -- --- -------- --------------

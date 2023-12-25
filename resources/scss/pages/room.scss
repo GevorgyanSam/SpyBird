@@ -136,6 +136,7 @@ main {
                             font-weight: 400;
                             font-family: var(--font-family-1);
                             color: var(--gray);
+                            text-transform: capitalize;
                         }
                     }
                 }
@@ -232,6 +233,10 @@ main {
                     display: grid;
                     place-items: center;
                     display: none;
+
+                    &.active {
+                        display: grid;
+                    }
 
                     .box {
                         text-align: center;
