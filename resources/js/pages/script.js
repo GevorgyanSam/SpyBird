@@ -143,7 +143,11 @@ export function toggleDropdown() {
         }
         closeDropdownMenu();
         let id = dropdownMenu.data("user-id");
-        getRelationship(id);
+        if ($(this).hasClass("personSettings")) {
+            asideDropdown(id);
+        } else if ($(this).hasClass("dropdownParent")) {
+            roomDropdown(id);
+        }
         dropdownMenu.addClass("active");
     });
 
@@ -202,6 +206,9 @@ function dropdownItem() {
             case "blockUser":
                 blockUser(id);
                 break;
+            case "deleteChat":
+                deleteChat(id);
+                break;
         }
     });
 }
@@ -210,15 +217,35 @@ function dropdownItem() {
 // This Method Is For Getting Relationship Between Users
 // ---- ------ -- --- ------- ------------ ------- -----
 
-function getRelationship(id) {
+function asideDropdown(id) {
     $.ajax({
-        url: `/get-relationship/${id}`,
+        url: `/get-aside-dropdown-data/${id}`,
         method: "POST",
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
         success: function (response) {
-            setDropdownMenu(response, id);
+            setAsideDropdownMenu(response, id);
+        },
+        error: function (error) {
+            location.reload();
+        },
+    });
+}
+
+// ---- ------ -- --- ------- ------------ ------- -----
+// This Method Is For Getting Relationship Between Users
+// ---- ------ -- --- ------- ------------ ------- -----
+
+function roomDropdown(id) {
+    $.ajax({
+        url: `/get-room-dropdown-data/${id}`,
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        success: function (response) {
+            setRoomDropdownMenu(response, id);
         },
         error: function (error) {
             location.reload();
@@ -230,7 +257,7 @@ function getRelationship(id) {
 // This Method Is For Setting Data In The Dropdown Menu
 // ---- ------ -- --- ------- ---- -- --- -------- ----
 
-function setDropdownMenu(data, id) {
+function setAsideDropdownMenu(data, id) {
     let dropdownMenu = $(`.dropdownMenu[data-user-id=${id}]`);
     let message =
         '<div class="dropdownItem" data-job="sendMessage">send message</div>';
@@ -259,6 +286,34 @@ function setDropdownMenu(data, id) {
     let content = `
         ${message}
         ${friend}
+        <div class="line"></div>
+        ${blocked}
+    `;
+    dropdownMenu.html(content);
+    dropdownItem();
+}
+
+// ---- ------ -- --- ------- ---- -- --- -------- ----
+// This Method Is For Setting Data In The Dropdown Menu
+// ---- ------ -- --- ------- ---- -- --- -------- ----
+
+function setRoomDropdownMenu(data, id) {
+    let dropdownMenu = $(`.dropdownMenu[data-user-id=${id}]`);
+    let deleteChat =
+        '<div class="dropdownItem" data-job="deleteChat">delete chat</div>';
+    let blocked = "";
+    switch (data.blocked) {
+        case "block":
+            blocked =
+                '<div class="dropdownItem danger" data-job="blockUser">block user</div>';
+            break;
+        case "unblock":
+            blocked =
+                '<div class="dropdownItem danger" data-job="unblockUser">unblock user</div>';
+            break;
+    }
+    let content = `
+        ${deleteChat}
         <div class="line"></div>
         ${blocked}
     `;
@@ -358,6 +413,28 @@ function blockUser(id) {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
         success: function (response) {},
+        error: function (error) {
+            location.reload();
+        },
+    });
+}
+
+// ---- ------ -- -------- -- ------ ----
+// This Method Is Designed To Delete Chat
+// ---- ------ -- -------- -- ------ ----
+
+function deleteChat(id) {
+    $.ajax({
+        url: `/delete-chat/${id}`,
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        success: function (response) {
+            if (response.success) {
+                location.href = "/";
+            }
+        },
         error: function (error) {
             location.reload();
         },

@@ -6,6 +6,7 @@ use App\Models\BlockedUser;
 use App\Models\Room;
 use App\Models\RoomMemeber;
 use App\Models\User;
+use App\Services\Block\GetBlockedRelationshipService;
 use App\Services\Settings\GetLoginHistoryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -59,6 +60,72 @@ class RoomController extends Controller
         ];
         $devices = $getLoginHistoryService->handle();
         return view('pages.room', ['devices' => $devices, 'client' => $client]);
+    }
+
+    // ---- ------ -- --- ------- ---- -------- ----
+    // This Method Is For Getting Room Dropdown Data
+    // ---- ------ -- --- ------- ---- -------- ----
+
+    public function getRoomDropdownData(int $id)
+    {
+        $user = User::where('id', $id)
+            ->where('id', '!=', auth()->user()->id)
+            ->where('status', 1)
+            ->where('invisible', 0)
+            ->count();
+        if (!$user) {
+            return response()->json(['error' => true], 404);
+        }
+        $blocked = BlockedUser::where('user_id', $id)
+            ->where('blocked_user_id', auth()->user()->id)
+            ->where('status', 1)
+            ->count();
+        if ($blocked) {
+            return response()->json(['error' => true], 404);
+        }
+        $response = (object) [];
+        $blockedRelationshipService = new GetBlockedRelationshipService();
+        $response->blocked = $blockedRelationshipService->handle($id);
+        return response()->json($response, 200);
+    }
+
+    // ---- ------ -- -------- -- ------ ----
+    // This Method Is Designed To Delete Chat
+    // ---- ------ -- -------- -- ------ ----
+
+    public function deleteChat(int $id)
+    {
+        $user = User::where('id', $id)
+            ->where('id', '!=', auth()->user()->id)
+            ->where('status', 1)
+            ->where('invisible', 0)
+            ->count();
+        if (!$user) {
+            return response()->json(['error' => true], 404);
+        }
+        $blocked = BlockedUser::where('user_id', $id)
+            ->where('blocked_user_id', auth()->user()->id)
+            ->where('status', 1)
+            ->count();
+        if ($blocked) {
+            return response()->json(['error' => true], 404);
+        }
+        $room = RoomMemeber::from('room_members as rm1')
+            ->join('room_members as rm2', 'rm1.room_id', '=', 'rm2.room_id')
+            ->where('rm1.user_id', '=', auth()->user()->id)
+            ->where('rm2.user_id', '=', $id)
+            ->select('rm1.room_id')
+            ->first();
+        $count = Room::where('id', $room->room_id)
+            ->where('status', 1)
+            ->update([
+                'status' => 0,
+                'updated_at' => now()
+            ]);
+        if (!$count) {
+            return response()->json(['error' => true], 404);
+        }
+        return response()->json(['success' => true], 200);
     }
 
 }

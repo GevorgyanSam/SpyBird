@@ -35,11 +35,11 @@ class HomeController extends Controller
         return $service->handle($request);
     }
 
-    // ---- ------ -- --- ------- ------------ ------- -----
-    // This Method Is For Getting Relationship Between Users
-    // ---- ------ -- --- ------- ------------ ------- -----
+    // ---- ------ -- --- ------- ----- -------- ----
+    // This Method Is For Getting Aside Dropdown Data
+    // ---- ------ -- --- ------- ----- -------- ----
 
-    public function getRelationship(int $id)
+    public function getAsideDropdownData(int $id)
     {
         $user = User::where('id', $id)
             ->where('id', '!=', auth()->user()->id)

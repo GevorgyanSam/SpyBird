@@ -445,11 +445,7 @@
                         <div class="settings">
                             <div class="dropdownParent">
                                 <i class="fa-solid fa-ellipsis"></i>
-                                <div class="dropdownMenu">
-                                    <div class="dropdownItem">delete chat</div>
-                                    <div class="line"></div>
-                                    <div class="dropdownItem danger">block user</div>
-                                </div>
+                                <div class="dropdownMenu" data-user-id="{{ $client->id }}"></div>
                             </div>
                         </div>
                     </div>

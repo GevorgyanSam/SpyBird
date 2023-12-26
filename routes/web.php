@@ -51,7 +51,7 @@ Route::middleware(['auth', 'lockscreen'])->group(function () {
 
         Route::get('/', 'index')->name('index');
         Route::post('/check-authentication', 'checkAuthentication')->name('check-authentication')->withoutMiddleware('lockscreen');
-        Route::post('/get-relationship/{id}', 'getRelationship')->name('get-relationship');
+        Route::post('/get-aside-dropdown-data/{id}', 'getAsideDropdownData')->name('get-aside-dropdown-data');
         Route::post('/send-message/{id}', 'sendMessage')->name('send-message');
         Route::post('/get-chats', 'getChats')->name('get-chats');
         Route::post('/search-chats', 'searchChats')->name('search-chats');
@@ -61,6 +61,8 @@ Route::middleware(['auth', 'lockscreen'])->group(function () {
     Route::controller(RoomController::class)->group(function () {
 
         Route::get('/room/{id}', 'room')->name('room');
+        Route::post('/get-room-dropdown-data/{id}', 'getRoomDropdownData')->name('get-room-dropdown-data');
+        Route::post('/delete-chat/{id}', 'deleteChat')->name('delete-chat');
 
     });
 
