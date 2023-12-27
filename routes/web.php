@@ -63,6 +63,7 @@ Route::middleware(['auth', 'lockscreen'])->group(function () {
         Route::get('/room/{id}', 'room')->name('room');
         Route::post('/get-room-dropdown-data/{id}', 'getRoomDropdownData')->name('get-room-dropdown-data');
         Route::post('/delete-chat/{id}', 'deleteChat')->name('delete-chat');
+        Route::post('/get-new-messages/{id}', 'getNewMessages')->name('get-new-messages');
 
     });
 

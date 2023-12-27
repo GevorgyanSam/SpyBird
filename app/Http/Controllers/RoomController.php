@@ -59,7 +59,7 @@ class RoomController extends Controller
             'status' => $user->activity ? ($user->latestLoginInfo->status ? 'online' : Carbon::parse($user->latestLoginInfo->updated_at)->format('d M H:i')) : 'hidden status',
         ];
         $devices = $getLoginHistoryService->handle();
-        return view('pages.room', ['devices' => $devices, 'client' => $client]);
+        return view('pages.room', ['devices' => $devices, 'client' => $client, 'room' => $id]);
     }
 
     // ---- ------ -- --- ------- ---- -------- ----
@@ -126,6 +126,53 @@ class RoomController extends Controller
             return response()->json(['error' => true], 404);
         }
         return response()->json(['success' => true], 200);
+    }
+
+    // ---- ------ -- --- ------- --- --------
+    // This Method Is For Getting New Messages
+    // ---- ------ -- --- ------- --- --------
+
+    public function getNewMessages(int $id)
+    {
+        $room = Room::join('room_members', 'rooms.id', '=', 'room_members.room_id')
+            ->where('rooms.id', $id)
+            ->where('rooms.status', 1)
+            ->where('room_members.user_id', auth()->user()->id)
+            ->count();
+        if (!$room) {
+            return response()->json(['redirect' => true], 403);
+        }
+        $member = RoomMemeber::select('user_id')
+            ->where('room_id', $id)
+            ->where('user_id', '!=', auth()->user()->id)
+            ->get();
+        if (!$member->count()) {
+            return response()->json(['redirect' => true], 404);
+        }
+        $user_id = $member[0]->user_id;
+        $user = User::with('latestLoginInfo')
+            ->where('id', $user_id)
+            ->where('status', 1)
+            ->where('invisible', 0)
+            ->first();
+        if (!$user) {
+            return response()->json(['redirect' => true], 404);
+        }
+        $blocked = BlockedUser::where('user_id', $user->id)
+            ->where('blocked_user_id', auth()->user()->id)
+            ->where('status', 1)
+            ->count();
+        if ($blocked) {
+            return response()->json(['redirect' => true], 404);
+        }
+        $client = (object) [
+            'id' => $user->id,
+            'name' => $user->name,
+            'avatar' => $user->avatar ? asset('storage/' . $user->avatar) : null,
+            'active' => $user->activity && $user->latestLoginInfo->status ? 'active' : null,
+            'status' => $user->activity ? ($user->latestLoginInfo->status ? 'online' : Carbon::parse($user->latestLoginInfo->updated_at)->format('d M H:i')) : 'hidden status',
+        ];
+        return response()->json(['client' => $client], 200);
     }
 
 }

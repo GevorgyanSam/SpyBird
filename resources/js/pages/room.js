@@ -1,3 +1,61 @@
+// ---- ------ -- --- ------- --- --------
+// This Method Is For Getting New Messages
+// ---- ------ -- --- ------- --- --------
+
+function getNewMessages() {
+    let room = $('meta[name="room-id"]').attr("content");
+    $.ajax({
+        url: `/get-new-messages/${room}`,
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        success: function (response) {
+            if (response.client) {
+                handleClientData(response.client);
+            }
+        },
+        error: function (error) {
+            if (error.responseJSON.redirect) {
+                location.href = "/";
+            }
+        },
+    });
+}
+
+getNewMessages();
+setInterval(getNewMessages, 1000);
+
+// ---- ------ -- --- -------- ------ ----
+// This Method Is For Handling Client Data
+// ---- ------ -- --- -------- ------ ----
+
+function handleClientData(client) {
+    let oldData = sessionStorage.getItem(`client-${client.id}`);
+    let newData = JSON.stringify(client);
+    if (oldData !== newData) {
+        sessionStorage.setItem(`client-${client.id}`, newData);
+        let profile = $(".mainParent .roomParent .header .profile");
+        let avatar = client.avatar
+            ? `<img src="${client.avatar}">`
+            : client.name[0];
+        let content = `
+            <div>
+                <div class="avatar ${client.active}">
+                    ${avatar}
+                </div>
+            </div>
+            <div>
+                <div class="info">
+                    <h2>${client.name}</h2>
+                    <h3>${client.status}</h3>
+                </div>
+            </div>
+        `;
+        profile.html(content);
+    }
+}
+
 // ---- ------ -- --- --------- ----
 // This Method Is For Scrolling Down
 // ---- ------ -- --- --------- ----
