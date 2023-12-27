@@ -56,7 +56,14 @@ getMessages();
 function setMessages(messages) {
     let area = $(".mainParent .roomParent .main .chatArea");
     let content = "";
+    let date = transformMessageDate(messages[0]);
+    content += transformMessageDateToHtml(date);
     messages.forEach((message) => {
+        let newDate = transformMessageDate(message);
+        if (date != newDate) {
+            date = newDate;
+            content += transformMessageDateToHtml(date);
+        }
         content += transformMessageDataToHtml(message);
     });
     area.html(content);
@@ -88,6 +95,26 @@ function transformMessageDataToHtml(message) {
             <div class="content-date">${content}</div>
         </div>
     `;
+}
+
+// ---- ------ -- --- ------------ ------- ----
+// This Method Is For Transforming Message Date
+// ---- ------ -- --- ------------ ------- ----
+
+function transformMessageDate(message) {
+    let date = new Date(message.created_at);
+    let day = date.getDate();
+    let month = date.toLocaleString("default", { month: "short" });
+    let content = month + " " + day;
+    return content;
+}
+
+// ---- ------ -- --- ------------ ------- ---- -- ----
+// This Method Is For Transforming Message Date To Html
+// ---- ------ -- --- ------------ ------- ---- -- ----
+
+function transformMessageDateToHtml(content) {
+    return `<div class="message-date">${content}</div>`;
 }
 
 // ---- ------ -- --- ------- --- --------
