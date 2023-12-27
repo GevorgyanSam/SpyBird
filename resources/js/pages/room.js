@@ -1,3 +1,95 @@
+// ---- ------ -- --- ------ --------
+// This Method Is For Hiding Messages
+// ---- ------ -- --- ------ --------
+
+function hideMessages() {
+    let empty = $(".mainParent .roomParent .main .emptyParent");
+    let area = $(".mainParent .roomParent .main .chatArea");
+    area.hide();
+    empty.addClass("active");
+}
+
+// ---- ------ -- --- ------- --------
+// This Method Is For Showing Messages
+// ---- ------ -- --- ------- --------
+
+function showMessages() {
+    let empty = $(".mainParent .roomParent .main .emptyParent");
+    let area = $(".mainParent .roomParent .main .chatArea");
+    empty.removeClass("active");
+    area.show();
+}
+
+// ---- ------ -- --- ------- --------
+// This Method Is For Getting Messages
+// ---- ------ -- --- ------- --------
+
+function getMessages() {
+    let room = $('meta[name="room-id"]').attr("content");
+    $.ajax({
+        url: `/get-messages/${room}`,
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        success: function (response) {
+            if (response.empty) {
+                hideMessages();
+            } else if (response.messages) {
+                showMessages();
+                setMessages(response.messages);
+                scrollAndFocus();
+            }
+        },
+        error: function (error) {
+            location.reload();
+        },
+    });
+}
+
+getMessages();
+
+// ---- ------ -- -------- -- ------- --------
+// This Method Is Designed To Display Messages
+// ---- ------ -- -------- -- ------- --------
+
+function setMessages(messages) {
+    let area = $(".mainParent .roomParent .main .chatArea");
+    let content = "";
+    messages.forEach((message) => {
+        content += transformMessageDataToHtml(message);
+    });
+    area.html(content);
+}
+
+// ---- ------ -- --- ------------ ------- ---- -- ----
+// This Method Is For Transforming Message Data To Html
+// ---- ------ -- --- ------------ ------- ---- -- ----
+
+function transformMessageDataToHtml(message) {
+    let user_id = $('meta[name="user-id"]').attr("content");
+    let client_id = $('meta[name="client-id"]').attr("content");
+    let date = message.created_at.substr(-8, 5);
+    let liked = message.liked
+        ? `<div class="liked"><i class="fa-solid fa-heart"></i></div>`
+        : "";
+    let position = "";
+    let content = "";
+    if (message.user_id == user_id) {
+        position = "message-right";
+        content = liked + date;
+    } else if (message.user_id == client_id) {
+        position = "message-left";
+        content = date + liked;
+    }
+    return `
+        <div class="message ${position}">
+            <div class="content">${message.message}</div>
+            <div class="content-date">${content}</div>
+        </div>
+    `;
+}
+
 // ---- ------ -- --- ------- --- --------
 // This Method Is For Getting New Messages
 // ---- ------ -- --- ------- --- --------

@@ -1,5 +1,6 @@
 <x-app title='Room'>
     <x-slot:styles>
+        <meta name="user-id" content="{{ auth()->user()->id }}">
         <meta name="client-id" content="{{ $client->id }}">
         <meta name="room-id" content="{{ $room }}">
         <link rel="stylesheet" href="{{ asset('css/pages/room.css') }}">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BlockedUser;
+use App\Models\Message;
 use App\Models\Room;
 use App\Models\RoomMemeber;
 use App\Models\User;
@@ -126,6 +127,22 @@ class RoomController extends Controller
             return response()->json(['error' => true], 404);
         }
         return response()->json(['success' => true], 200);
+    }
+
+    // ---- ------ -- --- ------- --------
+    // This Method Is For Getting Messages
+    // ---- ------ -- --- ------- --------
+
+    public function getMessages(int $id)
+    {
+        $messages = Message::where('room_id', $id)
+            ->where('status', 1)
+            ->orderBy('id')
+            ->get();
+        if (!$messages->count()) {
+            return response()->json(['empty' => true], 200);
+        }
+        return response()->json(['messages' => $messages], 200);
     }
 
     // ---- ------ -- --- ------- --- --------
