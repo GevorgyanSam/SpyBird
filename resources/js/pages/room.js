@@ -133,6 +133,12 @@ function getNewMessages() {
             if (response.client) {
                 handleClientData(response.client);
             }
+            if (response.empty) {
+                hideMessages();
+            }
+            if (response.messages) {
+                //
+            }
         },
         error: function (error) {
             if (error.responseJSON.redirect) {

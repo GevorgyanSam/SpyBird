@@ -52,6 +52,14 @@ class RoomController extends Controller
         if ($blocked) {
             return redirect()->route('index');
         }
+        Message::where('status', 1)
+            ->where('seen', 0)
+            ->where('room_id', $id)
+            ->where('user_id', '!=', auth()->user()->id)
+            ->update([
+                'seen' => 1,
+                'updated_at' => now()
+            ]);
         $client = (object) [
             'id' => $user->id,
             'name' => $user->name,
@@ -189,7 +197,14 @@ class RoomController extends Controller
             'active' => $user->activity && $user->latestLoginInfo->status ? 'active' : null,
             'status' => $user->activity ? ($user->latestLoginInfo->status ? 'online' : Carbon::parse($user->latestLoginInfo->updated_at)->format('d M H:i')) : 'hidden status',
         ];
-        return response()->json(['client' => $client], 200);
+        $messages = Message::where('room_id', $id)
+            ->where('status', 1)
+            ->orderBy('id')
+            ->get();
+        if (!$messages->count()) {
+            return response()->json(['client' => $client, 'empty' => true], 200);
+        }
+        return response()->json(['client' => $client, 'messages' => $messages], 200);
     }
 
 }
