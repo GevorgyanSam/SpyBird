@@ -99,7 +99,7 @@ function transformMessageDataToHtml(message) {
         }
     }
     return `
-        <div class="message ${position}">
+        <div class="message ${position}" data-message-id="${message.id}">
             <div class="content">${message.message}</div>
             <div class="content-date">${content}</div>
         </div>
@@ -272,7 +272,26 @@ function removeMessage() {
     message.each(function () {
         let self = $(this);
         self.children(".content").dblclick(function () {
-            removeMessageAnimation(self);
+            let id = self.data("message-id");
+            let room = $('meta[name="room-id"]').attr("content");
+            $.ajax({
+                url: `/delete-message/${id}`,
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                data: {
+                    room: room,
+                },
+                success: function (response) {
+                    removeMessageAnimation(self);
+                },
+                error: function (error) {
+                    location.reload();
+                },
+            });
         });
     });
 }
@@ -294,6 +313,9 @@ function removeMessageAnimation(item) {
             },
             100
         );
+        setTimeout(() => {
+            item.remove();
+        }, 100);
     }, 200);
 }
 
@@ -308,7 +330,26 @@ function likeMessage() {
         self.children(".content").dblclick(function () {
             let liked = self.children(".content-date").children(".liked");
             if (!liked.hasClass("liked")) {
-                likeMessageAnimation(self);
+                let id = self.data("message-id");
+                let room = $('meta[name="room-id"]').attr("content");
+                $.ajax({
+                    url: `/like-message/${id}`,
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                            "content"
+                        ),
+                    },
+                    data: {
+                        room: room,
+                    },
+                    success: function (response) {
+                        likeMessageAnimation(self);
+                    },
+                    error: function (error) {
+                        location.reload();
+                    },
+                });
             }
         });
     });

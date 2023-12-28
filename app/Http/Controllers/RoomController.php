@@ -258,4 +258,47 @@ class RoomController extends Controller
         return response()->json(['success' => true], 200);
     }
 
+    // ---- ------ -- --- -------- -------
+    // This Method Is For Deleting Message
+    // ---- ------ -- --- -------- -------
+
+    public function deleteMessage(Request $request, int $id)
+    {
+        $room_id = $request->input('room');
+        $count = Message::where('id', $id)
+            ->where('room_id', $room_id)
+            ->where('status', 1)
+            ->where('user_id', auth()->user()->id)
+            ->update([
+                'status' => 0,
+                'updated_at' => now()
+            ]);
+        if (!$count) {
+            return response()->json(['error' => true], 404);
+        }
+        return response()->json(['success' => true], 200);
+    }
+
+    // ---- ------ -- --- ---- -------
+    // This Method Is For Like Message
+    // ---- ------ -- --- ---- -------
+
+    public function likeMessage(Request $request, int $id)
+    {
+        $room_id = $request->input('room');
+        $count = Message::where('id', $id)
+            ->where('room_id', $room_id)
+            ->where('status', 1)
+            ->where('liked', 0)
+            ->where('user_id', '!=', auth()->user()->id)
+            ->update([
+                'liked' => 1,
+                'updated_at' => now()
+            ]);
+        if (!$count) {
+            return response()->json(['error' => true], 404);
+        }
+        return response()->json(['success' => true], 200);
+    }
+
 }
