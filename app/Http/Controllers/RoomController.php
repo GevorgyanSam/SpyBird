@@ -207,4 +207,55 @@ class RoomController extends Controller
         return response()->json(['client' => $client, 'messages' => $messages], 200);
     }
 
+    // ---- ------ -- --- ------- ------- -- ----
+    // This Method Is For Marking Message As Seen
+    // ---- ------ -- --- ------- ------- -- ----
+
+    public function setSeenMessage(int $id)
+    {
+        Message::where('id', $id)
+            ->where('status', 1)
+            ->where('seen', 0)
+            ->where('user_id', '!=', auth()->user()->id)
+            ->update([
+                'seen' => 1,
+                'updated_at' => now()
+            ]);
+        return response()->json(['success' => true], 200);
+    }
+
+    // ---- ------ -- --- ------- -------
+    // This Method Is For Sending Message
+    // ---- ------ -- --- ------- -------
+
+    public function sendLetter(Request $request, int $id)
+    {
+        $rules = [
+            'letter' => ['bail', 'required']
+        ];
+        $messages = [
+            'required' => 'enter :attribute',
+        ];
+        $request->validate($rules, $messages);
+        $room = Room::join('room_members', 'rooms.id', '=', 'room_members.room_id')
+            ->where('rooms.id', $id)
+            ->where('rooms.status', 1)
+            ->where('room_members.user_id', auth()->user()->id)
+            ->count();
+        if (!$room) {
+            return response()->json(['redirect' => true], 403);
+        }
+        $letter = $request->input('letter');
+        Message::create([
+            'user_id' => auth()->user()->id,
+            'room_id' => $id,
+            'message' => $letter,
+            'liked' => 0,
+            'seen' => 0,
+            'status' => 1,
+            'created_at' => now()
+        ]);
+        return response()->json(['success' => true], 200);
+    }
+
 }

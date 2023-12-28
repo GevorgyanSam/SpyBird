@@ -36,8 +36,14 @@ function getMessages() {
             if (response.empty) {
                 hideMessages();
             } else if (response.messages) {
+                sessionStorage.setItem(
+                    "messages",
+                    JSON.stringify(response.messages)
+                );
                 showMessages();
                 setMessages(response.messages);
+                removeMessage();
+                likeMessage();
                 scrollAndFocus();
             }
         },
@@ -88,6 +94,9 @@ function transformMessageDataToHtml(message) {
     } else if (message.user_id == client_id) {
         position = "message-left";
         content = date + liked;
+        if (!message.seen) {
+            setSeenMessage(message.id);
+        }
     }
     return `
         <div class="message ${position}">
@@ -117,6 +126,24 @@ function transformMessageDateToHtml(content) {
     return `<div class="message-date">${content}</div>`;
 }
 
+// ---- ------ -- --- ------- ------- -- ----
+// This Method Is For Marking Message As Seen
+// ---- ------ -- --- ------- ------- -- ----
+
+function setSeenMessage(id) {
+    $.ajax({
+        url: `/set-seen-message/${id}`,
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        success: function (response) {},
+        error: function (error) {
+            location.reload();
+        },
+    });
+}
+
 // ---- ------ -- --- ------- --- --------
 // This Method Is For Getting New Messages
 // ---- ------ -- --- ------- --- --------
@@ -134,10 +161,20 @@ function getNewMessages() {
                 handleClientData(response.client);
             }
             if (response.empty) {
+                sessionStorage.removeItem("messages");
                 hideMessages();
             }
             if (response.messages) {
-                //
+                let oldMessages = sessionStorage.getItem("messages");
+                let newMessages = JSON.stringify(response.messages);
+                if (oldMessages != newMessages) {
+                    sessionStorage.setItem("messages", newMessages);
+                    showMessages();
+                    setMessages(response.messages);
+                    removeMessage();
+                    likeMessage();
+                    scrollAndFocus();
+                }
             }
         },
         error: function (error) {
@@ -198,19 +235,33 @@ scrollAndFocus();
 // This Method Is For Sending A Message
 // ---- ------ -- --- ------- - -------
 
-function sendMessage() {
-    const form = {
-        input: $(".roomParent .footer .formParent input"),
-        button: $(".roomParent .footer .formParent button"),
-    };
+function sendLetter() {
+    const form = $("form#sendLetter");
+    const input = $("form#sendLetter input[name=letter]");
 
-    form.button.click((e) => {
+    form.submit((e) => {
         e.preventDefault();
+        if (!input.val().trim()) {
+            return false;
+        }
+        $.ajax({
+            url: form.attr("action"),
+            method: form.attr("method"),
+            data: form.serialize(),
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            success: function (response) {},
+            error: function (error) {
+                location.reload();
+            },
+        });
+        input.val("");
         scrollAndFocus();
     });
 }
 
-sendMessage();
+sendLetter();
 
 // ---- ------ -- --- -------- - -------
 // This Method Is For Deleting A Message

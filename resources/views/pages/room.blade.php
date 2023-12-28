@@ -462,9 +462,9 @@
                         <div class="chatArea"></div>
                     </div>
                     <div class="footer">
-                        <x-form method="post">
+                        <x-form id="sendLetter" method="post" action="{{ route('send-letter', ['id' => $room]) }}">
                             <div class="formParent">
-                                <input type="text" placeholder="type your message ..." autocomplete="off">
+                                <input type="text" placeholder="type your message ..." autocomplete="off" name="letter">
                                 <button type="submit">
                                     <i class="fa-solid fa-paper-plane"></i>
                                 </button>
