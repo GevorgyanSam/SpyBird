@@ -49,6 +49,7 @@ class MakeUser extends Command
             'status' => 1,
             'two_factor_authentication' => 0,
             'activity' => 1,
+            'spy' => 0,
             'invisible' => 0,
             'created_at' => now(),
             'email_verified_at' => now()

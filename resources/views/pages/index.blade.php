@@ -214,7 +214,7 @@
                                                 <h4>switch to spy mode</h4>
                                             </div>
                                             <div>
-                                                <input type="checkbox" class="checkbox" id="spy">
+                                                <input type="checkbox" class="checkbox" id="spy" {{ auth()->user()->spy ? "checked" : null }}>
                                             </div>
                                         </div>
                                     </label>

@@ -147,11 +147,53 @@ export function switchFullScreen() {
 export function switchSpyMode() {
     const checkbox = $(".settingsParent .spy input[type=checkbox]");
     checkbox.change((e) => {
+        loading(true);
         if (e.target.checked) {
-            notify("Switch To Spy Mode", "This Feature Is Under Construction");
-            setTimeout(() => {
-                e.target.checked = false;
-            }, 1000);
+            e.target.checked = false;
+            $.ajax({
+                url: "/request-enable-spy-mode",
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                success: function (response) {
+                    if (response.success) {
+                        loading(false);
+                        e.target.checked = true;
+                    } else if (response.reload) {
+                        location.reload();
+                    }
+                },
+                error: function (error) {
+                    loading(false);
+                    location.reload();
+                },
+            });
+        } else {
+            e.target.checked = true;
+            $.ajax({
+                url: "/request-disable-spy-mode",
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                success: function (response) {
+                    if (response.success) {
+                        loading(false);
+                        e.target.checked = false;
+                    } else if (response.reload) {
+                        location.reload();
+                    }
+                },
+                error: function (error) {
+                    loading(false);
+                    location.reload();
+                },
+            });
         }
     });
 }

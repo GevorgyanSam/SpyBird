@@ -10,6 +10,8 @@ use App\Services\Settings\LogoutService;
 use App\Services\Settings\PasswordResetService;
 use App\Services\Settings\RequestDisableInvisibleService;
 use App\Services\Settings\RequestEnableInvisibleService;
+use App\Services\Settings\RequestDisableSpyService;
+use App\Services\Settings\RequestEnableSpyService;
 use App\Services\Settings\RequestHideActivityService;
 use App\Services\Settings\RequestShowActivityService;
 use App\Services\Settings\UpdateProfileService;
@@ -31,6 +33,24 @@ class SettingsController extends Controller
     // ---- ------ -- --- ---------- -- ------- --------- ----
 
     public function requestDisableInvisible(RequestDisableInvisibleService $service)
+    {
+        return $service->handle();
+    }
+
+    // ---- ------ -- --- ---------- -- ------ --- ----
+    // This Method Is For Requesting To Enable Spy Mode
+    // ---- ------ -- --- ---------- -- ------ --- ----
+
+    public function requestEnableSpy(RequestEnableSpyService $service)
+    {
+        return $service->handle();
+    }
+
+    // ---- ------ -- --- ---------- -- ------- --- ----
+    // This Method Is For Requesting To Disable Spy Mode
+    // ---- ------ -- --- ---------- -- ------- --- ----
+
+    public function requestDisableSpy(RequestDisableSpyService $service)
     {
         return $service->handle();
     }

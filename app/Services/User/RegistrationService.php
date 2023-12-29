@@ -62,6 +62,7 @@ class RegistrationService
             'status' => 0,
             'two_factor_authentication' => 0,
             'activity' => 0,
+            'spy' => 0,
             'invisible' => 0,
             'created_at' => now()
         ]);

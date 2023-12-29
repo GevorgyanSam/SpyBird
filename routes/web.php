@@ -76,6 +76,8 @@ Route::middleware(['auth', 'lockscreen'])->group(function () {
 
         Route::post('/request-enable-invisible-mode', 'requestEnableInvisible')->name('request-enable-invisible-mode');
         Route::post('/request-disable-invisible-mode', 'requestDisableInvisible')->name('request-disable-invisible-mode');
+        Route::post('/request-enable-spy-mode', 'requestEnableSpy')->name('request-enable-spy-mode');
+        Route::post('/request-disable-spy-mode', 'requestDisableSpy')->name('request-disable-spy-mode');
         Route::post('/request-show-activity', 'requestShowActivity')->name('request-show-activity');
         Route::post('/request-hide-activity', 'requestHideActivity')->name('request-hide-activity');
         Route::post('/update-profile', 'updateProfile')->name('update-profile');

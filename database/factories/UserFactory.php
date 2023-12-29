@@ -16,6 +16,7 @@ class UserFactory extends Factory
             'status' => fake()->numberBetween(0, 1),
             'two_factor_authentication' => fake()->numberBetween(0, 1),
             'activity' => fake()->numberBetween(0, 1),
+            'spy' => fake()->numberBetween(0, 1),
             'invisible' => fake()->numberBetween(0, 1),
             'email_verified_at' => fake()->dateTime(),
             'created_at' => fake()->dateTime(),

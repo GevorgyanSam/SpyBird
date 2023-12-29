@@ -21,6 +21,7 @@ class User extends Authenticatable
         'status' => 'boolean',
         'two_factor_authentication' => 'boolean',
         'activity' => 'boolean',
+        'spy' => 'boolean',
         'invisible' => 'boolean'
     ];
     protected $fillable = [
@@ -31,6 +32,7 @@ class User extends Authenticatable
         'status',
         'two_factor_authentication',
         'activity',
+        'spy',
         'invisible',
         'email_verified_at',
         'created_at',
