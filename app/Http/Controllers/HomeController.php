@@ -130,7 +130,7 @@ class HomeController extends Controller
             'login_info.status',
             'messages.message',
             'messages.created_at',
-            DB::raw('(SELECT COUNT(*) FROM messages WHERE messages.room_id = room_members.room_id AND messages.seen = 0 AND messages.user_id != ' . auth()->user()->id . ') as unread_message_count'))
+            DB::raw('(SELECT COUNT(*) FROM messages WHERE messages.room_id = room_members.room_id AND messages.seen = 0 AND messages.status = 1 AND messages.user_id != ' . auth()->user()->id . ') as unread_message_count'))
             ->join('users', 'room_members.user_id', '=', 'users.id')
             ->join(DB::raw('(SELECT user_id, MAX(created_at) AS latest_login FROM login_info GROUP BY user_id) as latest_login_info'), function ($join) {
                 $join->on('users.id', '=', 'latest_login_info.user_id');
@@ -181,7 +181,7 @@ class HomeController extends Controller
             'login_info.status',
             'messages.message',
             'messages.created_at',
-            DB::raw('(SELECT COUNT(*) FROM messages WHERE messages.room_id = room_members.room_id AND messages.seen = 0 AND messages.user_id != ' . auth()->user()->id . ') as unread_message_count'))
+            DB::raw('(SELECT COUNT(*) FROM messages WHERE messages.room_id = room_members.room_id AND messages.seen = 0 AND messages.status = 1 AND messages.user_id != ' . auth()->user()->id . ') as unread_message_count'))
             ->join('users', 'room_members.user_id', '=', 'users.id')
             ->join(DB::raw('(SELECT user_id, MAX(created_at) AS latest_login FROM login_info GROUP BY user_id) as latest_login_info'), function ($join) {
                 $join->on('users.id', '=', 'latest_login_info.user_id');
