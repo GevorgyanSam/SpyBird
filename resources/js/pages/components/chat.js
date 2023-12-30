@@ -54,7 +54,10 @@ function setChats(data) {
 function transformChatDataToHtml(data) {
     let content = "";
     data.forEach((user) => {
-        let avatar = user.avatar
+        let name = user.spy ? "spy name" : user.name;
+        let avatar = user.spy
+            ? "spy"
+            : user.avatar
             ? `<img src="/storage/${user.avatar}"></img>`
             : user.name[0];
         let active = user.activity && user.status ? "active" : null;
@@ -74,7 +77,7 @@ function transformChatDataToHtml(data) {
                         </div>
                     </div>
                     <div class="chatInfo">
-                        <div class="name">${user.name}</div>
+                        <div class="name">${name}</div>
                         <div class="time">${created_at}</div>
                         <div class="message">${user.message}</div>
                         <div class="unread">${unread}</div>

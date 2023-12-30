@@ -14,9 +14,12 @@ class Room extends Model
     protected $keyType = 'int';
     protected $guarded = [];
     protected $casts = [
+        'spy' => 'boolean',
         'status' => 'boolean'
     ];
     protected $fillable = [
+        'user_id',
+        'spy',
         'status',
         'created_at',
         'updated_at'

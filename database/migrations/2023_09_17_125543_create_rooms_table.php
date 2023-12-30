@@ -10,6 +10,8 @@ return new class extends Migration {
     {
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id');
+            $table->integer('spy');
             $table->integer('status');
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();

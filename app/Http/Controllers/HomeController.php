@@ -85,35 +85,74 @@ class HomeController extends Controller
         if ($blocked) {
             return response()->json(['error' => true], 404);
         }
-        $room = Room::select('rooms.*')
-            ->join('room_members as rm1', function ($join) {
-                $join->on('rooms.id', '=', 'rm1.room_id')
-                    ->where('rm1.user_id', auth()->user()->id);
-            })
-            ->join('room_members as rm2', function ($join) use ($id) {
-                $join->on('rooms.id', '=', 'rm2.room_id')
-                    ->where('rm2.user_id', $id);
-            })
-            ->where('rooms.status', 1)
-            ->first();
-        if (!$room) {
-            $newRoom = Room::create([
-                'status' => 1,
-                'created_at' => now()
-            ]);
-            RoomMemeber::create([
-                'user_id' => auth()->user()->id,
-                'room_id' => $newRoom->id,
-                'created_at' => now()
-            ]);
-            RoomMemeber::create([
-                'user_id' => $id,
-                'room_id' => $newRoom->id,
-                'created_at' => now()
-            ]);
-            return response()->json(['room_id' => $newRoom->id], 200);
+        if (auth()->user()->spy) {
+            $room = Room::select('rooms.*')
+                ->join('room_members as rm1', function ($join) {
+                    $join->on('rooms.id', '=', 'rm1.room_id')
+                        ->where('rm1.user_id', auth()->user()->id);
+                })
+                ->join('room_members as rm2', function ($join) use ($id) {
+                    $join->on('rooms.id', '=', 'rm2.room_id')
+                        ->where('rm2.user_id', $id);
+                })
+                ->where('rooms.user_id', auth()->user()->id)
+                ->where('rooms.spy', 1)
+                ->where('rooms.status', 1)
+                ->first();
+            if (!$room) {
+                $newRoom = Room::create([
+                    'user_id' => auth()->user()->id,
+                    'spy' => 1,
+                    'status' => 1,
+                    'created_at' => now()
+                ]);
+                RoomMemeber::create([
+                    'user_id' => auth()->user()->id,
+                    'room_id' => $newRoom->id,
+                    'created_at' => now()
+                ]);
+                RoomMemeber::create([
+                    'user_id' => $id,
+                    'room_id' => $newRoom->id,
+                    'created_at' => now()
+                ]);
+                return response()->json(['room_id' => $newRoom->id], 200);
+            }
+            return response()->json(['room_id' => $room->id], 200);
+        } else {
+            $room = Room::select('rooms.*')
+                ->join('room_members as rm1', function ($join) {
+                    $join->on('rooms.id', '=', 'rm1.room_id')
+                        ->where('rm1.user_id', auth()->user()->id);
+                })
+                ->join('room_members as rm2', function ($join) use ($id) {
+                    $join->on('rooms.id', '=', 'rm2.room_id')
+                        ->where('rm2.user_id', $id);
+                })
+                ->where('rooms.spy', 0)
+                ->where('rooms.status', 1)
+                ->first();
+            if (!$room) {
+                $newRoom = Room::create([
+                    'user_id' => auth()->user()->id,
+                    'spy' => 0,
+                    'status' => 1,
+                    'created_at' => now()
+                ]);
+                RoomMemeber::create([
+                    'user_id' => auth()->user()->id,
+                    'room_id' => $newRoom->id,
+                    'created_at' => now()
+                ]);
+                RoomMemeber::create([
+                    'user_id' => $id,
+                    'room_id' => $newRoom->id,
+                    'created_at' => now()
+                ]);
+                return response()->json(['room_id' => $newRoom->id], 200);
+            }
+            return response()->json(['room_id' => $room->id], 200);
         }
-        return response()->json(['room_id' => $room->id], 200);
     }
 
     // ---- ------ -- --- ------- --- -----
@@ -122,48 +161,106 @@ class HomeController extends Controller
 
     public function getChats()
     {
-        $chats = RoomMemeber::select(
-            'room_members.room_id',
-            'users.name',
-            'users.activity',
-            'users.avatar',
-            'login_info.status',
-            'messages.message',
-            'messages.created_at',
-            DB::raw('(SELECT COUNT(*) FROM messages WHERE messages.room_id = room_members.room_id AND messages.seen = 0 AND messages.status = 1 AND messages.user_id != ' . auth()->user()->id . ') as unread_message_count'))
-            ->join('users', 'room_members.user_id', '=', 'users.id')
-            ->join(DB::raw('(SELECT user_id, MAX(created_at) AS latest_login FROM login_info GROUP BY user_id) as latest_login_info'), function ($join) {
-                $join->on('users.id', '=', 'latest_login_info.user_id');
-            })
-            ->join('login_info', function ($join) {
-                $join->on('users.id', '=', 'login_info.user_id')->on('latest_login_info.latest_login', '=', 'login_info.created_at');
-            })
-            ->join(DB::raw('(SELECT room_id, message, created_at, ROW_NUMBER() OVER (PARTITION BY room_id ORDER BY created_at DESC) AS row_num FROM messages WHERE status = 1) as messages'), function ($join) {
-                $join->on('room_members.room_id', '=', 'messages.room_id')->where('messages.row_num', '=', 1);
-            })
-            ->whereIn('room_members.room_id', function ($query) {
-                $query->select('rooms.id')
-                    ->from('rooms')
-                    ->join('room_members', 'rooms.id', '=', 'room_members.room_id')
-                    ->where('rooms.status', '=', 1)
-                    ->where('room_members.user_id', '=', auth()->user()->id);
-            })
-            ->leftJoin('blocked_users', function ($join) {
-                $join->on('users.id', '=', 'blocked_users.user_id')
-                    ->where('blocked_users.blocked_user_id', '=', auth()->user()->id)
-                    ->where('blocked_users.status', '=', 1);
-            })
-            ->whereNull('blocked_users.id')
-            ->where('room_members.user_id', '!=', auth()->user()->id)
-            ->where('users.status', '=', 1)
-            ->where('users.invisible', '=', 0)
-            ->orderByDesc('unread_message_count')
-            ->orderByDesc('messages.created_at')
-            ->get();
-        if (!$chats->count()) {
-            return response()->json(['empty' => true], 200);
+        if (auth()->user()->spy) {
+            $chats = RoomMemeber::select(
+                'room_members.room_id',
+                'users.name',
+                'users.activity',
+                'users.avatar',
+                'login_info.status',
+                'messages.message',
+                'messages.created_at',
+                DB::raw('(SELECT COUNT(*) FROM messages WHERE messages.room_id = room_members.room_id AND messages.seen = 0 AND messages.status = 1 AND messages.user_id != ' . auth()->user()->id . ') as unread_message_count')
+            )
+                ->join('users', 'room_members.user_id', '=', 'users.id')
+                ->join(DB::raw('(SELECT user_id, MAX(created_at) AS latest_login FROM login_info GROUP BY user_id) as latest_login_info'), function ($join) {
+                    $join->on('users.id', '=', 'latest_login_info.user_id');
+                })
+                ->join('login_info', function ($join) {
+                    $join->on('users.id', '=', 'login_info.user_id')->on('latest_login_info.latest_login', '=', 'login_info.created_at');
+                })
+                ->join(DB::raw('(SELECT room_id, message, created_at, ROW_NUMBER() OVER (PARTITION BY room_id ORDER BY created_at DESC) AS row_num FROM messages WHERE status = 1) as messages'), function ($join) {
+                    $join->on('room_members.room_id', '=', 'messages.room_id')->where('messages.row_num', '=', 1);
+                })
+                ->whereIn('room_members.room_id', function ($query) {
+                    $query->select('rooms.id')
+                        ->from('rooms')
+                        ->join('room_members', 'rooms.id', '=', 'room_members.room_id')
+                        ->where('rooms.user_id', '=', auth()->user()->id)
+                        ->where('rooms.spy', '=', 1)
+                        ->where('rooms.status', '=', 1)
+                        ->where('room_members.user_id', '=', auth()->user()->id);
+                })
+                ->leftJoin('blocked_users', function ($join) {
+                    $join->on('users.id', '=', 'blocked_users.user_id')
+                        ->where('blocked_users.blocked_user_id', '=', auth()->user()->id)
+                        ->where('blocked_users.status', '=', 1);
+                })
+                ->whereNull('blocked_users.id')
+                ->where('room_members.user_id', '!=', auth()->user()->id)
+                ->where('users.status', '=', 1)
+                ->where('users.invisible', '=', 0)
+                ->orderByDesc('unread_message_count')
+                ->orderByDesc('messages.created_at')
+                ->get();
+            if (!$chats->count()) {
+                return response()->json(['empty' => true], 200);
+            }
+            return response()->json(['data' => $chats], 200);
+        } else {
+            $chats = RoomMemeber::select(
+                'room_members.room_id',
+                'users.name',
+                'users.activity',
+                'users.avatar',
+                'login_info.status',
+                'messages.message',
+                'messages.created_at',
+                'rooms.spy',
+                DB::raw('(SELECT COUNT(*) FROM messages WHERE messages.room_id = room_members.room_id AND messages.seen = 0 AND messages.status = 1 AND messages.user_id != ' . auth()->user()->id . ') as unread_message_count')
+            )
+                ->join('users', 'room_members.user_id', '=', 'users.id')
+                ->join(DB::raw('(SELECT user_id, MAX(created_at) AS latest_login FROM login_info GROUP BY user_id) as latest_login_info'), function ($join) {
+                    $join->on('users.id', '=', 'latest_login_info.user_id');
+                })
+                ->join('login_info', function ($join) {
+                    $join->on('users.id', '=', 'login_info.user_id')->on('latest_login_info.latest_login', '=', 'login_info.created_at');
+                })
+                ->join(DB::raw('(SELECT room_id, message, created_at, ROW_NUMBER() OVER (PARTITION BY room_id ORDER BY created_at DESC) AS row_num FROM messages WHERE status = 1) as messages'), function ($join) {
+                    $join->on('room_members.room_id', '=', 'messages.room_id')->where('messages.row_num', '=', 1);
+                })
+                ->whereIn('room_members.room_id', function ($query) {
+                    $query->select('rooms.id')
+                        ->from('rooms')
+                        ->join('room_members', 'rooms.id', '=', 'room_members.room_id')
+                        ->where('rooms.status', '=', 1)
+                        ->where(function ($query) {
+                            $query->where('rooms.spy', 0)
+                                ->orWhere(function ($query) {
+                                    $query->where('rooms.spy', 1)
+                                        ->where('rooms.user_id', '!=', auth()->user()->id);
+                                });
+                        })
+                        ->where('room_members.user_id', '=', auth()->user()->id);
+                })
+                ->leftJoin('rooms', 'rooms.id', '=', 'room_members.room_id')
+                ->leftJoin('blocked_users', function ($join) {
+                    $join->on('users.id', '=', 'blocked_users.user_id')
+                        ->where('blocked_users.blocked_user_id', '=', auth()->user()->id)
+                        ->where('blocked_users.status', '=', 1);
+                })
+                ->whereNull('blocked_users.id')
+                ->where('room_members.user_id', '!=', auth()->user()->id)
+                ->where('users.status', '=', 1)
+                ->where('users.invisible', '=', 0)
+                ->orderByDesc('unread_message_count')
+                ->orderByDesc('messages.created_at')
+                ->get();
+            if (!$chats->count()) {
+                return response()->json(['empty' => true], 200);
+            }
+            return response()->json(['data' => $chats], 200);
         }
-        return response()->json(['data' => $chats], 200);
     }
 
     // ---- ------ -- --- --------- -----
@@ -173,49 +270,109 @@ class HomeController extends Controller
     public function searchChats(Request $request)
     {
         $search = $request->input('search');
-        $chats = RoomMemeber::select(
-            'room_members.room_id',
-            'users.name',
-            'users.activity',
-            'users.avatar',
-            'login_info.status',
-            'messages.message',
-            'messages.created_at',
-            DB::raw('(SELECT COUNT(*) FROM messages WHERE messages.room_id = room_members.room_id AND messages.seen = 0 AND messages.status = 1 AND messages.user_id != ' . auth()->user()->id . ') as unread_message_count'))
-            ->join('users', 'room_members.user_id', '=', 'users.id')
-            ->join(DB::raw('(SELECT user_id, MAX(created_at) AS latest_login FROM login_info GROUP BY user_id) as latest_login_info'), function ($join) {
-                $join->on('users.id', '=', 'latest_login_info.user_id');
-            })
-            ->join('login_info', function ($join) {
-                $join->on('users.id', '=', 'login_info.user_id')->on('latest_login_info.latest_login', '=', 'login_info.created_at');
-            })
-            ->join(DB::raw('(SELECT room_id, message, created_at, ROW_NUMBER() OVER (PARTITION BY room_id ORDER BY created_at DESC) AS row_num FROM messages WHERE status = 1) as messages'), function ($join) {
-                $join->on('room_members.room_id', '=', 'messages.room_id')->where('messages.row_num', '=', 1);
-            })
-            ->whereIn('room_members.room_id', function ($query) {
-                $query->select('rooms.id')
-                    ->from('rooms')
-                    ->join('room_members', 'rooms.id', '=', 'room_members.room_id')
-                    ->where('rooms.status', '=', 1)
-                    ->where('room_members.user_id', '=', auth()->user()->id);
-            })
-            ->leftJoin('blocked_users', function ($join) {
-                $join->on('users.id', '=', 'blocked_users.user_id')
-                    ->where('blocked_users.blocked_user_id', '=', auth()->user()->id)
-                    ->where('blocked_users.status', '=', 1);
-            })
-            ->whereNull('blocked_users.id')
-            ->where('room_members.user_id', '!=', auth()->user()->id)
-            ->where('users.status', '=', 1)
-            ->where('users.invisible', '=', 0)
-            ->where('users.name', 'like', "%$search%")
-            ->orderByDesc('unread_message_count')
-            ->orderByDesc('messages.created_at')
-            ->get();
-        if (!$chats->count()) {
-            return response()->json(['empty' => true], 200);
+        if (auth()->user()->spy) {
+            $chats = RoomMemeber::select(
+                'room_members.room_id',
+                'users.name',
+                'users.activity',
+                'users.avatar',
+                'login_info.status',
+                'messages.message',
+                'messages.created_at',
+                DB::raw('(SELECT COUNT(*) FROM messages WHERE messages.room_id = room_members.room_id AND messages.seen = 0 AND messages.status = 1 AND messages.user_id != ' . auth()->user()->id . ') as unread_message_count')
+            )
+                ->join('users', 'room_members.user_id', '=', 'users.id')
+                ->join(DB::raw('(SELECT user_id, MAX(created_at) AS latest_login FROM login_info GROUP BY user_id) as latest_login_info'), function ($join) {
+                    $join->on('users.id', '=', 'latest_login_info.user_id');
+                })
+                ->join('login_info', function ($join) {
+                    $join->on('users.id', '=', 'login_info.user_id')->on('latest_login_info.latest_login', '=', 'login_info.created_at');
+                })
+                ->join(DB::raw('(SELECT room_id, message, created_at, ROW_NUMBER() OVER (PARTITION BY room_id ORDER BY created_at DESC) AS row_num FROM messages WHERE status = 1) as messages'), function ($join) {
+                    $join->on('room_members.room_id', '=', 'messages.room_id')->where('messages.row_num', '=', 1);
+                })
+                ->whereIn('room_members.room_id', function ($query) {
+                    $query->select('rooms.id')
+                        ->from('rooms')
+                        ->join('room_members', 'rooms.id', '=', 'room_members.room_id')
+                        ->where('rooms.user_id', '=', auth()->user()->id)
+                        ->where('rooms.spy', '=', 1)
+                        ->where('rooms.status', '=', 1)
+                        ->where('room_members.user_id', '=', auth()->user()->id);
+                })
+                ->leftJoin('blocked_users', function ($join) {
+                    $join->on('users.id', '=', 'blocked_users.user_id')
+                        ->where('blocked_users.blocked_user_id', '=', auth()->user()->id)
+                        ->where('blocked_users.status', '=', 1);
+                })
+                ->whereNull('blocked_users.id')
+                ->where('room_members.user_id', '!=', auth()->user()->id)
+                ->where('users.status', '=', 1)
+                ->where('users.invisible', '=', 0)
+                ->where('users.name', 'like', "%$search%")
+                ->orderByDesc('unread_message_count')
+                ->orderByDesc('messages.created_at')
+                ->get();
+            if (!$chats->count()) {
+                return response()->json(['empty' => true], 200);
+            }
+            return response()->json(['data' => $chats], 200);
+        } else {
+            $chats = RoomMemeber::select(
+                'room_members.room_id',
+                'users.name',
+                'users.activity',
+                'users.avatar',
+                'login_info.status',
+                'messages.message',
+                'messages.created_at',
+                'rooms.spy',
+                DB::raw('(SELECT COUNT(*) FROM messages WHERE messages.room_id = room_members.room_id AND messages.seen = 0 AND messages.status = 1 AND messages.user_id != ' . auth()->user()->id . ') as unread_message_count')
+            )
+                ->join('users', 'room_members.user_id', '=', 'users.id')
+                ->join(DB::raw('(SELECT user_id, MAX(created_at) AS latest_login FROM login_info GROUP BY user_id) as latest_login_info'), function ($join) {
+                    $join->on('users.id', '=', 'latest_login_info.user_id');
+                })
+                ->join('login_info', function ($join) {
+                    $join->on('users.id', '=', 'login_info.user_id')->on('latest_login_info.latest_login', '=', 'login_info.created_at');
+                })
+                ->join(DB::raw('(SELECT room_id, message, created_at, ROW_NUMBER() OVER (PARTITION BY room_id ORDER BY created_at DESC) AS row_num FROM messages WHERE status = 1) as messages'), function ($join) {
+                    $join->on('room_members.room_id', '=', 'messages.room_id')->where('messages.row_num', '=', 1);
+                })
+                ->whereIn('room_members.room_id', function ($query) {
+                    $query->select('rooms.id')
+                        ->from('rooms')
+                        ->join('room_members', 'rooms.id', '=', 'room_members.room_id')
+                        ->where('rooms.status', '=', 1)
+                        ->where(function ($query) {
+                            $query->where('rooms.spy', 0)
+                                ->orWhere(function ($query) {
+                                    $query->where('rooms.spy', 1)
+                                        ->where('rooms.user_id', '!=', auth()->user()->id);
+                                });
+                        })
+                        ->where('room_members.user_id', '=', auth()->user()->id);
+                })
+                ->leftJoin('rooms', 'rooms.id', '=', 'room_members.room_id')
+                ->leftJoin('blocked_users', function ($join) {
+                    $join->on('users.id', '=', 'blocked_users.user_id')
+                        ->where('blocked_users.blocked_user_id', '=', auth()->user()->id)
+                        ->where('blocked_users.status', '=', 1);
+                })
+                ->whereNull('blocked_users.id')
+                ->where('room_members.user_id', '!=', auth()->user()->id)
+                ->where('users.status', '=', 1)
+                ->where('users.invisible', '=', 0)
+                ->where('rooms.spy', 0)
+                ->where('users.name', 'like', "%$search%")
+                ->orderByDesc('unread_message_count')
+                ->orderByDesc('messages.created_at')
+                ->get();
+            if (!$chats->count()) {
+                return response()->json(['empty' => true], 200);
+            }
+            return response()->json(['data' => $chats], 200);
         }
-        return response()->json(['data' => $chats], 200);
     }
 
 }
