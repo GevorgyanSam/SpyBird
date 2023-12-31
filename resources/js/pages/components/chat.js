@@ -54,37 +54,46 @@ function setChats(data) {
 function transformChatDataToHtml(data) {
     let content = "";
     data.forEach((user) => {
-        let name = user.spy ? "spy name" : user.name;
-        let avatar = user.spy
-            ? "spy"
-            : user.avatar
-            ? `<img src="/storage/${user.avatar}"></img>`
-            : user.name[0];
-        let active = user.activity && user.status ? "active" : null;
+        let name = "";
+        let avatar = "";
+        let active = "";
+        let created_at = user.created_at.substr(-8, 5);
         let unread = user.unread_message_count
             ? user.unread_message_count > 9
                 ? `<div class="count">9+</div>`
                 : `<div class="count">${user.unread_message_count}</div>`
             : "";
-        let created_at = user.created_at.substr(-8, 5);
+        if (user.spy) {
+            name = "anonymous";
+            let int = Math.floor(Math.random() * 2) + 1;
+            let url = `/assets/anonymous-${int}.png`;
+            avatar = `<img src="${url}"></img>`;
+            active = "";
+        } else {
+            name = user.name;
+            avatar = user.avatar
+                ? `<img src="/storage/${user.avatar}"></img>`
+                : user.name[0];
+            active = user.activity && user.status ? "active" : "";
+        }
         content += `
-        <a href="/room/${user.room_id}">
-            <div class="chatItem">
-                <div class="chat">
-                    <div>
-                        <div class="avatar ${active}">
-                            ${avatar}
+            <a href="/room/${user.room_id}">
+                <div class="chatItem">
+                    <div class="chat">
+                        <div>
+                            <div class="avatar ${active}">
+                                ${avatar}
+                            </div>
+                        </div>
+                        <div class="chatInfo">
+                            <div class="name">${name}</div>
+                            <div class="time">${created_at}</div>
+                            <div class="message">${user.message}</div>
+                            <div class="unread">${unread}</div>
                         </div>
                     </div>
-                    <div class="chatInfo">
-                        <div class="name">${name}</div>
-                        <div class="time">${created_at}</div>
-                        <div class="message">${user.message}</div>
-                        <div class="unread">${unread}</div>
-                    </div>
                 </div>
-            </div>
-        </a>
+            </a>
         `;
     });
     return content;
@@ -195,6 +204,7 @@ export function getNewChats() {
                     setNewChats(response.data);
                 }
             } else if (response.empty && page === "chat") {
+                hideChatCount();
                 hideChats();
             } else {
                 hideChatCount();
