@@ -424,11 +424,15 @@ function blockUser(id) {
 // ---- ------ -- -------- -- ------ ----
 
 function deleteChat(id) {
+    let spy = $('meta[name="spy"]').attr("content");
     $.ajax({
         url: `/delete-chat/${id}`,
         method: "POST",
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        data: {
+            spy: spy,
         },
         success: function (response) {
             if (response.success) {

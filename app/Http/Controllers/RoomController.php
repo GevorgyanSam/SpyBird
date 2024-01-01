@@ -21,11 +21,12 @@ class RoomController extends Controller
 
     public function room(int $id, GetLoginHistoryService $getLoginHistoryService)
     {
-        $room = Room::join('room_members', 'rooms.id', '=', 'room_members.room_id')
+        $room = Room::select('rooms.user_id', 'rooms.spy')
+            ->join('room_members', 'rooms.id', '=', 'room_members.room_id')
             ->where('rooms.id', $id)
             ->where('rooms.status', 1)
             ->where('room_members.user_id', auth()->user()->id)
-            ->count();
+            ->first();
         if (!$room) {
             return redirect()->route('index');
         }
@@ -52,14 +53,6 @@ class RoomController extends Controller
         if ($blocked) {
             return redirect()->route('index');
         }
-        Message::where('status', 1)
-            ->where('seen', 0)
-            ->where('room_id', $id)
-            ->where('user_id', '!=', auth()->user()->id)
-            ->update([
-                'seen' => 1,
-                'updated_at' => now()
-            ]);
         $client = (object) [
             'id' => $user->id,
             'name' => $user->name,
@@ -67,8 +60,12 @@ class RoomController extends Controller
             'active' => $user->activity && $user->latestLoginInfo->status ? 'active' : null,
             'status' => $user->activity ? ($user->latestLoginInfo->status ? 'online' : Carbon::parse($user->latestLoginInfo->updated_at)->format('d M H:i')) : 'hidden status',
         ];
+        $area = (object) [
+            'owner' => $room->user_id,
+            'spy' => $room->spy
+        ];
         $devices = $getLoginHistoryService->handle();
-        return view('pages.room', ['devices' => $devices, 'client' => $client, 'room' => $id]);
+        return view('pages.room', ['devices' => $devices, 'client' => $client, 'room' => $id, 'area' => $area]);
     }
 
     // ---- ------ -- --- ------- ---- -------- ----
@@ -102,8 +99,9 @@ class RoomController extends Controller
     // This Method Is Designed To Delete Chat
     // ---- ------ -- -------- -- ------ ----
 
-    public function deleteChat(int $id)
+    public function deleteChat(Request $request, int $id)
     {
+        $spy = $request->input('spy');
         $user = User::where('id', $id)
             ->where('id', '!=', auth()->user()->id)
             ->where('status', 1)
@@ -121,11 +119,15 @@ class RoomController extends Controller
         }
         $room = RoomMemeber::from('room_members as rm1')
             ->join('room_members as rm2', 'rm1.room_id', '=', 'rm2.room_id')
+            ->join('rooms', 'rm1.room_id', '=', 'rooms.id')
             ->where('rm1.user_id', '=', auth()->user()->id)
             ->where('rm2.user_id', '=', $id)
+            ->where('rooms.status', '=', 1)
+            ->where('rooms.spy', '=', $spy)
             ->select('rm1.room_id')
             ->first();
         $count = Room::where('id', $room->room_id)
+            ->where('spy', $spy)
             ->where('status', 1)
             ->update([
                 'status' => 0,

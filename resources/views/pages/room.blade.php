@@ -3,6 +3,7 @@
         <meta name="user-id" content="{{ auth()->user()->id }}">
         <meta name="client-id" content="{{ $client->id }}">
         <meta name="room-id" content="{{ $room }}">
+        <meta name="spy" content="{{ $area->spy ? 1 : 0 }}">
         <link rel="stylesheet" href="{{ asset('css/pages/room.css') }}">
     </x-slot>
     <x-slot:body>
@@ -430,18 +431,50 @@
                         </div>
                         <div class="profile">
                             <div>
-                                <div class="avatar {{ $client->active }}">
-                                    @if($client->avatar)
-                                        <img src="{{ $client->avatar }}">
+                                <div class="avatar {{ $area->spy ? ($area->owner == auth()->user()->id ? $client->active : null) : $client->active }}">
+                                    @if ($area->spy)
+                                        @if ($area->owner == auth()->user()->id)
+                                            @if($client->avatar)
+                                                <img src="{{ $client->avatar }}">
+                                            @else
+                                                {{ $client->name[0] }}
+                                            @endif
+                                        @else
+                                            <img src="/assets/anonymous-{{ rand(1, 5) }}.png">
+                                        @endif
                                     @else
-                                        {{ $client->name[0] }}
+                                        @if($client->avatar)
+                                            <img src="{{ $client->avatar }}">
+                                        @else
+                                            {{ $client->name[0] }}
+                                        @endif
                                     @endif
                                 </div>
                             </div>
                             <div>
                                 <div class="info">
-                                    <h2>{{ $client->name }}</h2>
-                                    <h3>{{ $client->status }}</h3>
+                                    <h2>
+                                        @if ($area->spy)
+                                            @if ($area->owner == auth()->user()->id)
+                                                {{ $client->name }}
+                                            @else
+                                                anonymous
+                                            @endif
+                                        @else
+                                            {{ $client->name }}
+                                        @endif
+                                    </h2>
+                                    <h3>
+                                        @if ($area->spy)
+                                            @if ($area->owner == auth()->user()->id)
+                                                {{ $client->status }}
+                                            @else
+                                                hidden status
+                                            @endif
+                                        @else
+                                            {{ $client->status }}
+                                        @endif
+                                    </h3>
                                 </div>
                             </div>
                         </div>

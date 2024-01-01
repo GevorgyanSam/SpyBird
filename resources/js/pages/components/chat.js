@@ -65,7 +65,7 @@ function transformChatDataToHtml(data) {
             : "";
         if (user.spy) {
             name = "anonymous";
-            let int = Math.floor(Math.random() * 2) + 1;
+            let int = Math.floor(Math.random() * 5) + 1;
             let url = `/assets/anonymous-${int}.png`;
             avatar = `<img src="${url}"></img>`;
             active = "";
