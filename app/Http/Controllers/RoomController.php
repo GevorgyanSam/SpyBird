@@ -161,11 +161,12 @@ class RoomController extends Controller
 
     public function getNewMessages(int $id)
     {
-        $room = Room::join('room_members', 'rooms.id', '=', 'room_members.room_id')
+        $room = Room::select('rooms.user_id', 'rooms.spy')
+            ->join('room_members', 'rooms.id', '=', 'room_members.room_id')
             ->where('rooms.id', $id)
             ->where('rooms.status', 1)
             ->where('room_members.user_id', auth()->user()->id)
-            ->count();
+            ->first();
         if (!$room) {
             return response()->json(['redirect' => true], 403);
         }
@@ -203,6 +204,12 @@ class RoomController extends Controller
             ->where('status', 1)
             ->orderBy('id')
             ->get();
+        if ($room->spy && $room->user_id != auth()->user()->id) {
+            if (!$messages->count()) {
+                return response()->json(['empty' => true], 200);
+            }
+            return response()->json(['messages' => $messages], 200);
+        }
         if (!$messages->count()) {
             return response()->json(['client' => $client, 'empty' => true], 200);
         }
