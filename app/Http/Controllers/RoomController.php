@@ -170,6 +170,15 @@ class RoomController extends Controller
         if (!$room) {
             return response()->json(['redirect' => true], 403);
         }
+        if (auth()->user()->spy) {
+            if (($room->spy && $room->user_id != auth()->user()->id) || !$room->spy) {
+                return response()->json(['redirect' => true], 403);
+            }
+        } else {
+            if ($room->spy && $room->user_id == auth()->user()->id) {
+                return response()->json(['redirect' => true], 403);
+            }
+        }
         $member = RoomMemeber::select('user_id')
             ->where('room_id', $id)
             ->where('user_id', '!=', auth()->user()->id)
