@@ -161,6 +161,7 @@ export function switchSpyMode() {
                 success: function (response) {
                     if (response.success) {
                         loading(false);
+                        spyView(true);
                         e.target.checked = true;
                     } else if (response.reload) {
                         location.reload();
@@ -184,6 +185,7 @@ export function switchSpyMode() {
                 success: function (response) {
                     if (response.success) {
                         loading(false);
+                        spyView(false);
                         e.target.checked = false;
                     } else if (response.reload) {
                         location.reload();
@@ -195,6 +197,43 @@ export function switchSpyMode() {
                 },
             });
         }
+    });
+}
+
+// ---- ------ -- --- --- ---- ----
+// This Method Is For Spy Mode View
+// ---- ------ -- --- --- ---- ----
+
+function spyView(mode) {
+    if (mode) {
+        $("body").addClass("spy");
+    } else {
+        $("body").removeClass("spy");
+    }
+    $("svg").attr("fill", $("body").css("--primary-color"));
+}
+
+// ---- ------ ------ --- ------- -- -- --- ----
+// This Method Checks The Website Is In Spy Mode
+// ---- ------ ------ --- ------- -- -- --- ----
+
+export function checkSpy() {
+    $.ajax({
+        url: "/check-spy-mode",
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        success: function (response) {
+            if (response.spy) {
+                spyView(true);
+            } else {
+                spyView(false);
+            }
+        },
+        error: function (error) {
+            location.reload();
+        },
     });
 }
 

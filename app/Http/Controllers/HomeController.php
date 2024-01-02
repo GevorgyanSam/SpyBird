@@ -35,6 +35,15 @@ class HomeController extends Controller
         return $service->handle($request);
     }
 
+    // ---- ------ -- -------- -- ----- -- ---- -- --- ---- -- ---
+    // This Method Is Designed To Check Is User In Spy Mode Or Not
+    // ---- ------ -- -------- -- ----- -- ---- -- --- ---- -- ---
+
+    public function checkSpyMode()
+    {
+        return response()->json(['spy' => auth()->user()->spy], 200);
+    }
+
     // ---- ------ -- --- ------- ----- -------- ----
     // This Method Is For Getting Aside Dropdown Data
     // ---- ------ -- --- ------- ----- -------- ----

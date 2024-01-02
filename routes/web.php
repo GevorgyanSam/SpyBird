@@ -55,6 +55,7 @@ Route::middleware(['auth', 'lockscreen'])->group(function () {
         Route::post('/send-message/{id}', 'sendMessage')->name('send-message');
         Route::post('/get-chats', 'getChats')->name('get-chats');
         Route::post('/search-chats', 'searchChats')->name('search-chats');
+        Route::post('/check-spy-mode', 'checkSpyMode')->name('check-spy-mode');
 
     });
 
