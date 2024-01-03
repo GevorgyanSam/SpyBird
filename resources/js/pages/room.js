@@ -105,6 +105,14 @@ function transformMessageDataToHtml(message) {
             <div class="content-date">${content}</div>
         </div>
     `;
+    /*
+        <div class="message ${position}" data-message-id="${message.id}">
+            <div class="content-img">
+                <img src="path">
+            </div>
+            <div class="content-date">${content}</div>
+        </div>
+    */
 }
 
 // ---- ------ -- --- ------------ ------- ----
@@ -199,6 +207,7 @@ function handleClientData(client) {
     if (oldData !== newData) {
         sessionStorage.setItem(`client-${client.id}`, newData);
         let profile = $(".mainParent .roomParent .header .profile");
+        let name = $("<div/>").text(client.name).html();
         let avatar = client.avatar
             ? `<img src="${client.avatar}">`
             : client.name[0];
@@ -210,7 +219,7 @@ function handleClientData(client) {
             </div>
             <div>
                 <div class="info">
-                    <h2>${client.name}</h2>
+                    <h2>${name}</h2>
                     <h3>${client.status}</h3>
                 </div>
             </div>
