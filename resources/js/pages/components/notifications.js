@@ -125,6 +125,7 @@ function transformNotificationDataToHtml(data) {
             `;
         } else {
             let url = $('meta[name="asset-url"]').attr("content");
+            let name = $("<div/>").text(notification.sender.name).html();
             let avatar = notification.sender.avatar
                 ? `<img src="${url}/${notification.sender.avatar}"></img>`
                 : notification.sender.name[0];
@@ -137,7 +138,7 @@ function transformNotificationDataToHtml(data) {
                         </div>
                     </div>
                     <div class="content">
-                        <div class="name">${notification.sender.name}</div>
+                        <div class="name">${name}</div>
                         <div class="time">${date}</div>
                         <div class="message">${notification.content}.</div>
                     </div>

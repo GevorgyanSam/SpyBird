@@ -497,6 +497,10 @@
                     <div class="footer">
                         <x-form id="sendLetter" method="post" action="{{ route('send-letter', ['id' => $room]) }}">
                             <div class="formParent">
+                                <label for="file">
+                                    <i class="fa-solid fa-image"></i>
+                                </label>
+                                <input type="file" name="file" id="file" accept=".jpg, .jpeg, .png, .webp">
                                 <input type="text" placeholder="type your message ..." autocomplete="off" name="letter">
                                 <button type="submit">
                                     <i class="fa-solid fa-paper-plane"></i>

@@ -366,6 +366,19 @@ main {
                     justify-content: space-between;
                     overflow: hidden;
 
+                    label[for="file"] {
+                        height: calc(100% - 20px);
+                        width: 40px;
+                        cursor: pointer;
+                        margin-left: 10px;
+                        display: grid;
+                        place-items: center;
+
+                        i {
+                            color: var(--primary-color);
+                        }
+                    }
+
                     input {
                         height: 100%;
                         width: 100%;
@@ -377,6 +390,10 @@ main {
                         &::placeholder {
                             text-transform: capitalize;
                             color: var(--gray);
+                        }
+
+                        &[name="file"] {
+                            display: none;
                         }
                     }
 

@@ -82,6 +82,7 @@ function setMessages(messages) {
 function transformMessageDataToHtml(message) {
     let user_id = $('meta[name="user-id"]').attr("content");
     let client_id = $('meta[name="client-id"]').attr("content");
+    let text = $("<div/>").text(message.message).html();
     let date = message.created_at.substr(-8, 5);
     let liked = message.liked
         ? `<div class="liked"><i class="fa-solid fa-heart"></i></div>`
@@ -100,7 +101,7 @@ function transformMessageDataToHtml(message) {
     }
     return `
         <div class="message ${position}" data-message-id="${message.id}">
-            <div class="content">${message.message}</div>
+            <div class="content">${text}</div>
             <div class="content-date">${content}</div>
         </div>
     `;

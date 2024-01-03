@@ -58,6 +58,7 @@ function transformChatDataToHtml(data) {
         let avatar = "";
         let active = "";
         let created_at = user.created_at.substr(-8, 5);
+        let message = $("<div/>").text(user.message).html();
         let unread = user.unread_message_count
             ? user.unread_message_count > 9
                 ? `<div class="count">9+</div>`
@@ -70,7 +71,7 @@ function transformChatDataToHtml(data) {
             avatar = `<img src="${url}"></img>`;
             active = "";
         } else {
-            name = user.name;
+            name = $("<div/>").text(user.name).html();
             avatar = user.avatar
                 ? `<img src="/storage/${user.avatar}"></img>`
                 : user.name[0];
@@ -88,7 +89,7 @@ function transformChatDataToHtml(data) {
                         <div class="chatInfo">
                             <div class="name">${name}</div>
                             <div class="time">${created_at}</div>
-                            <div class="message">${user.message}</div>
+                            <div class="message">${message}</div>
                             <div class="unread">${unread}</div>
                         </div>
                     </div>

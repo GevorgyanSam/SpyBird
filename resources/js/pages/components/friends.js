@@ -60,6 +60,7 @@ function transformFriendsDataToHtml(data) {
             : user.name[0];
         let active = user.status ? "active" : null;
         let updated_at = user.updated_at;
+        let name = $("<div/>").text(user.name).html();
         let status = user.hidden
             ? "hidden status"
             : active
@@ -73,7 +74,7 @@ function transformFriendsDataToHtml(data) {
                 </div>
             </div>
             <div class="personInfo">
-                <h4>${user.name}</h4>
+                <h4>${name}</h4>
                 <div class="status">${status}</div>
             </div>
             <div class="personSettings">
