@@ -68,6 +68,7 @@ Route::middleware(['auth', 'lockscreen'])->group(function () {
         Route::post('/get-new-messages/{id}', 'getNewMessages')->name('get-new-messages');
         Route::post('/set-seen-message/{id}', 'setSeenMessage')->name('set-seen-message');
         Route::post('/send-letter/{id}', 'sendLetter')->name('send-letter');
+        Route::post('/send-image/{id}', 'sendImage')->name('send-image');
         Route::post('/delete-message/{id}', 'deleteMessage')->name('delete-message');
         Route::post('/like-message/{id}', 'likeMessage')->name('like-message');
 

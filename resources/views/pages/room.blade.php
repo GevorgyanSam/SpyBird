@@ -495,7 +495,7 @@
                         <div class="chatArea"></div>
                     </div>
                     <div class="footer">
-                        <x-form id="sendLetter" method="post" action="{{ route('send-letter', ['id' => $room]) }}">
+                        <x-form id="sendLetter" method="post" action="{{ route('send-letter', ['id' => $room]) }}" enctype="multipart/form-data">
                             <div class="formParent">
                                 <label for="file">
                                     <i class="fa-solid fa-image"></i>

@@ -273,6 +273,41 @@ function sendLetter() {
 
 sendLetter();
 
+// ---- ------ -- --- ------- -- ------
+// This Method Is For Sending An Image
+// ---- ------ -- --- ------- -- ------
+
+function sendImage() {
+    const input = $("form#sendLetter input[name=file]");
+
+    input.on("change", function () {
+        let file = input[0].files[0];
+        if (file) {
+            let id = $('meta[name="room-id"]').attr("content");
+            let data = new FormData();
+            data.append("file", file);
+            $.ajax({
+                url: `/send-image/${id}`,
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                data: data,
+                processData: false,
+                contentType: false,
+                success: function (response) {},
+                error: function (error) {
+                    location.reload();
+                },
+            });
+        }
+    });
+}
+
+sendImage();
+
 // ---- ------ -- --- -------- - -------
 // This Method Is For Deleting A Message
 // ---- ------ -- --- -------- - -------

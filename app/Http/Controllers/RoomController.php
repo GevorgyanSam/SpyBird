@@ -11,6 +11,7 @@ use App\Services\Block\GetBlockedRelationshipService;
 use App\Services\Settings\GetLoginHistoryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 class RoomController extends Controller
 {
@@ -274,6 +275,34 @@ class RoomController extends Controller
             'created_at' => now()
         ]);
         return response()->json(['success' => true], 200);
+    }
+
+    // ---- ------ -- --- ------- -----
+    // This Method Is For Sending Image
+    // ---- ------ -- --- ------- -----
+
+    public function sendImage(Request $request, int $id)
+    {
+        $rules = [
+            'file' => ['bail', 'file', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5000'],
+        ];
+        $messages = [
+            "max" => ":attribute is too big"
+        ];
+        $request->validate($rules, $messages);
+        if ($request->hasFile("file") && $request->file("file")->isValid()) {
+            $fileName = Str::random(10) . "_" . now()->timestamp . "_" . auth()->user()->id . "." . $request->file("file")->getClientOriginalExtension();
+            $path = $request->file("file")->storeAs("assets", $fileName);
+            $room = Room::join('room_members', 'rooms.id', '=', 'room_members.room_id')
+                ->where('rooms.id', $id)
+                ->where('rooms.status', 1)
+                ->where('room_members.user_id', auth()->user()->id)
+                ->count();
+            if (!$room) {
+                return response()->json(['redirect' => true], 403);
+            }
+            return response()->json(['success' => true], 200);
+        }
     }
 
     // ---- ------ -- --- -------- -------
