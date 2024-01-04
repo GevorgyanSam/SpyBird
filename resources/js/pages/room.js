@@ -1,3 +1,8 @@
+// ------ ------- ------ ---- -----------
+// Import Loading Method From Components.
+// ------ ------- ------ ---- -----------
+import loading from "../components/loading";
+
 // ---- ------ -- --- ------ --------
 // This Method Is For Hiding Messages
 // ---- ------ -- --- ------ --------
@@ -287,6 +292,7 @@ function sendImage() {
     input.on("change", function () {
         let file = input[0].files[0];
         if (file) {
+            loading(true);
             let id = $('meta[name="room-id"]').attr("content");
             let data = new FormData();
             data.append("file", file);
@@ -301,7 +307,10 @@ function sendImage() {
                 data: data,
                 processData: false,
                 contentType: false,
-                success: function (response) {},
+                success: function (response) {
+                    input.val("");
+                    loading(false);
+                },
                 error: function (error) {
                     location.reload();
                 },
