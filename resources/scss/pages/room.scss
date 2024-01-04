@@ -295,11 +295,13 @@ main {
                         }
 
                         .content-img {
-                            max-width: 450px;
+                            width: 20cqw;
+                            height: 30cqh;
                             border-radius: var(--radius);
                             overflow: hidden;
 
                             img {
+                                cursor: pointer;
                                 border-radius: var(--radius);
                                 width: 100%;
                                 height: 100%;

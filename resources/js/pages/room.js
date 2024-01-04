@@ -49,6 +49,7 @@ function getMessages() {
                 setMessages(response.messages);
                 removeMessage();
                 likeMessage();
+                resizeImage();
                 scrollAndFocus();
             }
         },
@@ -191,6 +192,7 @@ function getNewMessages() {
                     setMessages(response.messages);
                     removeMessage();
                     likeMessage();
+                    resizeImage();
                     scrollAndFocus();
                 }
             }
@@ -425,3 +427,16 @@ function likeMessageAnimation(item) {
     liked.html('<i class="fa-solid fa-heart"></i>');
     item.children(".content-date").append(liked);
 }
+
+// ---- ------ -- -------- -- ------ ---- -- ---- ------
+// This Method Is Designed To Change Size Of Chat Images
+// ---- ------ -- -------- -- ------ ---- -- ---- ------
+
+function resizeImage() {
+    let image = $(".chatArea .content-img img");
+    image.click(function () {
+        let path = $(this).attr("src");
+    });
+}
+
+resizeImage();

@@ -37,6 +37,16 @@
                         }
                     }
                 }
+
+                .main {
+                    .chatArea {
+                        .message {
+                            .content-img {
+                                width: 30cqw;
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -71,6 +81,16 @@
 
                     .settings {
                         width: 10%;
+                    }
+                }
+
+                .main {
+                    .chatArea {
+                        .message {
+                            .content-img {
+                                width: 40cqw;
+                            }
+                        }
                     }
                 }
 
@@ -113,7 +133,8 @@
                             }
 
                             .content-img {
-                                max-width: 80cqw;
+                                width: 60cqw;
+                                height: 25cqh;
                             }
 
                             .content-date {
