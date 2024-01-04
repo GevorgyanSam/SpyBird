@@ -177,7 +177,9 @@ class HomeController extends Controller
                 'users.activity',
                 'users.avatar',
                 'login_info.status',
-                'messages.message',
+                'messages.user_id',
+                'messages.content',
+                'messages.type',
                 'messages.created_at',
                 DB::raw('(SELECT COUNT(*) FROM messages WHERE messages.room_id = room_members.room_id AND messages.seen = 0 AND messages.status = 1 AND messages.user_id != ' . auth()->user()->id . ') as unread_message_count')
             )
@@ -188,7 +190,7 @@ class HomeController extends Controller
                 ->join('login_info', function ($join) {
                     $join->on('users.id', '=', 'login_info.user_id')->on('latest_login_info.latest_login', '=', 'login_info.created_at');
                 })
-                ->join(DB::raw('(SELECT room_id, message, created_at, ROW_NUMBER() OVER (PARTITION BY room_id ORDER BY created_at DESC) AS row_num FROM messages WHERE status = 1) as messages'), function ($join) {
+                ->join(DB::raw('(SELECT room_id, user_id, content, type, created_at, ROW_NUMBER() OVER (PARTITION BY room_id ORDER BY created_at DESC) AS row_num FROM messages WHERE status = 1) as messages'), function ($join) {
                     $join->on('room_members.room_id', '=', 'messages.room_id')->where('messages.row_num', '=', 1);
                 })
                 ->whereIn('room_members.room_id', function ($query) {
@@ -223,7 +225,9 @@ class HomeController extends Controller
                 'users.activity',
                 'users.avatar',
                 'login_info.status',
-                'messages.message',
+                'messages.user_id',
+                'messages.content',
+                'messages.type',
                 'messages.created_at',
                 'rooms.spy',
                 DB::raw('(SELECT COUNT(*) FROM messages WHERE messages.room_id = room_members.room_id AND messages.seen = 0 AND messages.status = 1 AND messages.user_id != ' . auth()->user()->id . ') as unread_message_count')
@@ -235,7 +239,7 @@ class HomeController extends Controller
                 ->join('login_info', function ($join) {
                     $join->on('users.id', '=', 'login_info.user_id')->on('latest_login_info.latest_login', '=', 'login_info.created_at');
                 })
-                ->join(DB::raw('(SELECT room_id, message, created_at, ROW_NUMBER() OVER (PARTITION BY room_id ORDER BY created_at DESC) AS row_num FROM messages WHERE status = 1) as messages'), function ($join) {
+                ->join(DB::raw('(SELECT room_id, user_id, content, type, created_at, ROW_NUMBER() OVER (PARTITION BY room_id ORDER BY created_at DESC) AS row_num FROM messages WHERE status = 1) as messages'), function ($join) {
                     $join->on('room_members.room_id', '=', 'messages.room_id')->where('messages.row_num', '=', 1);
                 })
                 ->whereIn('room_members.room_id', function ($query) {
@@ -286,7 +290,9 @@ class HomeController extends Controller
                 'users.activity',
                 'users.avatar',
                 'login_info.status',
-                'messages.message',
+                'messages.user_id',
+                'messages.content',
+                'messages.type',
                 'messages.created_at',
                 DB::raw('(SELECT COUNT(*) FROM messages WHERE messages.room_id = room_members.room_id AND messages.seen = 0 AND messages.status = 1 AND messages.user_id != ' . auth()->user()->id . ') as unread_message_count')
             )
@@ -297,7 +303,7 @@ class HomeController extends Controller
                 ->join('login_info', function ($join) {
                     $join->on('users.id', '=', 'login_info.user_id')->on('latest_login_info.latest_login', '=', 'login_info.created_at');
                 })
-                ->join(DB::raw('(SELECT room_id, message, created_at, ROW_NUMBER() OVER (PARTITION BY room_id ORDER BY created_at DESC) AS row_num FROM messages WHERE status = 1) as messages'), function ($join) {
+                ->join(DB::raw('(SELECT room_id, user_id, content, type, created_at, ROW_NUMBER() OVER (PARTITION BY room_id ORDER BY created_at DESC) AS row_num FROM messages WHERE status = 1) as messages'), function ($join) {
                     $join->on('room_members.room_id', '=', 'messages.room_id')->where('messages.row_num', '=', 1);
                 })
                 ->whereIn('room_members.room_id', function ($query) {
@@ -333,7 +339,9 @@ class HomeController extends Controller
                 'users.activity',
                 'users.avatar',
                 'login_info.status',
-                'messages.message',
+                'messages.user_id',
+                'messages.content',
+                'messages.type',
                 'messages.created_at',
                 'rooms.spy',
                 DB::raw('(SELECT COUNT(*) FROM messages WHERE messages.room_id = room_members.room_id AND messages.seen = 0 AND messages.status = 1 AND messages.user_id != ' . auth()->user()->id . ') as unread_message_count')
@@ -345,7 +353,7 @@ class HomeController extends Controller
                 ->join('login_info', function ($join) {
                     $join->on('users.id', '=', 'login_info.user_id')->on('latest_login_info.latest_login', '=', 'login_info.created_at');
                 })
-                ->join(DB::raw('(SELECT room_id, message, created_at, ROW_NUMBER() OVER (PARTITION BY room_id ORDER BY created_at DESC) AS row_num FROM messages WHERE status = 1) as messages'), function ($join) {
+                ->join(DB::raw('(SELECT room_id, user_id, content, type, created_at, ROW_NUMBER() OVER (PARTITION BY room_id ORDER BY created_at DESC) AS row_num FROM messages WHERE status = 1) as messages'), function ($join) {
                     $join->on('room_members.room_id', '=', 'messages.room_id')->where('messages.row_num', '=', 1);
                 })
                 ->whereIn('room_members.room_id', function ($query) {

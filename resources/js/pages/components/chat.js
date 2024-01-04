@@ -52,13 +52,23 @@ function setChats(data) {
 // ---- ------ -- ------------ ---- -- ----
 
 function transformChatDataToHtml(data) {
+    let user_id = $('meta[name="user-id"]').attr("content");
     let content = "";
     data.forEach((user) => {
         let name = "";
         let avatar = "";
         let active = "";
         let created_at = user.created_at.substr(-8, 5);
-        let message = $("<div/>").text(user.message).html();
+        let message = "";
+        if (user.type === "image") {
+            if (user.user_id == user_id) {
+                message = "You Sent An Image";
+            } else {
+                message = "Sent You An Image";
+            }
+        } else {
+            message = $("<div/>").text(user.content).html();
+        }
         let unread = user.unread_message_count
             ? user.unread_message_count > 9
                 ? `<div class="count">9+</div>`

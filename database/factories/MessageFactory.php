@@ -11,7 +11,8 @@ class MessageFactory extends Factory
         return [
             'user_id' => fake()->numberBetween(1, 100),
             'room_id' => fake()->numberBetween(1, 100),
-            'message' => fake()->sentence(fake()->numberBetween(1, 50)),
+            'content' => fake()->sentence(fake()->numberBetween(1, 50)),
+            'type' => fake()->randomElement(['text', 'image']),
             'liked' => fake()->numberBetween(0, 1),
             'seen' => fake()->numberBetween(0, 1),
             'status' => fake()->numberBetween(0, 1),

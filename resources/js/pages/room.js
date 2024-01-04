@@ -82,7 +82,7 @@ function setMessages(messages) {
 function transformMessageDataToHtml(message) {
     let user_id = $('meta[name="user-id"]').attr("content");
     let client_id = $('meta[name="client-id"]').attr("content");
-    let text = $("<div/>").text(message.message).html();
+    let text = $("<div/>").text(message.content).html();
     let date = message.created_at.substr(-8, 5);
     let liked = message.liked
         ? `<div class="liked"><i class="fa-solid fa-heart"></i></div>`
@@ -99,20 +99,24 @@ function transformMessageDataToHtml(message) {
             setSeenMessage(message.id);
         }
     }
+    if (message.type === "image") {
+        let asset = $('meta[name="asset-url"]').attr("content");
+        let path = asset + "/" + message.content;
+        return `
+            <div class="message ${position}" data-message-id="${message.id}">
+                <div class="content-img">
+                    <img src="${path}">
+                </div>
+                <div class="content-date">${content}</div>
+            </div>
+        `;
+    }
     return `
         <div class="message ${position}" data-message-id="${message.id}">
             <div class="content">${text}</div>
             <div class="content-date">${content}</div>
         </div>
     `;
-    /*
-        <div class="message ${position}" data-message-id="${message.id}">
-            <div class="content-img">
-                <img src="path">
-            </div>
-            <div class="content-date">${content}</div>
-        </div>
-    */
 }
 
 // ---- ------ -- --- ------------ ------- ----
@@ -316,7 +320,7 @@ function removeMessage() {
     const message = $(".chatArea .message-right");
     message.each(function () {
         let self = $(this);
-        self.children(".content").dblclick(function () {
+        self.children(".content, .content-img").dblclick(function () {
             let id = self.data("message-id");
             let room = $('meta[name="room-id"]').attr("content");
             $.ajax({
@@ -372,7 +376,7 @@ function likeMessage() {
     const message = $(".chatArea .message-left");
     message.each(function () {
         let self = $(this);
-        self.children(".content").dblclick(function () {
+        self.children(".content, .content-img").dblclick(function () {
             let liked = self.children(".content-date").children(".liked");
             if (!liked.hasClass("liked")) {
                 let id = self.data("message-id");

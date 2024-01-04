@@ -268,7 +268,8 @@ class RoomController extends Controller
         Message::create([
             'user_id' => auth()->user()->id,
             'room_id' => $id,
-            'message' => $letter,
+            'content' => $letter,
+            'type' => 'text',
             'liked' => 0,
             'seen' => 0,
             'status' => 1,
@@ -301,6 +302,16 @@ class RoomController extends Controller
             if (!$room) {
                 return response()->json(['redirect' => true], 403);
             }
+            Message::create([
+                'user_id' => auth()->user()->id,
+                'room_id' => $id,
+                'content' => $path,
+                'type' => 'image',
+                'liked' => 0,
+                'seen' => 0,
+                'status' => 1,
+                'created_at' => now()
+            ]);
             return response()->json(['success' => true], 200);
         }
     }

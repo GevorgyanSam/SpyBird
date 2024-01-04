@@ -12,7 +12,8 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('room_id');
-            $table->text('message');
+            $table->text('content');
+            $table->enum('type', ['text', 'image']);
             $table->integer('liked');
             $table->integer('seen');
             $table->integer('status');

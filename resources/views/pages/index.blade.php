@@ -1,5 +1,6 @@
 <x-app title='Chat'>
     <x-slot:styles>
+        <meta name="user-id" content="{{ auth()->user()->id }}">
         <link rel="stylesheet" href="{{ asset('css/pages/style.css') }}">
     </x-slot>
     <x-slot:body>
