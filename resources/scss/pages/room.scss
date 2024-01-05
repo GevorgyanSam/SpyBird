@@ -1,5 +1,43 @@
 @import "./style.scss";
 
+#imageContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: var(--loading-background);
+    z-index: 9999999999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    animation: showContainer 0.2s linear forwards;
+    opacity: 0;
+
+    @keyframes showContainer {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+    &.active {
+        display: flex;
+    }
+
+    .imageParent {
+        img {
+            border-radius: var(--radius);
+            max-height: 90cqh;
+            max-width: 90cqw;
+            object-fit: cover;
+            object-position: center;
+        }
+    }
+}
+
 main {
     .mainParent {
         background-color: var(--background-color-2);

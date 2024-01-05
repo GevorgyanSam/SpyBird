@@ -433,9 +433,19 @@ function likeMessageAnimation(item) {
 // ---- ------ -- -------- -- ------ ---- -- ---- ------
 
 function resizeImage() {
+    let container = $("#imageContainer");
+    let element = container.find(".imageParent img");
     let image = $(".chatArea .content-img img");
+
     image.click(function () {
         let path = $(this).attr("src");
+        element.attr("src", path);
+        container.addClass("active");
+    });
+
+    container.click(function () {
+        container.removeClass("active");
+        element.attr("src", "");
     });
 }
 

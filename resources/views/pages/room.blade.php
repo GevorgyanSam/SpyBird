@@ -9,6 +9,11 @@
     <x-slot:body>
         <x-notification />
         <x-loading />
+        <section id="imageContainer">
+            <div class="imageParent">
+                <img src="">
+            </div>
+        </section>
 
         <!-- ----- ----- ---------- ----- ----- -->
         <!-- ----- ----- Navigation ----- ----- -->
