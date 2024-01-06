@@ -497,6 +497,9 @@
                                 <h3>no messages yet, <br> start the conversation!</h3>
                             </div>
                         </div>
+                        <div class="interactParent">
+                            <div class="container"></div>
+                        </div>
                         <div class="chatArea"></div>
                     </div>
                     <div class="footer">

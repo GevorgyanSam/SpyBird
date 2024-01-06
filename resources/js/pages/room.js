@@ -47,10 +47,8 @@ function getMessages() {
                 );
                 showMessages();
                 setMessages(response.messages);
-                removeMessage();
-                likeMessage();
-                resizeImage();
-                scrollAndFocus();
+                interactMessage();
+                scrollDown();
             }
         },
         error: function (error) {
@@ -190,10 +188,8 @@ function getNewMessages() {
                     sessionStorage.setItem("messages", newMessages);
                     showMessages();
                     setMessages(response.messages);
-                    removeMessage();
-                    likeMessage();
-                    resizeImage();
-                    scrollAndFocus();
+                    interactMessage();
+                    scrollDown();
                 }
             }
         },
@@ -243,14 +239,12 @@ function handleClientData(client) {
 // This Method Is For Scrolling Down
 // ---- ------ -- --- --------- ----
 
-function scrollAndFocus() {
+function scrollDown() {
     const chat = $(".main .chatArea");
-    const input = $(".roomParent .footer .formParent input");
     chat.scrollTop(chat[0].scrollHeight);
-    input.focus();
 }
 
-scrollAndFocus();
+scrollDown();
 
 // ---- ------ -- --- ------- - -------
 // This Method Is For Sending A Message
@@ -278,7 +272,7 @@ function sendLetter() {
             },
         });
         input.val("");
-        scrollAndFocus();
+        scrollDown();
     });
 }
 
@@ -356,8 +350,6 @@ function removeMessage() {
     });
 }
 
-removeMessage();
-
 // ---- ------ -- -- --------- --- -------- - -------
 // This Method Is An Animation For Deleting A Message
 // ---- ------ -- -- --------- --- -------- - -------
@@ -415,8 +407,6 @@ function likeMessage() {
     });
 }
 
-likeMessage();
-
 // ---- ------ -- -- --------- -- ------ - -------
 // This Method Is An Animation Of Liking A Message
 // ---- ------ -- -- --------- -- ------ - -------
@@ -432,16 +422,12 @@ function likeMessageAnimation(item) {
 // This Method Is Designed To Change Size Of Chat Images
 // ---- ------ -- -------- -- ------ ---- -- ---- ------
 
-function resizeImage() {
+function resizeImage(message) {
     let container = $("#imageContainer");
     let element = container.find(".imageParent img");
-    let image = $(".chatArea .content-img img");
-
-    image.click(function () {
-        let path = $(this).attr("src");
-        element.attr("src", path);
-        container.addClass("active");
-    });
+    let path = message.find(".content-img img").attr("src");
+    element.attr("src", path);
+    container.addClass("active");
 
     container.click(function () {
         container.removeClass("active");
@@ -449,4 +435,151 @@ function resizeImage() {
     });
 }
 
-resizeImage();
+// ---- ------ -- -------- -- -------- ---- --------
+// This Method Is Designed To Interact With Messages
+// ---- ------ -- -------- -- -------- ---- --------
+
+function interactMessage() {
+    let messages = $(".chatArea .message");
+
+    messages.dblclick(function () {
+        closeInteractContainer();
+        let self = $(this);
+        let response = getMessageInfo(self);
+        interactContainer(response);
+        interactItem(self);
+    });
+
+    $(document).click(function () {
+        closeInteractContainer();
+    });
+}
+
+interactMessage();
+
+// ---- ------ -- --- ------- ---- ----- -------
+// This Method Is For Getting Info About Message
+// ---- ------ -- --- ------- ---- ----- -------
+
+function getMessageInfo(message) {
+    let response = {};
+    if (message.hasClass("message-left")) {
+        response.owner = false;
+    } else if (message.hasClass("message-right")) {
+        response.owner = true;
+    }
+    if (message.children("div").hasClass("content")) {
+        response.text = true;
+    } else if (message.children("div").hasClass("content-img")) {
+        response.image = true;
+    }
+    return response;
+}
+
+// ---- ------ -- --- ------------ ------- ---- -- -------- ---------
+// This Method Is For Transforming Message Data To Interact Container
+// ---- ------ -- --- ------------ ------- ---- -- -------- ---------
+
+function interactContainer(message) {
+    let parent = $(".roomParent .main .interactParent");
+    let container = parent.find(".container");
+    container.empty();
+    let content = ``;
+    if (message.owner) {
+        if (message.text) {
+            content += `
+                <div class="item" data-job="copyClipboard">
+                    <i class="fa-solid fa-copy"></i>
+                    copy to clipboard
+                </div>
+            `;
+            content += `<div class="line"></div>`;
+            content += `
+                <div class="item danger" data-job="deleteMessage">
+                    <i class="fa-solid fa-trash"></i>
+                    delete message
+                </div>
+            `;
+        } else if (message.image) {
+            content += `
+                <div class="item" data-job="resizeImage">
+                    <i class="fa-solid fa-expand"></i>
+                    open image
+                </div>
+            `;
+            content += `<div class="line"></div>`;
+            content += `
+                <div class="item danger"  data-job="deleteMessage">
+                    <i class="fa-solid fa-trash"></i>
+                    delete image
+                </div>
+            `;
+        }
+    } else {
+        if (message.text) {
+            content += `
+                <div class="item" data-job="copyClipboard">
+                    <i class="fa-solid fa-copy"></i>
+                    copy to clipboard
+                </div>
+            `;
+            content += `<div class="line"></div>`;
+            content += `
+                <div class="item" data-job="likeMessage">
+                    <i class="fa-solid fa-heart"></i>
+                    like message
+                </div>
+            `;
+        } else if (message.image) {
+            content += `
+                <div class="item" data-job="resizeImage">
+                    <i class="fa-solid fa-expand"></i>
+                    open image
+                </div>
+            `;
+            content += `<div class="line"></div>`;
+            content += `
+                <div class="item" data-job="likeMessage">
+                    <i class="fa-solid fa-heart"></i>
+                    like image
+                </div>
+            `;
+        }
+    }
+    container.html(content);
+    parent.addClass("active");
+}
+
+// ---- ------ -- --- ------- -------- ---------
+// This Method Is For Closing Interact Container
+// ---- ------ -- --- ------- -------- ---------
+
+function closeInteractContainer() {
+    let parent = $(".roomParent .main .interactParent");
+    parent.removeClass("active");
+}
+
+// ---- ------ -- -------- -- ------ --- ----- -- -------- ---------
+// This Method Is Designed To Handle The Click In Interact Container
+// ---- ------ -- -------- -- ------ --- ----- -- -------- ---------
+
+function interactItem(message) {
+    let item = $(".roomParent .main .interactParent .container .item");
+    item.click(function () {
+        let job = $(this).data("job");
+        switch (job) {
+            case "copyClipboard":
+                console.log("Copy To Clipboard");
+                break;
+            case "deleteMessage":
+                console.log("Delete Message");
+                break;
+            case "resizeImage":
+                resizeImage(message);
+                break;
+            case "likeMessage":
+                console.log("Like Message");
+                break;
+        }
+    });
+}

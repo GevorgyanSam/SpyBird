@@ -1,3 +1,19 @@
+@media only screen and (max-width: 1400px) {
+    main {
+        .mainParent {
+            .roomParent {
+                .main {
+                    .interactParent {
+                        .container {
+                            width: 40%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 @media only screen and (max-width: 1200px) {
     nav {
         .mobileNavParent {
@@ -92,6 +108,12 @@
                             }
                         }
                     }
+
+                    .interactParent {
+                        .container {
+                            width: 50%;
+                        }
+                    }
                 }
 
                 .footer {
@@ -140,6 +162,12 @@
                             .content-date {
                                 font-size: 9px;
                             }
+                        }
+                    }
+
+                    .interactParent {
+                        .container {
+                            width: 75%;
                         }
                     }
                 }
