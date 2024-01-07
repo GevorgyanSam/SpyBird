@@ -402,6 +402,43 @@ function likeMessageAnimation(item) {
     item.children(".content-date").append(liked);
 }
 
+// ---- ------ -- --- -------- ---- ---- -------
+// This Method Is For Removing Like From Message
+// ---- ------ -- --- -------- ---- ---- -------
+
+function removeLikeMessage(message) {
+    let liked = message.children(".content-date").children(".liked");
+    let id = message.data("message-id");
+    let room = $('meta[name="room-id"]').attr("content");
+    if (liked.hasClass("liked")) {
+        $.ajax({
+            url: `/remove-like-message/${id}`,
+            method: "POST",
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            data: {
+                room: room,
+            },
+            success: function (response) {
+                removeLikeMessageAnimation(message);
+            },
+            error: function (error) {
+                location.reload();
+            },
+        });
+    }
+}
+
+// ---- ------ -- -- --------- -- -------- ---- ---- -------
+// This Method Is An Animation Of Removing Like From Message
+// ---- ------ -- -- --------- -- -------- ---- ---- -------
+
+function removeLikeMessageAnimation(message) {
+    let liked = message.children(".content-date").children(".liked");
+    liked.remove();
+}
+
 // ---- ------ -- -------- -- ------ ---- -- ---- ------
 // This Method Is Designed To Change Size Of Chat Images
 // ---- ------ -- -------- -- ------ ---- -- ---- ------
@@ -477,6 +514,13 @@ function getMessageInfo(message) {
     let response = {};
     if (message.hasClass("message-left")) {
         response.owner = false;
+        if (
+            message.children(".content-date").children("div").hasClass("liked")
+        ) {
+            response.liked = true;
+        } else {
+            response.liked = false;
+        }
     } else if (message.hasClass("message-right")) {
         response.owner = true;
     }
@@ -543,12 +587,21 @@ function interactContainer(message) {
                 </div>
             `;
             content += `<div class="line"></div>`;
-            content += `
-                <div class="item" data-job="likeMessage">
-                    <i class="fa-solid fa-heart"></i>
-                    like message
-                </div>
-            `;
+            if (message.liked) {
+                content += `
+                    <div class="item" data-job="removeLikeMessage">
+                        <i class="fa-solid fa-heart-circle-xmark"></i>
+                        remove like
+                    </div>
+                `;
+            } else {
+                content += `
+                    <div class="item" data-job="likeMessage">
+                        <i class="fa-solid fa-heart"></i>
+                        like message
+                    </div>
+                `;
+            }
         } else if (message.image) {
             content += `
                 <div class="item" data-job="resizeImage">
@@ -564,12 +617,21 @@ function interactContainer(message) {
                 </div>
             `;
             content += `<div class="line"></div>`;
-            content += `
-                <div class="item" data-job="likeMessage">
-                    <i class="fa-solid fa-heart"></i>
-                    like image
-                </div>
-            `;
+            if (message.liked) {
+                content += `
+                    <div class="item" data-job="removeLikeMessage">
+                        <i class="fa-solid fa-heart-circle-xmark"></i>
+                        remove like
+                    </div>
+                `;
+            } else {
+                content += `
+                    <div class="item" data-job="likeMessage">
+                        <i class="fa-solid fa-heart"></i>
+                        like image
+                    </div>
+                `;
+            }
         }
     }
     container.html(content);
@@ -608,6 +670,9 @@ function interactItem(message) {
                 break;
             case "likeMessage":
                 likeMessage(message);
+                break;
+            case "removeLikeMessage":
+                removeLikeMessage(message);
                 break;
         }
     });

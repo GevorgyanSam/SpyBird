@@ -71,6 +71,7 @@ Route::middleware(['auth', 'lockscreen'])->group(function () {
         Route::post('/send-image/{id}', 'sendImage')->name('send-image');
         Route::post('/delete-message/{id}', 'deleteMessage')->name('delete-message');
         Route::post('/like-message/{id}', 'likeMessage')->name('like-message');
+        Route::post('/remove-like-message/{id}', 'removeLikeMessage')->name('remove-like-message');
 
     });
 
