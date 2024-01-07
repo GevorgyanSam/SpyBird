@@ -375,36 +375,28 @@ function removeMessageAnimation(item) {
 // This Method Is For Liking A Message
 // ---- ------ -- --- ------ - -------
 
-function likeMessage() {
-    const message = $(".chatArea .message-left");
-    message.each(function () {
-        let self = $(this);
-        self.children(".content, .content-img").dblclick(function () {
-            let liked = self.children(".content-date").children(".liked");
-            if (!liked.hasClass("liked")) {
-                let id = self.data("message-id");
-                let room = $('meta[name="room-id"]').attr("content");
-                $.ajax({
-                    url: `/like-message/${id}`,
-                    method: "POST",
-                    headers: {
-                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
-                            "content"
-                        ),
-                    },
-                    data: {
-                        room: room,
-                    },
-                    success: function (response) {
-                        likeMessageAnimation(self);
-                    },
-                    error: function (error) {
-                        location.reload();
-                    },
-                });
-            }
+function likeMessage(message) {
+    let liked = message.children(".content-date").children(".liked");
+    let id = message.data("message-id");
+    let room = $('meta[name="room-id"]').attr("content");
+    if (!liked.hasClass("liked")) {
+        $.ajax({
+            url: `/like-message/${id}`,
+            method: "POST",
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            data: {
+                room: room,
+            },
+            success: function (response) {
+                likeMessageAnimation(message);
+            },
+            error: function (error) {
+                location.reload();
+            },
         });
-    });
+    }
 }
 
 // ---- ------ -- -- --------- -- ------ - -------
@@ -617,7 +609,7 @@ function interactItem(message) {
                 downloadImage(message);
                 break;
             case "likeMessage":
-                console.log("Like Message");
+                likeMessage(message);
                 break;
         }
     });
