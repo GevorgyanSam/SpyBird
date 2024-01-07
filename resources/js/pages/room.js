@@ -321,32 +321,24 @@ sendImage();
 // This Method Is For Deleting A Message
 // ---- ------ -- --- -------- - -------
 
-function removeMessage() {
-    const message = $(".chatArea .message-right");
-    message.each(function () {
-        let self = $(this);
-        self.children(".content, .content-img").dblclick(function () {
-            let id = self.data("message-id");
-            let room = $('meta[name="room-id"]').attr("content");
-            $.ajax({
-                url: `/delete-message/${id}`,
-                method: "POST",
-                headers: {
-                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
-                        "content"
-                    ),
-                },
-                data: {
-                    room: room,
-                },
-                success: function (response) {
-                    removeMessageAnimation(self);
-                },
-                error: function (error) {
-                    location.reload();
-                },
-            });
-        });
+function removeMessage(message) {
+    let id = message.data("message-id");
+    let room = $('meta[name="room-id"]').attr("content");
+    $.ajax({
+        url: `/delete-message/${id}`,
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        data: {
+            room: room,
+        },
+        success: function (response) {
+            removeMessageAnimation(message);
+        },
+        error: function (error) {
+            location.reload();
+        },
     });
 }
 
@@ -600,7 +592,7 @@ function interactItem(message) {
                 copyToClipboard(message);
                 break;
             case "deleteMessage":
-                console.log("Delete Message");
+                removeMessage(message);
                 break;
             case "resizeImage":
                 resizeImage(message);
