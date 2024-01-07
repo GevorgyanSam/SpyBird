@@ -285,7 +285,7 @@ class RoomController extends Controller
     public function sendImage(Request $request, int $id)
     {
         $rules = [
-            'file' => ['bail', 'file', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5000'],
+            'file' => ['bail', 'file', 'image', 'max:10000'],
         ];
         $messages = [
             "max" => ":attribute is too big"

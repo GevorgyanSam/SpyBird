@@ -435,6 +435,19 @@ function resizeImage(message) {
     });
 }
 
+// ---- ------ -- -------- -- -------- -----
+// This Method Is Designed To Download Image
+// ---- ------ -- -------- -- -------- -----
+
+function downloadImage(message) {
+    let path = message.find(".content-img img").attr("src");
+    let name = path.substring(path.lastIndexOf("/") + 1);
+    let element = $("<a>").attr("href", path).attr("download", name);
+    $("body").append(element);
+    element[0].click();
+    element.remove();
+}
+
 // ---- ------ -- -------- -- -------- ---- --------
 // This Method Is Designed To Interact With Messages
 // ---- ------ -- -------- -- -------- ---- --------
@@ -509,6 +522,13 @@ function interactContainer(message) {
             `;
             content += `<div class="line"></div>`;
             content += `
+                <div class="item" data-job="downloadImage">
+                    <i class="fa-solid fa-download"></i>
+                    download image
+                </div>
+            `;
+            content += `<div class="line"></div>`;
+            content += `
                 <div class="item danger"  data-job="deleteMessage">
                     <i class="fa-solid fa-trash"></i>
                     delete image
@@ -535,6 +555,13 @@ function interactContainer(message) {
                 <div class="item" data-job="resizeImage">
                     <i class="fa-solid fa-expand"></i>
                     open image
+                </div>
+            `;
+            content += `<div class="line"></div>`;
+            content += `
+                <div class="item" data-job="downloadImage">
+                    <i class="fa-solid fa-download"></i>
+                    download image
                 </div>
             `;
             content += `<div class="line"></div>`;
@@ -576,6 +603,9 @@ function interactItem(message) {
                 break;
             case "resizeImage":
                 resizeImage(message);
+                break;
+            case "downloadImage":
+                downloadImage(message);
                 break;
             case "likeMessage":
                 console.log("Like Message");
