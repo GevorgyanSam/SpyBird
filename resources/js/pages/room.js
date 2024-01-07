@@ -438,7 +438,13 @@ function downloadImage(message) {
 
 function copyToClipboard(message) {
     let text = message.find(".content").text();
-    navigator.clipboard.writeText(text);
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text);
+    } else {
+        $("<textarea>").val(text).appendTo("body").select();
+        document.execCommand("copy");
+        $("textarea").remove();
+    }
 }
 
 // ---- ------ -- -------- -- -------- ---- --------
