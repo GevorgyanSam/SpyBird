@@ -448,6 +448,15 @@ function downloadImage(message) {
     element.remove();
 }
 
+// ---- ------ -- -------- -- ---- ---- -- ---------
+// This Method Is Designed To Copy Text To Clipboard
+// ---- ------ -- -------- -- ---- ---- -- ---------
+
+function copyToClipboard(message) {
+    let text = message.find(".content").text();
+    navigator.clipboard.writeText(text);
+}
+
 // ---- ------ -- -------- -- -------- ---- --------
 // This Method Is Designed To Interact With Messages
 // ---- ------ -- -------- -- -------- ---- --------
@@ -596,7 +605,7 @@ function interactItem(message) {
         let job = $(this).data("job");
         switch (job) {
             case "copyClipboard":
-                console.log("Copy To Clipboard");
+                copyToClipboard(message);
                 break;
             case "deleteMessage":
                 console.log("Delete Message");
