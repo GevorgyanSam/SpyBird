@@ -47,6 +47,7 @@ function getMessages() {
                 );
                 showMessages();
                 setMessages(response.messages);
+                loadImages();
                 interactMessage();
                 scrollDown();
             }
@@ -108,8 +109,8 @@ function transformMessageDataToHtml(message) {
         let path = asset + "/" + message.content;
         return `
             <div class="message ${position}" data-message-id="${message.id}">
-                <div class="content-img">
-                    <img src="${path}">
+                <div class="content-img" style="background-image: url(${path});">
+                    <img src="${path}" loading="lazy">
                 </div>
                 <div class="content-date">${content}</div>
             </div>
@@ -188,6 +189,7 @@ function getNewMessages() {
                     sessionStorage.setItem("messages", newMessages);
                     showMessages();
                     setMessages(response.messages);
+                    loadImages();
                     interactMessage();
                     scrollDown();
                 }
@@ -316,6 +318,25 @@ function sendImage() {
 }
 
 sendImage();
+
+// ---- ------ -- --- ------- ------
+// This Method Is For Loading Images
+// ---- ------ -- --- ------- ------
+
+function loadImages() {
+    const container = $(".content-img");
+    const img = container.find("img");
+
+    function loaded() {
+        container.addClass("loaded");
+    }
+
+    if (img.prop("complete")) {
+        loaded();
+    } else {
+        img.on("load", loaded);
+    }
+}
 
 // ---- ------ -- --- -------- - -------
 // This Method Is For Deleting A Message
