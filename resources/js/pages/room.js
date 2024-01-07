@@ -105,12 +105,14 @@ function transformMessageDataToHtml(message) {
         }
     }
     if (message.type === "image") {
+        let data = JSON.parse(message.content);
         let asset = $('meta[name="asset-url"]').attr("content");
-        let path = asset + "/" + message.content;
+        let originalPath = asset + "/" + data.original;
+        let lowQualityPath = asset + "/" + data.low;
         return `
             <div class="message ${position}" data-message-id="${message.id}">
-                <div class="content-img" style="background-image: url(${path});">
-                    <img src="${path}" loading="lazy">
+                <div class="content-img" style="background-image: url(${lowQualityPath});">
+                    <img src="${originalPath}" loading="lazy">
                 </div>
                 <div class="content-date">${content}</div>
             </div>

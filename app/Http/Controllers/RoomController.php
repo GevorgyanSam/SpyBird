@@ -11,7 +11,9 @@ use App\Services\Block\GetBlockedRelationshipService;
 use App\Services\Settings\GetLoginHistoryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Spatie\Image\Image;
 
 class RoomController extends Controller
 {
@@ -292,8 +294,18 @@ class RoomController extends Controller
         ];
         $request->validate($rules, $messages);
         if ($request->hasFile("file") && $request->file("file")->isValid()) {
-            $fileName = Str::random(10) . "_" . now()->timestamp . "_" . auth()->user()->id . "." . $request->file("file")->getClientOriginalExtension();
-            $path = $request->file("file")->storeAs("assets", $fileName);
+            $file = $request->file("file");
+            $originalFileName = Str::random(10) . "_" . now()->timestamp . "_" . auth()->user()->id . "." . $file->getClientOriginalExtension();
+            $lowQualityFileName = Str::random(10) . "_low_quality_" . now()->timestamp . "_" . auth()->user()->id . "." . $file->getClientOriginalExtension();
+            $originalPath = $file->storeAs("assets", $originalFileName);
+            $lowQualityPath = 'assets/' . $lowQualityFileName;
+            Image::load(Storage::path($originalPath))
+                ->width(100)
+                ->height(100)
+                ->quality(25)
+                ->save(Storage::path($lowQualityPath));
+            $data = ['original' => $originalPath, 'low' => $lowQualityPath];
+            $path = json_encode($data);
             $room = Room::join('room_members', 'rooms.id', '=', 'room_members.room_id')
                 ->where('rooms.id', $id)
                 ->where('rooms.status', 1)

@@ -423,7 +423,7 @@ main {
                             height: 30cqh;
                             border-radius: var(--radius);
                             overflow: hidden;
-                            filter: blur(10px);
+                            filter: blur(5px);
 
                             &.loaded {
                                 filter: blur(0);
