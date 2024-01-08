@@ -190,10 +190,9 @@ function getNewMessages() {
                 if (oldMessages != newMessages) {
                     sessionStorage.setItem("messages", newMessages);
                     showMessages();
-                    setMessages(response.messages);
+                    setNewMessages(response.messages);
                     loadImages();
                     interactMessage();
-                    scrollDown();
                 }
             }
         },
@@ -207,6 +206,76 @@ function getNewMessages() {
 
 getNewMessages();
 setInterval(getNewMessages, 1000);
+
+// ---- ------ -- --- ---------- ------- ------------
+// This Method Is For Displaying Changed Conversation
+// ---- ------ -- --- ---------- ------- ------------
+
+function setNewMessages(messages) {
+    let user_id = $('meta[name="user-id"]').attr("content");
+    let client_id = $('meta[name="client-id"]').attr("content");
+    let asset = $('meta[name="asset-url"]').attr("content");
+    let chats = $(".chatArea .message");
+    chats.each((index, element) => {
+        let chat = $(element);
+        let id = chat.data("message-id");
+        let message = messages.find((item) => item.id === id);
+        if (!message) {
+            let lastSibling = chat.siblings().last();
+            if (lastSibling.hasClass("message-date")) {
+                removeMessageAnimation(lastSibling);
+            }
+            removeMessageAnimation(chat);
+        }
+    });
+    messages.forEach((message) => {
+        let chat = $(`.chatArea .message[data-message-id=${message.id}]`);
+        if (!chat.length) {
+            let lastMessage = $(".chatArea .message").last();
+            let newMessage = transformMessageDataToHtml(message);
+            let lastDate = $(".chatArea .message-date").last().text();
+            let newDate = transformMessageDate(message);
+            if (lastDate != newDate) {
+                lastMessage.after(transformMessageDateToHtml(newDate));
+                $(".chatArea .message-date").last().after(newMessage);
+            } else {
+                lastMessage.after(newMessage);
+            }
+            scrollDown();
+        }
+        if (message.user_id == user_id) {
+            if (!chat.hasClass("message-right")) {
+                chat.removeAttr("class");
+                chat.addClass("message message-right");
+            }
+        }
+        if (message.user_id == client_id) {
+            if (!chat.hasClass("message-left")) {
+                chat.removeAttr("class");
+                chat.addClass("message message-left");
+            }
+        }
+        if (message.liked) {
+            if (!chat.find(".liked").length) {
+                likeMessageAnimation(chat);
+            }
+        } else {
+            if (chat.find(".liked").length) {
+                removeLikeMessageAnimation(chat);
+            }
+        }
+        if (message.type == "text") {
+            if (chat.find(".content").text() != message.content) {
+                chat.find(".content").text(message.content);
+            }
+        } else {
+            let path = asset + "/" + JSON.parse(message.content).original;
+            if (chat.find(".content-img img").attr("src") != path) {
+                chat.find(".content-img img").attr("src", path);
+            }
+        }
+    });
+}
 
 // ---- ------ -- --- -------- ------ ----
 // This Method Is For Handling Client Data
@@ -276,7 +345,6 @@ function sendLetter() {
             },
         });
         input.val("");
-        scrollDown();
     });
 }
 
@@ -356,9 +424,7 @@ function removeMessage(message) {
         data: {
             room: room,
         },
-        success: function (response) {
-            removeMessageAnimation(message);
-        },
+        success: function (response) {},
         error: function (error) {
             location.reload();
         },
@@ -404,9 +470,7 @@ function likeMessage(message) {
             data: {
                 room: room,
             },
-            success: function (response) {
-                likeMessageAnimation(message);
-            },
+            success: function (response) {},
             error: function (error) {
                 location.reload();
             },
@@ -422,7 +486,11 @@ function likeMessageAnimation(item) {
     let liked = $("<div>");
     liked.addClass("liked");
     liked.html('<i class="fa-solid fa-heart"></i>');
-    item.children(".content-date").append(liked);
+    if (item.hasClass("message-left")) {
+        item.children(".content-date").append(liked);
+    } else if (item.hasClass("message-right")) {
+        item.children(".content-date").prepend(liked);
+    }
 }
 
 // ---- ------ -- --- -------- ---- ---- -------
@@ -443,9 +511,7 @@ function removeLikeMessage(message) {
             data: {
                 room: room,
             },
-            success: function (response) {
-                removeLikeMessageAnimation(message);
-            },
+            success: function (response) {},
             error: function (error) {
                 location.reload();
             },
@@ -458,8 +524,16 @@ function removeLikeMessage(message) {
 // ---- ------ -- -- --------- -- -------- ---- ---- -------
 
 function removeLikeMessageAnimation(message) {
-    let liked = message.children(".content-date").children(".liked");
-    liked.remove();
+    let liked = message.find(".liked");
+    liked.animate(
+        {
+            scale: 0,
+        },
+        100
+    );
+    setTimeout(() => {
+        liked.remove();
+    }, 100);
 }
 
 // ---- ------ -- -------- -- ------ ---- -- ---- ------
