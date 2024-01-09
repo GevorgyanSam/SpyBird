@@ -10,6 +10,7 @@ import loading from "../components/loading";
 function hideMessages() {
     let empty = $(".mainParent .roomParent .main .emptyParent");
     let area = $(".mainParent .roomParent .main .chatArea");
+    area.empty();
     area.hide();
     empty.addClass("active");
 }
@@ -231,15 +232,24 @@ function setNewMessages(messages) {
     messages.forEach((message) => {
         let chat = $(`.chatArea .message[data-message-id=${message.id}]`);
         if (!chat.length) {
+            let area = $(".chatArea");
             let lastMessage = $(".chatArea .message").last();
             let newMessage = transformMessageDataToHtml(message);
             let lastDate = $(".chatArea .message-date").last().text();
             let newDate = transformMessageDate(message);
             if (lastDate != newDate) {
-                lastMessage.after(transformMessageDateToHtml(newDate));
+                if (lastMessage.length) {
+                    lastMessage.after(transformMessageDateToHtml(newDate));
+                } else {
+                    area.prepend(transformMessageDateToHtml(newDate));
+                }
                 $(".chatArea .message-date").last().after(newMessage);
             } else {
-                lastMessage.after(newMessage);
+                if (lastMessage.length) {
+                    lastMessage.after(newMessage);
+                } else {
+                    area.prepend(transformMessageDateToHtml(newDate));
+                }
             }
             scrollDown();
         }
