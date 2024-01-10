@@ -390,6 +390,7 @@ main {
                     .scroll-down {
                         cursor: pointer;
                         position: absolute;
+                        z-index: 99;
                         bottom: -100px;
                         left: 50%;
                         transform: translateX(-50%) translateY(0);

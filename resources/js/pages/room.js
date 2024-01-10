@@ -337,7 +337,7 @@ scrollDown();
 function checkScrollDown(message) {
     let user_id = $('meta[name="user-id"]').attr("content");
     let area = $(".chatArea");
-    if (area[0].scrollHeight - area[0].scrollTop < 900) {
+    if (area[0].scrollHeight - area[0].scrollTop < 1200) {
         area.css("scroll-behavior", "smooth");
         scrollDown();
         return;
@@ -357,7 +357,7 @@ function checkScrollDown(message) {
 function checkScroll() {
     let area = $(".chatArea");
     area.scroll(function () {
-        if (area[0].scrollHeight - area[0].scrollTop < 900) {
+        if (area[0].scrollHeight - area[0].scrollTop < 1200) {
             hideScrollButton();
         }
     });
