@@ -1,6 +1,6 @@
 {
     "name": "spybird",
-    "version": "1.2.93",
+    "version": "1.2.94",
     "description": "SpyBird - Chat Application",
     "main": "webpack.mix.js",
     "directories": {

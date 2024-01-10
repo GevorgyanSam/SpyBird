@@ -387,6 +387,41 @@ main {
                         display: none;
                     }
 
+                    .scroll-down {
+                        cursor: pointer;
+                        position: absolute;
+                        bottom: -100px;
+                        left: 50%;
+                        transform: translateX(-50%) translateY(0);
+                        height: 50px;
+                        width: 50px;
+                        border-radius: 50%;
+                        background-color: var(--background-color-2);
+                        display: grid;
+                        place-items: center;
+                        box-shadow: 0 0 10px 3px var(--primary-color);
+                        animation: scrollAnimation var(--animation-duration)
+                            forwards alternate infinite;
+
+                        &.active {
+                            bottom: 20px;
+                        }
+
+                        @keyframes scrollAnimation {
+                            0% {
+                                transform: translateX(-50%) translateY(0);
+                            }
+                            100% {
+                                transform: translateX(-50%) translateY(-10px);
+                            }
+                        }
+
+                        i {
+                            font-size: 18px;
+                            color: var(--primary-color);
+                        }
+                    }
+
                     .message-date {
                         margin: 20px 0;
                         text-align: center;

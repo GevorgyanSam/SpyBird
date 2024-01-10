@@ -48,6 +48,7 @@ function getMessages() {
                 );
                 showMessages();
                 setMessages(response.messages);
+                addScrollButton();
                 loadImages();
                 interactMessage();
                 scrollDown();
@@ -251,7 +252,7 @@ function setNewMessages(messages) {
                     area.prepend(transformMessageDateToHtml(newDate));
                 }
             }
-            scrollDown();
+            checkScrollDown(message);
         }
         if (message.user_id == user_id) {
             if (!chat.hasClass("message-right")) {
@@ -329,6 +330,84 @@ function scrollDown() {
 
 scrollDown();
 
+// ---- ------ -- -------- -- ----- ------- --- --------- ----
+// This Method Is Designed To Check Message For Scrolling Down
+// ---- ------ -- -------- -- ----- ------- --- --------- ----
+
+function checkScrollDown(message) {
+    let user_id = $('meta[name="user-id"]').attr("content");
+    let area = $(".chatArea");
+    if (area[0].scrollHeight - area[0].scrollTop < 900) {
+        area.css("scroll-behavior", "smooth");
+        scrollDown();
+        return;
+    }
+    if (message.user_id == user_id) {
+        area.css("scroll-behavior", "smooth");
+        scrollDown();
+        return;
+    }
+    showScrollButton();
+}
+
+// ---- ------ -- --- ---------- ---- -- ------
+// This Method Is For Monitoring Chat On Scroll
+// ---- ------ -- --- ---------- ---- -- ------
+
+function checkScroll() {
+    let area = $(".chatArea");
+    area.scroll(function () {
+        if (area[0].scrollHeight - area[0].scrollTop < 900) {
+            hideScrollButton();
+        }
+    });
+}
+
+checkScroll();
+
+// ---- ------ -- --- ------ ------ ---- ------ -- ----
+// This Method Is For Adding Scroll Down Button In Chat
+// ---- ------ -- --- ------ ------ ---- ------ -- ----
+
+function addScrollButton() {
+    let area = $(".chatArea");
+    let element = $("<div></div>").addClass("scroll-down");
+    let icon = "<i class='fa-regular fa-comments'></i>";
+    element.prepend(icon);
+    area.prepend(element);
+    element.click(function () {
+        hideScrollButton();
+        scrollDown();
+    });
+}
+
+// ---- ------ -- --- ------- ------ ---- ------
+// This Method Is For Showing Scroll Down Button
+// ---- ------ -- --- ------- ------ ---- ------
+
+function showScrollButton() {
+    let button = $(".chatArea .scroll-down");
+    button.addClass("active");
+}
+
+// ---- ------ -- --- ------ ------ ---- ------
+// This Method Is For Hiding Scroll Down Button
+// ---- ------ -- --- ------ ------ ---- ------
+
+function hideScrollButton() {
+    let button = $(".chatArea .scroll-down");
+    button.removeClass("active");
+}
+
+// ---- ------ -- --- -------- -----
+// This Method Is For Focusing Input
+// ---- ------ -- --- -------- -----
+
+function addFocus() {
+    const input = $(".roomParent .footer .formParent input");
+    input.focus();
+}
+
 // ---- ------ -- --- ------- - -------
 // This Method Is For Sending A Message
 // ---- ------ -- --- ------- - -------
@@ -355,6 +434,7 @@ function sendLetter() {
             },
         });
         input.val("");
+        addFocus();
     });
 }
 
