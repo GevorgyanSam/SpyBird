@@ -1,44 +1,69 @@
-<p align="center"><a href="#" target="_blank"><img src="./resources/assets/icon.png" width="150" alt="SpyBird Logo"></a></p>
+<p align="center"><img src="./resources/assets/icon.png" width="150" alt="SpyBird Logo"></p>
 
 # SpyBird - Chat Application
 
-## About SpyBird
+**SpyBird** is a modern web chat application that redefines online communication. Whether connecting with friends, collaborating with colleagues, or meeting new people, SpyBird offers a seamless and secure platform for real-time conversations.
 
-_**SpyBird** is a cutting-edge web chat application that redefines the way you communicate and connect with others online. Whether you're catching up with friends, collaborating with colleagues, or meeting new people, SpyBird offers a seamless and secure platform for real-time conversations._
+## Getting Started
 
-## Installation
+### Prerequisites
 
-_Provide step-by-step instructions on how to install the project and its dependencies._
+Make sure you have the following dependencies installed on your Debian-based Linux system:
 
-1. _Clone Repository_
-    `git clone https://github.com/GevorgyanSam/SpyBird.git`
-2. _Navigate To Project_
-    `cd ./SpyBird`
-3. _Install Dependencies_
-    - `composer install`
-    - `npm install`
+-   JavaScript: `nodejs`, `npm`
+-   PHP: `php`, `composer`, `php-curl`, `php-xml`, `php-mysql`, `php-imagick`, `php-gd`
+-   MySQL: `default-mysql-server`
 
-## Database
+### Installation
 
-_Before building the project, we need to set up the `.env` file and run the migrations_
+Follow these steps to install SpyBird:
 
-1. _Run Migrations_
-    `php artisan migrate`
+1. **Clone Repository:**
 
-## Build
+    ```bash
+    git clone https://github.com/GevorgyanSam/SpyBird.git
+    cd ./SpyBird
+    ```
 
-_After setting up the database, we need to build the application_
+2. **Install Dependencies:**
 
-1. _Create Storage Link_
-    `php artisan storage:link`
-2. _Run Scripts_
-    `npm run build`
+    ```bash
+    composer install
+    npm install
+    ```
 
-## Run
+### Database Setup
 
-_After building the application, we need to run it on the server_
+Before building the project, set up the `.env` file and run the migrations:
 
-1. _Run Server_
-    `php artisan serve`
+1. **Run Migrations:**
 
-_After running the server, the application should be accessible in your web browser at http://localhost:8000_
+    ```bash
+    php artisan migrate
+    ```
+
+### Build and Run
+
+After setting up the database, build and run the application:
+
+1. **Create Storage Link:**
+
+    ```bash
+    php artisan storage:link
+    ```
+
+2. **Build Application:**
+
+    ```bash
+    npm run build
+    # or
+    npm run production
+    ```
+
+3. **Run Server:**
+
+    ```bash
+    php artisan serve
+    ```
+
+The application should be accessible in your web browser at [http://localhost:8000](http://localhost:8000).
