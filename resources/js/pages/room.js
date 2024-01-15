@@ -2,6 +2,10 @@
 // Import Loading Method From Components.
 // ------ ------- ------ ---- -----------
 import loading from "../components/loading";
+// ------ ---- ------------ ---- -----------
+// Import Push Notification From Components.
+// ------ ---- ------------ ---- -----------
+import notify from "../components/push-notifications";
 
 // ---- ------ -- --- ------ --------
 // This Method Is For Hiding Messages
@@ -206,8 +210,8 @@ function getNewMessages() {
     });
 }
 
-getNewMessages();
-setInterval(getNewMessages, 1000);
+// getNewMessages();
+// setInterval(getNewMessages, 1000);
 
 // ---- ------ -- --- ---------- ------- ------------
 // This Method Is For Displaying Changed Conversation
@@ -317,6 +321,90 @@ function handleClientData(client) {
         `;
         profile.html(content);
     }
+}
+
+// ---- ------ -- -------- -- ----- ------ ---
+// This Method Is Designed To Check Scroll Top
+// ---- ------ -- -------- -- ----- ------ ---
+
+function pagination() {
+    let area = $(".chatArea");
+    area.scroll(function () {
+        let scrollTop = area[0].scrollTop == 0;
+        if (scrollTop) {
+            let id = area.find(".message").first().data("message-id");
+            paginate(id);
+        }
+    });
+}
+
+pagination();
+
+// ---- ------ -- --- ------- --- --------
+// This Method Is For Getting Old Messages
+// ---- ------ -- --- ------- --- --------
+
+function paginate(id) {
+    let room = $('meta[name="room-id"]').attr("content");
+    loading(true);
+    $.ajax({
+        url: `/get-old-messages/${room}`,
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        data: {
+            message_id: id,
+        },
+        success: function (response) {
+            loading(false);
+            if (response.empty) {
+                notify(
+                    "no messages found",
+                    "there are no older messages in this chat"
+                );
+            } else if (response.messages) {
+                let oldData = JSON.parse(sessionStorage.getItem("messages"));
+                let newData = [...response.messages, ...oldData];
+                sessionStorage.setItem("messages", JSON.stringify(newData));
+                setOldMessages(response.messages);
+                loadImages();
+                interactMessage();
+            }
+        },
+        error: function (error) {
+            location.reload();
+        },
+    });
+}
+
+// ---- ------ -- --- ------- --- --------
+// This Method Is For Setting Old Messages
+// ---- ------ -- --- ------- --- --------
+
+function setOldMessages(messages) {
+    let area = $(".chatArea");
+    let currentHeight = area[0].scrollHeight;
+    let oldDate = area.find(".message-date").first();
+    let newDate = transformMessageDate(messages[messages.length - 1]);
+    if (oldDate.text() == newDate) {
+        oldDate.remove();
+    }
+    let content = "";
+    let date = transformMessageDate(messages[0]);
+    content += transformMessageDateToHtml(date);
+    messages.forEach((message) => {
+        let newDate = transformMessageDate(message);
+        if (date != newDate) {
+            date = newDate;
+            content += transformMessageDateToHtml(date);
+        }
+        content += transformMessageDataToHtml(message);
+    });
+    area.prepend(content);
+    let newHeight = area[0].scrollHeight;
+    area.css("scroll-behavior", "auto");
+    area.scrollTop(newHeight - currentHeight);
 }
 
 // ---- ------ -- --- --------- ----

@@ -148,13 +148,57 @@ class RoomController extends Controller
 
     public function getMessages(int $id)
     {
+        $count = Message::where('room_id', $id)
+            ->where('status', 1)
+            ->orderBy('id')
+            ->count();
+        $limit = 20;
+        $offset = max(0, $count - $limit);
         $messages = Message::where('room_id', $id)
             ->where('status', 1)
             ->orderBy('id')
+            ->limit($limit)
+            ->offset($offset)
             ->get();
         if (!$messages->count()) {
             return response()->json(['empty' => true], 200);
         }
+        return response()->json(['messages' => $messages], 200);
+    }
+
+    // ---- ------ -- --- ------- --- --------
+    // This Method Is For Getting Old Messages
+    // ---- ------ -- --- ------- --- --------
+
+    public function getOldMessages(Request $request, int $id)
+    {
+        $messageId = (int) $request->input('message_id');
+        $count = Message::where('room_id', $id)
+            ->where('status', 1)
+            ->where('id', '<', $messageId)
+            ->orderBy('id')
+            ->count();
+        if (!$count) {
+            return response()->json(['empty' => true], 200);
+        }
+        $limit = 20;
+        if ($count > $limit) {
+            $offset = $count - $limit;
+            $messages = Message::where('room_id', $id)
+                ->where('status', 1)
+                ->where('id', '<', $messageId)
+                ->orderBy('id')
+                ->limit($limit)
+                ->offset($offset)
+                ->get();
+            return response()->json(['messages' => $messages], 200);
+        }
+        $messages = Message::where('room_id', $id)
+            ->where('status', 1)
+            ->where('id', '<', $messageId)
+            ->orderBy('id')
+            ->limit($count)
+            ->get();
         return response()->json(['messages' => $messages], 200);
     }
 
