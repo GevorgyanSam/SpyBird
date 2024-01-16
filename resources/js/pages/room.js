@@ -176,11 +176,15 @@ function setSeenMessage(id) {
 
 function getNewMessages() {
     let room = $('meta[name="room-id"]').attr("content");
+    let id = $(".chatArea .message").first().data("message-id") || 0;
     $.ajax({
         url: `/get-new-messages/${room}`,
         method: "POST",
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        data: {
+            message_id: id,
         },
         success: function (response) {
             if (response.client) {
@@ -210,8 +214,7 @@ function getNewMessages() {
     });
 }
 
-// getNewMessages();
-// setInterval(getNewMessages, 1000);
+setInterval(getNewMessages, 1000);
 
 // ---- ------ -- --- ---------- ------- ------------
 // This Method Is For Displaying Changed Conversation
@@ -329,13 +332,17 @@ function handleClientData(client) {
 
 function pagination() {
     let area = $(".chatArea");
-    area.scroll(function () {
-        let scrollTop = area[0].scrollTop == 0;
-        if (scrollTop) {
-            let id = area.find(".message").first().data("message-id");
-            paginate(id);
-        }
-    });
+    let areaHeight = area[0].scrollHeight;
+    let mainHeight = $(".main").height();
+    if (areaHeight > mainHeight) {
+        area.scroll(function () {
+            let scrollTop = area[0].scrollTop == 0;
+            if (scrollTop) {
+                let id = area.find(".message").first().data("message-id");
+                paginate(id);
+            }
+        });
+    }
 }
 
 pagination();
@@ -623,7 +630,7 @@ function removeMessage(message) {
 
 function removeMessageAnimation(item) {
     item.css({
-        transform: "scale(0)",
+        scale: 0,
     });
     setTimeout(() => {
         item.animate(

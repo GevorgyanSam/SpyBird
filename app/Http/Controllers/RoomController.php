@@ -206,7 +206,7 @@ class RoomController extends Controller
     // This Method Is For Getting New Messages
     // ---- ------ -- --- ------- --- --------
 
-    public function getNewMessages(int $id)
+    public function getNewMessages(Request $request, int $id)
     {
         $room = Room::select('rooms.user_id', 'rooms.spy')
             ->join('room_members', 'rooms.id', '=', 'room_members.room_id')
@@ -256,8 +256,10 @@ class RoomController extends Controller
             'active' => $user->activity && $user->latestLoginInfo->status ? 'active' : null,
             'status' => $user->activity ? ($user->latestLoginInfo->status ? 'online' : Carbon::parse($user->latestLoginInfo->updated_at)->format('d M H:i')) : 'hidden status',
         ];
+        $messageId = $request->input('message_id');
         $messages = Message::where('room_id', $id)
             ->where('status', 1)
+            ->where('id', '>=', $messageId)
             ->orderBy('id')
             ->get();
         if ($room->spy && $room->user_id != auth()->user()->id) {
