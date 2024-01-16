@@ -332,17 +332,15 @@ function handleClientData(client) {
 
 function pagination() {
     let area = $(".chatArea");
-    let areaHeight = area[0].scrollHeight;
     let mainHeight = $(".main").height();
-    if (areaHeight > mainHeight) {
-        area.scroll(function () {
-            let scrollTop = area[0].scrollTop == 0;
-            if (scrollTop) {
-                let id = area.find(".message").first().data("message-id");
-                paginate(id);
-            }
-        });
-    }
+    area.scroll(function () {
+        let scrollHeight = area[0].scrollHeight;
+        let scrollTop = area[0].scrollTop == 0;
+        if (scrollTop && scrollHeight > mainHeight) {
+            let id = area.find(".message").first().data("message-id");
+            paginate(id);
+        }
+    });
 }
 
 pagination();
