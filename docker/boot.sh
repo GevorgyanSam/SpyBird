@@ -12,11 +12,10 @@ composer install
 npm install
 php artisan storage:link
 npm run production
-# php artisan migrate
 
 service apache2 start
 
-cp /var/www/SpyBird/conf/spybird.conf /etc/apache2/sites-available/
+cp /var/www/SpyBird/docker/spybird.conf /etc/apache2/sites-available/
 cd /etc/apache2/sites-available/
 a2dissite 000-default.conf
 a2ensite spybird.conf

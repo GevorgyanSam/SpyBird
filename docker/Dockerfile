@@ -6,8 +6,8 @@ WORKDIR /var/www/SpyBird
 
 COPY . .
 
-RUN chmod +x conf/boot.sh && \
-    conf/boot.sh && \
+RUN chmod +x docker/boot.sh && \
+    docker/boot.sh && \
     chown -R www-data:www-data /var/www/SpyBird && \
     chmod -R 755 /var/www/SpyBird
 
