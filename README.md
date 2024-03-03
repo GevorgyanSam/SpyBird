@@ -6,64 +6,29 @@
 
 ## Getting Started
 
-### Prerequisites
-
-Make sure you have the following dependencies installed on your Debian-based Linux system:
-
--   JavaScript: `nodejs`, `npm`
--   PHP: `php`, `composer`, `php-curl`, `php-xml`, `php-mysql`, `php-imagick`, `php-gd`
--   MySQL: `default-mysql-server`
-
 ### Installation
 
-Follow these steps to install SpyBird:
+To install SpyBird using Docker, follow these steps:
 
 1. **Clone Repository:**
 
     ```bash
     git clone https://github.com/GevorgyanSam/SpyBird.git
-    cd ./SpyBird
+    cd ./SpyBird/docker
     ```
 
-2. **Install Dependencies:**
+2. **Build and Run Docker Containers:**
 
     ```bash
-    composer install
-    npm install
-    ```
-
-### Database Setup
-
-Before building the project, set up the `.env` file and run the migrations:
-
-1. **Run Migrations:**
-
-    ```bash
-    php artisan migrate
-    ```
-
-### Build and Run
-
-After setting up the database, build and run the application:
-
-1. **Create Storage Link:**
-
-    ```bash
-    php artisan storage:link
-    ```
-
-2. **Build Application:**
-
-    ```bash
-    npm run build
+    docker-compose up -d --build
     # or
-    npm run production
+    docker compose up -d --build
     ```
 
-3. **Run Server:**
+3. **Run Migrations:**
 
     ```bash
-    php artisan serve
+    docker-compose exec app php artisan migrate
     ```
 
-The application should be accessible in your web browser at [http://localhost:8000](http://localhost:8000).
+The application should be accessible in your web browser at [http://localhost:8080](http://localhost:8080).
