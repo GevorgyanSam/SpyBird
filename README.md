@@ -21,16 +21,12 @@ To install SpyBird using Docker, follow these steps:
 
     ```bash
     docker-compose up -d --build
-    # or
-    docker compose up -d --build
     ```
 
-3. **Run Migrations:**
+3. **Build Application:**
 
     ```bash
-    docker-compose exec app php artisan migrate
-    # or
-    docker compose exec app php artisan migrate
+    docker-compose exec app bash docker/boot.sh
     ```
 
-The application should be accessible in your web browser at [http://localhost:8080](http://localhost:8080).
+The application should be accessible in your web browser at [http://localhost:3030](http://localhost:3030).
