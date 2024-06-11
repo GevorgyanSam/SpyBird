@@ -20,13 +20,13 @@ To install SpyBird using Docker, follow these steps:
 2. **Build and Run Docker Containers:**
 
     ```bash
-    docker-compose up -d --build
+    docker compose up -d --build
     ```
 
 3. **Build Application:**
 
     ```bash
-    docker-compose exec app bash docker/boot.sh
+    bash boot.sh
     ```
 
 The application should be accessible in your web browser at [http://localhost:3030](http://localhost:3030).
