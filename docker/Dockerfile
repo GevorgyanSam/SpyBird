@@ -23,8 +23,17 @@ RUN cp /var/www/SpyBird/docker/spybird.conf /etc/apache2/sites-available/ && \
     a2dissite 000-default.conf && \
     a2ensite spybird.conf && \
     a2enmod rewrite && \
-    service apache2 restart && \
-    chmod -R 777 /var/www/SpyBird
+    service apache2 restart
+
+# Configure user and permissions
+RUN groupadd -g 1000 spybird && \
+    useradd -u 1000 -ms /bin/bash -g spybird spybird && \
+    chown -R spybird:spybird /var/www/SpyBird && \
+    chmod -R 755 /var/www/SpyBird
+
+# Change apache2 executor
+RUN sed -i 's/APACHE_RUN_USER=www-data/APACHE_RUN_USER=spybird/g' /etc/apache2/envvars && \
+    sed -i 's/APACHE_RUN_GROUP=www-data/APACHE_RUN_GROUP=spybird/g' /etc/apache2/envvars
 
 EXPOSE 80
 

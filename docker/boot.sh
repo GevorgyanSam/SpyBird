@@ -26,8 +26,8 @@ cd "$LOCAL_PATH/docker" || exit 1
 sed -i '/alias spybird=/d' ~/.bashrc
 echo "alias spybird='bash $LOCAL_PATH/docker/spybird.sh $LOCAL_PATH'" >> ~/.bashrc
 
-# Prepend 'docker compose exec app' to execute commands
-PREFIX="docker compose exec app"
+# Prepend container prefix to execute commands
+PREFIX="docker compose exec -u spybird app"
 
 # Install PHP dependencies using Composer
 $PREFIX composer install
