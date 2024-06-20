@@ -1,6 +1,7 @@
 FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV LC_ALL=C.UTF-8
 
 WORKDIR /var/www/SpyBird
 
@@ -13,7 +14,7 @@ RUN apt update && \
     apt autoclean
 
 # Install dependencies
-RUN apt install -y software-properties-common apache2 nano && \
+RUN apt install -y software-properties-common apache2 nano curl gnupg && \
     add-apt-repository ppa:ondrej/php && \
     apt install -y composer php php-curl php-cli php-json php-zip php-mbstring php-xml php-mysql php-imagick php-gd nodejs npm
 

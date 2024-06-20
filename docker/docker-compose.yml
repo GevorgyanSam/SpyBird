@@ -38,6 +38,15 @@ services:
             - ${PMA_PORT}:80
         networks:
             - network
+    mailpit:
+        container_name: ${PREFIX}-mailpit
+        restart: unless-stopped
+        image: axllent/mailpit:latest
+        ports:
+            - ${MAILPIT_PORT_SMTP}:1025
+            - ${MAILPIT_PORT_WEB}:8025
+        networks:
+            - network
 networks:
     network:
         driver: bridge
