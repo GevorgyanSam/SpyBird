@@ -17,13 +17,24 @@ To install SpyBird using Docker, follow these steps:
     cd ./SpyBird/docker
     ```
 
-2. **Build and Run Docker Containers:**
+2. **Check and Configure .env Files**
+
+    <div style="margin-top: 15px;">
+    Make sure to review and configure the `.env` files located in:<br><br>
+
+    - **Root Directory of the Application**: Contains application-specific environment variables.
+    - **Docker Directory**: Contains Docker-specific environment variables.
+
+    These files are crucial for the correct setup and functioning of the application and Docker containers.
+    </div>
+
+3. **Build and Run Docker Containers:**
 
     ```bash
     docker compose up -d --build
     ```
 
-3. **Build Application:**
+4. **Build Application:**
 
     ```bash
     bash boot.sh

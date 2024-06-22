@@ -28,6 +28,8 @@ services:
             - ${DB_PORT}:3306
         networks:
             - network
+        volumes:
+            - db:/var/lib/mysql
     phpmyadmin:
         container_name: ${PREFIX}-phpmyadmin
         restart: unless-stopped
@@ -51,3 +53,6 @@ networks:
     network:
         driver: bridge
         name: ${PREFIX}-network
+volumes:
+    db:
+        driver: local
