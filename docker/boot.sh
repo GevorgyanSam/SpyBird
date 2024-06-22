@@ -24,6 +24,7 @@ cd "$LOCAL_PATH/docker" || exit 1
 
 # Add an alias to ~/.bashrc
 sed -i '/alias spybird=/d' ~/.bashrc
+echo "" >> ~/.bashrc
 echo "alias spybird='bash $LOCAL_PATH/docker/spybird.sh $LOCAL_PATH'" >> ~/.bashrc
 
 # Prepend container prefix to execute commands

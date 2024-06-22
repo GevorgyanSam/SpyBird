@@ -39,5 +39,22 @@ To install SpyBird using Docker, follow these steps:
     ```bash
     bash boot.sh
     ```
+5. **Configure Nginx and Local Domains:**
 
-The application should be accessible in your web browser at [http://localhost:3030](http://localhost:3030).
+    <div style="margin-top: 15px;">
+    If you have Nginx installed on your PC, you can use local domains for your application instead of `localhost:3030`. Run the following command to set up the necessary configurations:
+
+    ```bash
+    sudo bash system.sh
+    ```
+
+    This command will configure Nginx and update your `/etc/hosts` file to use local domains for accessing SpyBird:
+
+    - `http://app.PREFIX.local`
+    - `http://db.PREFIX.local`
+    - `http://mail.PREFIX.local`
+
+    Replace `PREFIX` with your actual application prefix configured in `.env`.
+    </div>
+
+After completing these steps, SpyBird should be accessible in your web browser at [http://localhost:3030](http://localhost:3030), or using local domains if configured with Nginx. Ensure all steps are followed accurately for a smooth installation and setup process.
